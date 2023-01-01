@@ -12,15 +12,35 @@ Problem Dimensions
 - List the Action items if they are specifically called out.
 - Incase where Transcript is not available, you will have to additionally work on converting SPEECH to TEXT
 
-# Introduction
+## Introduction
 
-# Requirements
+Project features Implementated are 
 
-# Usage
+- [x] To do's
 
-# Project Structure
+## Requirements
 
-# Collaborators
+## Usage
+
+#### Start the main application
+
+```
+git clone https://github.com/gamingflexer/meeting-summarization-api.git
+cd src/main-api
+pip3 install -r requirements.txt
+python manage.py runserver
+```
+
+#### Start the meeting summarization api
+
+```
+cd src/models-api
+python3 main.py
+```
+
+## Project Structure
+
+### Collaborators
 
 - [Om Surve]()
 - [Kunal Wagh]()
