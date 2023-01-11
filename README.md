@@ -35,7 +35,7 @@ python manage.py runserver
 
 ```
 cd src/models-api
-python3 main.py
+python python __init__.py
 ```
 
 ## Project Structure
