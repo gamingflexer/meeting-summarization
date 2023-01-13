@@ -4,10 +4,17 @@ from rest_framework import permissions
 from rest_framework import status
 from .permissions import IsOwner
 
-# Create your views here.
+from decouple import config
+
+DEBUG = config('DEBUG', cast=bool)
+
+# View Starts here
 
 class LandingPageAPI(APIView):
-    permission_classes = (permissions.IsAuthenticated, IsOwner,)
+    if DEBUG:
+        permission_classes = (permissions.AllowAny,)
+    else:
+        permission_classes = (permissions.IsAuthenticated, IsOwner,)
     
     def get(self, request):
         user = request.user
