@@ -1,0 +1,35 @@
+from django.db import models
+
+# Create your models here.
+
+class User_info(models.Model):
+    user_id = models.AutoField(primary_key=True)
+    user_prof_type = models.CharField(max_length=255)
+    user_meeting_category = models.CharField(max_length=255)
+
+class Summary(models.Model):
+    meeting_id = models.AutoField(primary_key=True)
+    scheduled_meeting = models.CharField(max_length=255)
+    scheduled_meeting_time = models.TimeField()
+    meeting_description = models.CharField(max_length=255)
+    meeting_location = models.CharField(max_length=255)
+    
+    meeting_transcript = models.CharField(max_length=10000)
+    meeting_audio_file_link = models.CharField(max_length=255)
+    
+    is_summarized = models.BooleanField(default=False)
+    meeting_summary = models.CharField(max_length=200)
+    summary_gen_date = models.DateField()
+    meeting_category_assgined = models.CharField(max_length=255)
+    model_used = models.CharField(max_length=255)
+    
+    topic = models.CharField(max_length=255)
+    top_keywords = models.CharField(max_length=255)
+    top_speaker = models.CharField(max_length=255)
+    top_spent_time_person = models.CharField(max_length=255)
+    descions = models.CharField(max_length=1000)
+    highlights = models.CharField(max_length=1000)
+    
+    meeting_summary_old = models.CharField(max_length=200)
+    
+    

@@ -129,3 +129,6 @@ dmypy.json
 .pyre/
 meeting-summarization-api.code-workspace
 .gitignore
+src/main-api/api/migrations/*
+src/main-api/social_auth/migrations/*
+src/main-api/authentication/migrations/*
