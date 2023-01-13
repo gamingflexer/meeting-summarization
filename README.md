@@ -24,11 +24,19 @@ Project features Implementated are
 
 #### Start the main application
 
+
 ```
 git clone https://github.com/gamingflexer/meeting-summarization-api.git
 cd src/main-api
 pip3 install -r requirements.txt
 python manage.py runserver
+```
+
+##### Migration
+
+```
+python manage.py makemigrations
+python manage.py migrate
 ```
 
 #### Start the meeting summarization api
