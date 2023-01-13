@@ -132,3 +132,4 @@ meeting-summarization-api.code-workspace
 src/main-api/api/migrations/*
 src/main-api/social_auth/migrations/*
 src/main-api/authentication/migrations/*
+data/*
