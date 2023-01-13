@@ -12,12 +12,13 @@ def create_app():
 
     # register views
     from views import app_mbp
-    from views.api import TestApi
+    from views.api import AudioApi,SummaryApi
 
     app.register_blueprint(app_mbp)
 
     api = Api(app, prefix="/api")
-    api.add_resource(TestApi, "/test/<string:id>")
+    api.add_resource(AudioApi, "/transcript")
+    api.add_resource(SummaryApi, "/summarization")
     
     return app
 
