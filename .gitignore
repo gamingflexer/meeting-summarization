@@ -135,3 +135,4 @@ src/main-api/authentication/migrations/*
 data/*
 src/main-api/media/*
 src/models-api/views/media/*
+dump.rdb

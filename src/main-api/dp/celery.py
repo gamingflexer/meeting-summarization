@@ -14,7 +14,7 @@ app.conf.update(timezone = 'Asia/Kolkata')
 
 app.config_from_object(settings, namespace='CELERY')
 
-#Celeery Beat Config
+#Celery Beat Config
 
 app.autodiscover_tasks(lambda : settings.INSTALLED_APPS)
 
