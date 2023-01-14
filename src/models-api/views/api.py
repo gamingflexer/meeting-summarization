@@ -28,8 +28,10 @@ class AudioApi(Resource):
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(UPLOAD_FOLDER, filename))
+            if DEBUG:
+                return ({"summary":"summary"}),200
             result = wav_to_transcript(os.path.join(UPLOAD_FOLDER, filename))
-        return {"result": result}, 200
+            return {"summary": result}, 200
     
 class SummaryApi(Resource):
     def get(self):
