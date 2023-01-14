@@ -42,5 +42,7 @@ class Summary(models.Model):
     factual_consistency = models.CharField(max_length=255)
     
     meeting_summary_old = models.CharField(max_length=200)
-    
-    
+        
+class File(models.Model):
+  file = models.FileField(blank=False, null=False)
+  timestamp = models.DateTimeField(auto_now_add=True)

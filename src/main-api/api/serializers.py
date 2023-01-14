@@ -10,3 +10,8 @@ class User_info_Serializers(serializers.ModelSerializer):
     class Meta:
         model = User_info
         fields = "__all__"
+        
+class FileSerializer(serializers.ModelSerializer):
+    class Meta():
+        model = File
+        fields = ('file', 'timestamp')
