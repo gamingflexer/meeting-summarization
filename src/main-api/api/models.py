@@ -4,14 +4,15 @@ from django.db import models
 
 class User_info(models.Model):
     user_id = models.AutoField(primary_key=True)
-    user_prof_type = models.CharField(max_length=255)
-    user_meeting_category = models.CharField(max_length=255)
+    email = models.CharField(max_length=255,unique=True)
+    user_prof_type = models.CharField(max_length=255,default='SDE')
+    user_meeting_category = models.CharField(max_length=255,default='tech')
 
 class Summary(models.Model):
     meeting_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(User_info, on_delete=models.CASCADE)
-    scheduled_meeting = models.CharField(max_length=255)
-    scheduled_meeting_time = models.TimeField()
+    scheduled_meeting = models.CharField(max_length=255, null=True)
+    scheduled_meeting_time = models.TimeField(blank=True)
     meeting_description = models.CharField(max_length=255)
     meeting_location = models.CharField(max_length=255)
     
@@ -20,9 +21,9 @@ class Summary(models.Model):
     is_multilingual = models.BooleanField(default=False)
     language = models.CharField(max_length=255)
     
-    is_summarized = models.BooleanField(default=False)
+    is_summarized = models.BooleanField(default=False,null=False)
     meeting_summary = models.CharField(max_length=200)
-    summary_gen_date = models.DateField()
+    summary_gen_date = models.DateField(null=True)
     reading_time = models.CharField(max_length=30) # in minutes & no of words
     meeting_category_assgined = models.CharField(max_length=255)
     model_used = models.CharField(max_length=255)
