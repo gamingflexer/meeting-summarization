@@ -133,3 +133,4 @@ src/main-api/api/migrations/*
 src/main-api/social_auth/migrations/*
 src/main-api/authentication/migrations/*
 data/*
+src/main-api/media/*

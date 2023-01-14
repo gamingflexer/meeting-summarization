@@ -39,6 +39,13 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
+#### Celery
+
+```
+celery -A dp.celery worker -l info -P solo 
+
+```
+
 #### Start the meeting summarization api
 
 ```
