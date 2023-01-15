@@ -34,5 +34,7 @@ class AudioApi(Resource):
             return {"summary": result}, 200
     
 class SummaryApi(Resource):
-    def get(self):
+    def post(self):
+        data = request.get_json()
+        print(data)
         return {"result": "summary"}, 200
