@@ -55,3 +55,4 @@ redis
 Redis
 django_celery
 setuptools<58.0.0
+wget
