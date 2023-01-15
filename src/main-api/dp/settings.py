@@ -26,6 +26,7 @@ if not os.path.exists(os.path.join(MEDIA_ROOT, "audio")):
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('DJANGO_SECRET_KEY')
+MONGO_DB_URL = config('MONGO_DB_URL')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -86,14 +87,24 @@ WSGI_APPLICATION = 'dp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
+}"""
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME': 'dp',
+        'ENFORCE_SCHEMA': False,
+        'CLIENT': {
+                'host': MONGO_DB_URL
+
+        }
+    }
 }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 

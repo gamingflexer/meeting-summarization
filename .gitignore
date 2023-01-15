@@ -136,3 +136,4 @@ data/*
 src/main-api/media/*
 src/models-api/views/media/*
 dump.rdb
+src/main-api/api/migartions2/*

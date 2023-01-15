@@ -50,7 +50,7 @@ celery -A dp.celery worker -l info -P solo
 
 ```
 cd src/models-api
-python python __init__.py
+python __init__.py
 ```
 
 ## Project Structure
