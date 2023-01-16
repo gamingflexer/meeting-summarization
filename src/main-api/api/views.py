@@ -8,7 +8,7 @@ from api.models import User_info,Summary
 from api.tasks import summarization_function
 from .permissions import user_auth_required
 from config import base_path_file
-
+from authentication.models import User
 import datetime
 
 # View Starts here
@@ -94,5 +94,33 @@ class SummaryPagegAPI(APIView):
         main_queryset_serializer = Summary_Serializers(main_queryset,many=True)
         return Response({"data":{"meeting_data":main_queryset_serializer.data}},status=status.HTTP_200_OK)
     
+
+
+class EditDataAPI(APIView) :
+    def get(self,request,username):
+
+        User_data = User.objects.get(username=username)
+        User_data_serializer = User_info_Serializers(User_data)
+        return Response({"data": {"user_data": User_data_serializer.data}}, status=status.HTTP_200_OK)
+
+
+    def post(self,request):
+        try :
+            data = JSONParser().parse(request)
+            user_name = data['username']
+            query_set = User.objects.get(username=user_name)
+            query_set.is_verified = data['is_verified']
+            query_set.is_active = data['is_active']
+            query_set.is_staff = data['is_staff']
+            query_set.created_at = data['created_at']
+            query_set.updated_at = data['updated_at']
+            query_set.auth_provider = data['auth_provider']
+            query_set.save()
+
+            return Response(status=status.HTTP_200_OK)
+
+        except Exception as e :
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 # wget.download("https://firebasestorage.googleapis.com/v0/b/iitm-f916f.appspot.com/o/male.wav?alt=media&token=f2494f50-284d-42df-a7ff-332dd2a1777a")
