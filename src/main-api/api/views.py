@@ -123,4 +123,3 @@ class EditDataAPI(APIView) :
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-# wget.download("https://firebasestorage.googleapis.com/v0/b/iitm-f916f.appspot.com/o/male.wav?alt=media&token=f2494f50-284d-42df-a7ff-332dd2a1777a")
