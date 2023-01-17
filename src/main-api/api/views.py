@@ -96,9 +96,8 @@ class SummaryPagegAPI(APIView):
     
 
 
-class EditDataAPI(APIView) :
+class EditUserDataAPI(APIView) :
     def get(self,request,username):
-
         User_data = User.objects.get(username=username)
         User_data_serializer = User_info_Serializers(User_data)
         return Response({"data": {"user_data": User_data_serializer.data}}, status=status.HTTP_200_OK)
@@ -109,16 +108,8 @@ class EditDataAPI(APIView) :
             data = JSONParser().parse(request)
             user_name = data['username']
             query_set = User.objects.get(username=user_name)
-            query_set.is_verified = data['is_verified']
-            query_set.is_active = data['is_active']
-            query_set.is_staff = data['is_staff']
-            query_set.created_at = data['created_at']
-            query_set.updated_at = data['updated_at']
-            query_set.auth_provider = data['auth_provider']
             query_set.save()
-
             return Response(status=status.HTTP_200_OK)
-
         except Exception as e :
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
