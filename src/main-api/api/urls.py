@@ -6,5 +6,5 @@ urlpatterns = [
     path('addmeeting', AddMeetingAPI.as_view(), name='addmeeting'),
     path('addmeetingfile/<int:meeting_id>', AddMeetingFileAPI.as_view(), name='addmeetingfile'),
     path('summary/<int:meeting_id>', SummaryPagegAPI.as_view(), name='summary'),
-    path('userinfo/<int:user_id>', EditDataAPI.as_view(), name='fetch_user_data')
+    path('userinfo/<str:username>', EditUserDataAPI.as_view(), name='fetch_user_data')
 ] 
