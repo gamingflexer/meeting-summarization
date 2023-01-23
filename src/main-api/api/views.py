@@ -1,3 +1,4 @@
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -9,7 +10,10 @@ from api.tasks import summarization_function
 from .permissions import user_auth_required
 from config import base_path_file
 from authentication.models import User
+from decouple import config
 import datetime
+
+DEBUG = config('DEBUG', cast=bool)
 
 # View Starts here
 
@@ -45,6 +49,7 @@ class AddMeetingAPI(APIView):
     
     permission_classes = user_auth_required()
     
+    @csrf_exempt
     def post(self, request):
         data = JSONParser().parse(request)
         user_id= data['user_id']
@@ -74,6 +79,7 @@ class AddMeetingFileAPI(APIView):
     
     permission_classes = user_auth_required()
     
+    @csrf_exempt
     def post(self, request, meeting_id):
         file_serializer = FileSerializer(data=request.data)
         if file_serializer.is_valid():
@@ -103,7 +109,6 @@ class SummaryPagegAPI(APIView):
             }},status=status.HTTP_200_OK)
     
 
-
 class EditUserDataAPI(APIView) :
     
     permission_classes = user_auth_required()
@@ -113,7 +118,7 @@ class EditUserDataAPI(APIView) :
         User_data_serializer = User_info_Serializers(User_data)
         return Response({"data": {"user_data": User_data_serializer.data}}, status=status.HTTP_200_OK)
 
-
+    @csrf_exempt
     def post(self,request):
         try :
             data = JSONParser().parse(request)
@@ -123,5 +128,3 @@ class EditUserDataAPI(APIView) :
             return Response(status=status.HTTP_200_OK)
         except Exception as e :
             return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
