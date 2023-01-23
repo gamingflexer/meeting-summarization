@@ -31,7 +31,14 @@ MONGO_DB_URL = config('MONGO_DB_URL')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDITENTIALS = True
+ALLOWED_HOSTS = ['*']
+CORS_ALLOWED_ORIGINS = ['http://*']
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+)
 
 AUTH_USER_MODEL = 'authentication.User'
 
