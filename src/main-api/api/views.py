@@ -92,11 +92,22 @@ class SummaryPagegAPI(APIView):
     def get(self, request, meeting_id):
         main_queryset = Summary.objects.filter(meeting_id=meeting_id)
         main_queryset_serializer = Summary_Serializers(main_queryset,many=True)
-        return Response({"data":{"meeting_data":main_queryset_serializer.data}},status=status.HTTP_200_OK)
+        content = main_queryset_serializer.data
+        for i in content:
+            i['top_keywords'] = i['top_keywords'].split(',')
+            i['top_speaker'] = i['top_speaker'].split(',')
+            i['highlights'] = i['highlights'].split(',')
+            i['reading_time'] = str((len(i['meeting_summary'].split(' '))//3 )//60) + ' mins'
+        return Response({"data":{
+            "meeting_data":content
+            }},status=status.HTTP_200_OK)
     
 
 
 class EditUserDataAPI(APIView) :
+    
+    permission_classes = user_auth_required()
+    
     def get(self,request,username):
         User_data = User.objects.get(username=username)
         User_data_serializer = User_info_Serializers(User_data)

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import LandingPageAPI,AddMeetingAPI,SummaryPagegAPI,AddMeetingFileAPI,EditDataAPI
+from .views import LandingPageAPI,AddMeetingAPI,SummaryPagegAPI,AddMeetingFileAPI,EditUserDataAPI
 
 urlpatterns = [
     path('landing', LandingPageAPI.as_view(), name='landing'),
