@@ -3,7 +3,7 @@ from flask_restful import Resource
 from flask import request, json
 import os
 
-from .models import wav_to_transcript
+from .models import wav_to_transcript, transcript_to_entities
 from utils import allowed_file
 
 from decouple import config
@@ -38,3 +38,9 @@ class SummaryApi(Resource):
         data = request.get_json()
         print(data)
         return {"result": "summary"}, 200
+    
+class EntitiesApi(Resource):
+    def post(self):
+        data = request.get_json()
+        entites = transcript_to_entities(data['transcript'])
+        return {"result": entites}, 200
