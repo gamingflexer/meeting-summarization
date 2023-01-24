@@ -38,7 +38,7 @@ class LandingPageAPI(APIView):
                 
         main_queryset = Summary.objects.filter(user_id=user_id)
         main_queryset_serializer = Summary_Serializers(main_queryset, many=True)
-        return Response({"data":{"meetings":main_queryset_serializer.data,
+        return Response({"data":{"meetings":(main_queryset_serializer.data)[-4:],
                                  "total_meetings":len(main_queryset_serializer.data),
                                  "recent_meetings":"",
                                  "scheduled_meetings":"",
