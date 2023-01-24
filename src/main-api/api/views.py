@@ -69,10 +69,11 @@ class AddMeetingAPI(APIView):
                                 meeting_audio_file_link = meeting_audio_file_link_new,
                                 )
         main_queryset_summary = Summary.objects.filter(user_id=user_id).latest('meeting_id')
+        main_queryset_summary_serializer = Summary_Serializers(main_queryset_summary)
         #celery task
         #summarization_function(meeting_audio_file_link_new,file=False)
         return Response({"data":
-                        {"meeting_id":main_queryset_summary.meeting_id}},
+                        {"meeting_id":main_queryset_summary_serializer.data}},
                         status=status.HTTP_201_CREATED)
     
 class AddMeetingFileAPI(APIView):
