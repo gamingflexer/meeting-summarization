@@ -73,7 +73,7 @@ class AddMeetingAPI(APIView):
         #celery task
         #summarization_function(meeting_audio_file_link_new,file=False)
         return Response({"data":
-                        {"meeting_id":main_queryset_summary_serializer.data}},
+                        {"meeting_data":main_queryset_summary_serializer.data}},
                         status=status.HTTP_201_CREATED)
     
 class AddMeetingFileAPI(APIView):
