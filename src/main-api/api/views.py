@@ -1,8 +1,10 @@
 from django.views.decorators.csrf import csrf_exempt
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from drf_yasg import openapi
 
 from api.serializers import User_info_Serializers,Summary_Serializers,FileSerializer
 from api.models import User_info,Summary
@@ -83,7 +85,10 @@ class AddMeetingAPI(APIView):
 class AddMeetingFileAPI(APIView):
     
     permission_classes = user_auth_required()
-    
+    #Swagger Part
+    token_param_config = openapi.Parameter('meeting_id', in_= openapi.IN_QUERY, description='meeting_id', type=openapi.TYPE_STRING)
+
+    @swagger_auto_schema(manual_parameters=[token_param_config])
     @csrf_exempt
     def post(self, request, meeting_id):
         file_serializer = FileSerializer(data=request.data)

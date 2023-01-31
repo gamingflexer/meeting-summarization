@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'authentication',
     'social_auth',
     # 'django.contrib.admin',
+    'drf_yasg',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -60,6 +61,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
 ]
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}
 
 MIDDLEWARE = [
     'dp.middleware.MyMiddleware',
