@@ -58,7 +58,7 @@ class AddMeetingAPI(APIView):
     @csrf_exempt
     def post(self, request):
         data = JSONParser().parse(request)
-        user_id= data['user_id']
+        user_id = data['user_id']
         meeting_audio_file_link_new = ""
         if data.get("is_summarized"):
             meeting_audio_file_link_new = data.get("meeting_audio_file_link")
@@ -116,7 +116,7 @@ class SummaryPageAPI(APIView):
             i['top_speaker'] = i['top_speaker'].split(',')
             i['highlights'] = i['highlights'].split(',')
             i['reading_time'] = str((len(i['meeting_summary'].split(' '))//3 )//60) + ' mins'
-        path = os.path.join(base_path_file,f'{meeting_id}.pdf')
+        path = os.path.join(base_path_file,"media",f'{meeting_id}.pdf')
         txt_to_pdf(content[0]['meeting_summary'],path)
         return Response({"data":{
             "meeting_data":content,
@@ -132,7 +132,7 @@ class DownloadpdfAPI(APIView):
         main_queryset = Summary.objects.filter(meeting_id=meeting_id)
         main_queryset_serializer = Summary_Serializers(main_queryset,many=True)
         content = main_queryset_serializer.data
-        path = os.path.join(base_path_file,f'{meeting_id}.pdf')
+        path = os.path.join(base_path_file,"media",f'{meeting_id}.pdf')
         txt_to_pdf(content[0]['meeting_summary'],path)
         return Response({"data":{"path" : path}},status=status.HTTP_200_OK)
         
