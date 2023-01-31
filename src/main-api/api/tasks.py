@@ -13,10 +13,12 @@ def summarization_function(file_path_or_link, file=False):
         urllib.request.urlretrieve(file_path_or_link, os.path.join(media_path,"audio","transcript.txt"))
         print("file downloaded")
     #some pre-processing step
-    data = open(os.path.join(media_path,"audio","transcript.txt"), 'rb').read()
+    
+    data = (open(os.path.join(file_path_or_link), 'rb').read()).decode('utf-8')
+    
     try:
         response = requests.post(url_sumarization, 
-                                data=json.dumps({"data":""}), 
+                                data=json.dumps({"transcript":data}), 
                                 headers={"Content-Type": "application/json"})
         response.raise_for_status()
     except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
@@ -24,13 +26,14 @@ def summarization_function(file_path_or_link, file=False):
     except requests.exceptions.HTTPError:
         print("4xx, 5xx")
     transcript =  response.json()['summary']
-    try:
-        response = requests.post(url_sumarization, 
-                                data=json.dumps({"data":""}), 
-                                headers={"Content-Type": "application/json"})
-        response.raise_for_status()
-    except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-        print("Down")
-    except requests.exceptions.HTTPError:
-        print("4xx, 5xx")
+    return str(transcript),data
+    # try:
+    #     response = requests.post(url_sumarization, 
+    #                             data=json.dumps({"data":""}), 
+    #                             headers={"Content-Type": "application/json"})
+    #     response.raise_for_status()
+    # except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+    #     print("Down")
+    # except requests.exceptions.HTTPError:
+    #     print("4xx, 5xx")
     

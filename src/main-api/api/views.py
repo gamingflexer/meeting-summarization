@@ -11,7 +11,9 @@ from .permissions import user_auth_required
 from config import base_path_file
 from authentication.models import User
 from decouple import config
+from utils import txt_to_pdf
 import datetime
+import os
 
 DEBUG = config('DEBUG', cast=bool)
 
@@ -36,13 +38,15 @@ class LandingPageAPI(APIView):
             if main_queryset_serializer.is_valid():
                 main_queryset_serializer.save()
                 
-        main_queryset = Summary.objects.filter(user_id=user_id)
-        main_queryset_serializer = Summary_Serializers(main_queryset, many=True)
-        return Response({"data":{"meetings":(main_queryset_serializer.data)[-4:],
-                                 "total_meetings":len(main_queryset_serializer.data),
+        main_queryset_total_meetings = Summary.objects.filter(user_id=user_id)
+        main_queryset_summarized = Summary.objects.filter(user_id=user_id, is_summarized=True)
+        main_queryset = Summary.objects.filter(user_id=9).order_by('-meeting_id')[:4][::-1]
+        main_queryset_serializer = Summary_Serializers(reversed(main_queryset), many=True)
+        return Response({"data":{"meetings":(main_queryset_serializer.data),
+                                 "total_meetings":len(main_queryset_total_meetings),
                                  "recent_meetings":"",
                                  "scheduled_meetings":"",
-                                 "summrized_meetings":""}
+                                 "summrized_meetings":len(main_queryset_summarized)}
                          },status=status.HTTP_200_OK)
     
 class AddMeetingAPI(APIView):
@@ -87,16 +91,18 @@ class AddMeetingFileAPI(APIView):
             file_serializer.save()
             pathOfFile = file_serializer.data['file']
             newPath = base_path_file + '/' + pathOfFile
-            Summary.objects.filter(meeting_id=meeting_id).update(meeting_audio_file_link=newPath)
-            #celery task
-            #summarization_function(newPath,file=True)
+            Summary.objects.filter(meeting_id=meeting_id).update(meeting_audio_file_link=newPath,is_summarized=True)
+            #make it celery task
+            summary,transcript = summarization_function(newPath,file=True)
+            Summary.objects.filter(meeting_id=meeting_id).update(meeting_summary=summary,meeting_transcript=transcript)
         return Response({"data":{"meeting_id":meeting_id,"status":"File uploaded successfully"}},status=status.HTTP_201_CREATED)
     
-class SummaryPagegAPI(APIView):
+class SummaryPageAPI(APIView):
     
     permission_classes = user_auth_required()
     
     def get(self, request, meeting_id):
+        email = "surve790@gmail.com" #request.email
         main_queryset = Summary.objects.filter(meeting_id=meeting_id)
         main_queryset_serializer = Summary_Serializers(main_queryset,many=True)
         content = main_queryset_serializer.data
@@ -105,10 +111,26 @@ class SummaryPagegAPI(APIView):
             i['top_speaker'] = i['top_speaker'].split(',')
             i['highlights'] = i['highlights'].split(',')
             i['reading_time'] = str((len(i['meeting_summary'].split(' '))//3 )//60) + ' mins'
+        path = os.path.join(base_path_file,f'{meeting_id}.pdf')
+        txt_to_pdf(content[0]['meeting_summary'],path)
         return Response({"data":{
-            "meeting_data":content
+            "meeting_data":content,
+            "email_redirect":f"mailto:{email}",
             }},status=status.HTTP_200_OK)
     
+    
+class DownloadpdfAPI(APIView):
+    
+    permission_classes = user_auth_required()
+    
+    def get(self,request,meeting_id):
+        main_queryset = Summary.objects.filter(meeting_id=meeting_id)
+        main_queryset_serializer = Summary_Serializers(main_queryset,many=True)
+        content = main_queryset_serializer.data
+        path = os.path.join(base_path_file,f'{meeting_id}.pdf')
+        txt_to_pdf(content[0]['meeting_summary'],path)
+        return Response({"data":{"path" : path}},status=status.HTTP_200_OK)
+        
 
 class EditUserDataAPI(APIView) :
     

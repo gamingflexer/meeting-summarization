@@ -40,7 +40,7 @@ class SummaryApi(Resource):
         data = request.get_json()
         transcript = data.get('transcript')
         summary = bart_summarize(transcript, os.path.join(MODEL_FOLDER, 'v1.0.0-bart'))
-        return {"result": summary}, 200
+        return {"summary": summary}, 200
     
 class EntitiesApi(Resource):
     def post(self):
