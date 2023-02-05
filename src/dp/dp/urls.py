@@ -21,7 +21,7 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="INCOME EXPENSES API",
+        title="DP API",
         default_version='v1',
         description="Test description",
         terms_of_service="https://www.ourapp.com/policies/terms/",
