@@ -28,7 +28,7 @@ class LandingPageAPI(APIView):
     def get(self, request):
         user = request.user
         email = "test0991@test.com" #request.email
-        
+        user_id = 1
         main_queryset = User_info.objects.filter(email=email)
         if main_queryset.exists():
             main_queryset = main_queryset.first()
