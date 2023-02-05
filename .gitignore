@@ -140,3 +140,4 @@ src/main-api/api/migartions2/*
 src/models-api/model/v1.0.0-bart/*
 src/main-api/*.pdf
 test2.txt
+test.ipynb

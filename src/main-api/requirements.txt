@@ -60,3 +60,5 @@ djongo
 pymongo==3.12.1
 fpdf
 drf-yasg==1.20.0
+kombu
+click
