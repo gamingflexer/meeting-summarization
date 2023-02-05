@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'authentication',
     'social_auth',
     # 'django.contrib.admin',
+    'rest_framework',
     'drf_yasg',
     'django.contrib.auth',
     'django.contrib.contenttypes',
