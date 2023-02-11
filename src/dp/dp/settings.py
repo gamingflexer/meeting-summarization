@@ -18,6 +18,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+
 if not os.path.exists(os.path.join(MEDIA_ROOT, "audio")):
     os.makedirs(os.path.join(MEDIA_ROOT, "audio"))
 
@@ -29,8 +32,7 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 MONGO_DB_URL = config('MONGO_DB_URL')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+DEBUG = False
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDITENTIALS = True
