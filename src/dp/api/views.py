@@ -17,7 +17,7 @@ from utils import txt_to_pdf
 import datetime
 import os
 
-DEBUG = config('DEBUG', cast=bool)
+DEBUG_TEST = config('DEBUG_TEST', cast=bool)
 
 # View Starts here
 
@@ -27,18 +27,18 @@ class LandingPageAPI(APIView):
     
     def get(self, request):
         user = request.user
-        email = "test0991@test.com" #request.email
+        email = "test091@test.com" #request.email
         user_id = 1
-        main_queryset = User_info.objects.filter(email=email)
-        if main_queryset.exists():
-            main_queryset = main_queryset.first()
-            main_queryset_serializer = User_info_Serializers(main_queryset)
-            user_id = main_queryset.user_id
-        else:
-            main_queryset = User_info.objects.create(email=email)
-            main_queryset_serializer = User_info_Serializers(data = main_queryset)
-            if main_queryset_serializer.is_valid():
-                main_queryset_serializer.save()
+        # main_queryset = User_info.objects.filter(email=email)
+        # if main_queryset.exists():
+        #     main_queryset = main_queryset.first()
+        #     main_queryset_serializer = User_info_Serializers(main_queryset)
+        #     user_id = main_queryset.user_id
+        # else:
+        #     main_queryset = User_info.objects.create(email=email)
+        #     main_queryset_serializer = User_info_Serializers(data = main_queryset)
+        #     if main_queryset_serializer.is_valid():
+        #         main_queryset_serializer.save()
                 
         main_queryset_total_meetings = Summary.objects.filter(user_id=user_id)
         main_queryset_summarized = Summary.objects.filter(user_id=user_id, is_summarized=True)
