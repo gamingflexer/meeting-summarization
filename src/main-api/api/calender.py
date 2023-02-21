@@ -12,9 +12,8 @@ from django.views import View
 from django.http import JsonResponse
 from django.shortcuts import redirect
 
-
-
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
 
 class GoogleCalendarInitView(View):
@@ -57,7 +56,7 @@ class GoogleCalendarRedirectView(View):
 
         flow = InstalledAppFlow.from_client_secrets_file(
             '../main-api/config/client_secret.json',
-            scopes=['https://www.googleapis.com/auth/calendar.readonly'],
+            scopes=['https://www.googleapis.com/auth/calendar.readonly','"https://www.googleapis.com/auth/userinfo.email','https://www.googleapis.com/auth/userinfo.profile'],
             state=state
         )
         flow.redirect_uri = 'http://localhost:8000/api/rest/v1/calendar/redirect'
