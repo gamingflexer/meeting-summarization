@@ -28,7 +28,7 @@ class LandingPageAPI(APIView):
     def get(self, request):
         user = request.user
         email = "test0991@test.com" #request.email
-        
+        user_id = 1
         main_queryset = User_info.objects.filter(email=email)
         if main_queryset.exists():
             main_queryset = main_queryset.first()
@@ -41,8 +41,8 @@ class LandingPageAPI(APIView):
                 main_queryset_serializer.save()
                 
         main_queryset_total_meetings = Summary.objects.filter(user_id=user_id)
-        main_queryset_summarized = Summary.objects.filter(user_id=user_id, is_summarized=True)
-        main_queryset = Summary.objects.filter(user_id=9).order_by('-meeting_id')[:4][::-1]
+        main_queryset_summarized = Summary.objects.filter(user_id=user_id)
+        main_queryset = Summary.objects.filter(user_id=user_id).order_by('-meeting_id')[:4][::-1]
         main_queryset_serializer = Summary_Serializers(reversed(main_queryset), many=True)
         return Response({"data":{"meetings":(main_queryset_serializer.data),
                                  "total_meetings":len(main_queryset_total_meetings),
