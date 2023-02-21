@@ -31,7 +31,14 @@ MONGO_DB_URL = config('MONGO_DB_URL')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDITENTIALS = True
+ALLOWED_HOSTS = ['*']
+CORS_ALLOWED_ORIGINS = ['http://*']
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+)
 
 AUTH_USER_MODEL = 'authentication.User'
 
@@ -46,14 +53,28 @@ INSTALLED_APPS = [
     'authentication',
     'social_auth',
     # 'django.contrib.admin',
+    'drf_yasg',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
 ]
 
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}
+
 MIDDLEWARE = [
+    'dp.middleware.MyMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

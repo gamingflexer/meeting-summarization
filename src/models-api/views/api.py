@@ -3,10 +3,12 @@ from flask_restful import Resource
 from flask import request, json
 import os
 
-from .models import wav_to_transcript
+from .models import wav_to_transcript, transcript_to_entities
 from utils import allowed_file
 
 from decouple import config
+from config import MODEL_FOLDER
+from model.bart import bart_summarize
 
 DEBUG = config('DEBUG', cast=bool)
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'media')
@@ -36,5 +38,12 @@ class AudioApi(Resource):
 class SummaryApi(Resource):
     def post(self):
         data = request.get_json()
-        print(data)
-        return {"result": "summary"}, 200
+        transcript = data.get('transcript')
+        summary = bart_summarize(transcript, os.path.join(MODEL_FOLDER, 'v1.0.0-bart'))
+        return {"summary": summary}, 200
+    
+class EntitiesApi(Resource):
+    def post(self):
+        data = request.get_json()
+        entites = transcript_to_entities(data['transcript'])
+        return {"result": entites}, 200

@@ -1,6 +1,8 @@
 from django.urls import path
+
 from .views import LandingPageAPI,AddMeetingAPI,SummaryPagegAPI,AddMeetingFileAPI,EditUserDataAPI
 from .calender import GoogleCalendarInitView,GoogleCalendarEventsView,GoogleCalendarRedirectView
+
 
 urlpatterns = [
     path('landing', LandingPageAPI.as_view(), name='landing'),
@@ -14,4 +16,8 @@ urlpatterns = [
          GoogleCalendarRedirectView.as_view(), name='calendar_redirect'),
     path('rest/v1/calendar/events/',
          GoogleCalendarEventsView.as_view(), name='calendar_redirect'),
+    path('summary/<int:meeting_id>', SummaryPageAPI.as_view(), name='summary'),
+    path('summary/<int:meeting_id>/pdf', SummaryPageAPI.as_view(), name='summary_pdf'),
+    path('userinfo/<str:username>', EditUserDataAPI.as_view(), name='fetch_user_data')
+
 ] 

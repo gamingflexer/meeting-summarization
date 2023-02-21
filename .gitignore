@@ -137,3 +137,9 @@ src/main-api/media/*
 src/models-api/views/media/*
 dump.rdb
 src/main-api/api/migartions2/*
+src/models-api/model/v1.0.0-bart/*
+src/main-api/*.pdf
+test2.txt
+test.ipynb
+src/dp/dp/static/*
+src/dp/api/Archive.zip

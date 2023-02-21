@@ -9,3 +9,4 @@ setuptools-rust
 numpy
 torch
 gdown
+spacy
