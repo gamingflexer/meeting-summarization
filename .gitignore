@@ -143,3 +143,4 @@ test2.txt
 test.ipynb
 src/dp/dp/static/*
 src/dp/api/Archive.zip
+src/main-api/config/*.json

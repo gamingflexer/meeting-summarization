@@ -62,3 +62,4 @@ fpdf
 drf-yasg==1.20.0
 kombu
 click
+google_auth_oauthlib
