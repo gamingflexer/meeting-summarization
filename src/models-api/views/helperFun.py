@@ -16,7 +16,7 @@ class pre_processsor():
         phone_numbers = get_phone_numbers(text) #list
         human_name = get_human_name(text) #list
         addresses = address_grabber(text) #list
-        return text
+        return email,date,phone_numbers,human_name,addresses
     
     def get_corrected_text(self):
         text = self.text
