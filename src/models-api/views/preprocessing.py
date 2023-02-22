@@ -4,6 +4,7 @@ import spacy
 from nltk import ne_chunk, pos_tag, word_tokenize
 from nltk.tree import Tree
 from date_extractor import extract_dates
+from deep_translator import GoogleTranslator
 
 # load the English language model
 nlp = spacy.load("en_core_web_sm")
@@ -143,3 +144,14 @@ def detect_questions_answers(transcript):
             answers.append(sent.text)
 
     return questions, answers
+
+def g_translation_en(inText):
+  try:
+    if len(inText)<=4999:
+      outText = GoogleTranslator(target='en').translate(inText)
+      return outText
+    else:
+      return ""
+  except Exception as e:
+    print(e)
+    pass

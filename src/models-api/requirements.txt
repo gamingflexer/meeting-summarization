@@ -11,3 +11,4 @@ torch
 gdown
 spacy
 pyspellchecker
+deep_translator
