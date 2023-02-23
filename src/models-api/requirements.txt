@@ -12,3 +12,4 @@ gdown
 spacy
 pyspellchecker
 deep_translator
+nltk
