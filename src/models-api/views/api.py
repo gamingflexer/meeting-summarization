@@ -3,7 +3,7 @@ from flask_restful import Resource
 from flask import request, json
 import os
 
-from .models import wav_to_transcript, transcript_to_entities
+from .models import wav_to_transcript, transcript_to_entities, audio_enhance
 from utils import allowed_file
 
 from decouple import config
@@ -33,8 +33,12 @@ class AudioApi(Resource):
             file.save(os.path.join(UPLOAD_FOLDER, filename))
             if DEBUG:
                 return ({"summary":"summary"}),200
-            result = wav_to_transcript(os.path.join(UPLOAD_FOLDER, filename))
-            return {"summary": result}, 200
+            new_audio_path = audio_enhance(os.path.join(UPLOAD_FOLDER, filename))
+            result_base = wav_to_transcript(os.path.join(UPLOAD_FOLDER, filename))
+            result_denoised  = wav_to_transcript(new_audio_path)
+            return {
+                    "transcript":[result_base,result_denoised]
+                    }
     
 class SummaryApi(Resource):
     def post(self):

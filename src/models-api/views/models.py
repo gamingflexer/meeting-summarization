@@ -8,6 +8,21 @@ from model.models import bart_summarize,longformer_summarize,pegasus_summarize
 from model.extractive import extract_sentences
 from views.preprocessing import transcript_preprocesssing
 
+import noisereduce as nr
+import librosa as rosa
+import soundfile as sf
+import random as rd
+import os
+
+from config import AUDIO_FOLDER
+
+def audio_enhance(file):
+    audio_data, sample_rate = rosa.load(file, sr=16000)
+    reduced_noise = nr.reduce_noise(y = audio_data, sr=sample_rate, n_std_thresh_stationary=1.5,stationary=True)
+    path_to_save = os.path.join(AUDIO_FOLDER,f"file_{rd.random(0.1)}.wav")
+    sf.write(path_to_save,reduced_noise,sample_rate, 'PCM_24')
+    return path_to_save 
+
 def wav_to_transcript(wav_file_path,model_name="base"):
     model = whisper.load_model(model_name)
     result = model.transcribe(wav_file_path)

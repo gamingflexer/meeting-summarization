@@ -16,3 +16,6 @@ nltk
 scikit-learn 
 scipy 
 matplotlib
+noisereduce
+librosa
+soundfile
