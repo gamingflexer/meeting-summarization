@@ -35,6 +35,16 @@
             "topics": [],
             "notes": "large model",
             "type": "Abstractive"
+        },
+        {
+            "model_id": "MingZhong/DialogLED-base-16384",
+            "path": "MingZhong/DialogLED-base-16384",
+            "dataset": "DialogSum",
+            "perfomance": 0,
+            "topics": [],
+            "notes": "large model",
+            "type": "Abstractive"
+            
         }
     ],
     "pegasus": [
