@@ -8,7 +8,7 @@ from utils import allowed_file
 
 from decouple import config
 from config import MODEL_FOLDER
-from model.bart import bart_summarize
+from model.models import bart_summarize
 
 DEBUG = config('DEBUG', cast=bool)
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'media')

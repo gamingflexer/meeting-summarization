@@ -1,4 +1,4 @@
-from preprocessing import transcript_preprocesssing, email_grabber, date_grabber, get_phone_numbers, get_human_name, address_grabber, correct_sentence, get_jargon_sentences, detect_meeting_structure,detect_questions_answers
+from preprocessing import transcript_preprocesssing, email_grabber, date_grabber, get_phone_numbers, get_human_name, address_grabber, correct_sentence, get_jargon_sentences, detect_meeting_structure,detect_questions_answers, g_translation_en
 from postprocessing import clean_summary, format_summary
 from spellchecker import SpellChecker
 
@@ -8,6 +8,7 @@ class pre_processsor():
     
     def __init__(self, text):
         self.text = transcript_preprocesssing(text)
+        self.og_text = text
         
     def get_entites(self):
         text = self.text
@@ -33,6 +34,12 @@ class pre_processsor():
         meeting_structure = detect_meeting_structure(text)
         question,answers = detect_questions_answers(text)
         return meeting_structure,[question,answers]
+    
+    def tranlate_text(self):
+        text = self.og_text
+        #translate text
+        text = g_translation_en(text)
+        return text
     
 class post_processsor():
     
