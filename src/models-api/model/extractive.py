@@ -4,6 +4,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import spacy
 
+from views.preprocessing import detect_questions_answers
+
 # Load the spaCy model for English language
 nlp = spacy.load("en_core_web_sm")
 
@@ -36,7 +38,17 @@ def extract_sentences(text, n_sentences=5, n_topics=3):
     top_sentence_indices = sim_scores.argsort()[-n_sentences:][::-1]
     top_sentences = [sentences[i].text.strip() for i in top_sentence_indices]
 
-    return top_sentences
+    total_questions,top_answers = [],[]
+    for sentence in top_sentences:
+        q,a = detect_questions_answers(sentence)
+        if q != [] or a != []:
+            print("\nQuestion: ",q)
+            print("\nAnswer: ",a)
+            total_questions.append(q)
+            top_answers.append(a)
+            top_sentences.remove(sentence)
+        
+    return top_sentences,[total_questions,top_answers]
 
 # extract_sentence = extract_sentences(transcript2)
 # extract_sentence joined_sentences = ' '.join(extract_sentence)

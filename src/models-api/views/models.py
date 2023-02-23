@@ -5,7 +5,8 @@ from transformers import pipeline
 from transformers import TFAutoModelForSeq2SeqLM,PegasusForConditionalGeneration
 
 from model.models import bart_summarize,longformer_summarize,pegasus_summarize
-from preprocessing import transcript_preprocesssing
+from model.extractive import extract_sentences
+from views.preprocessing import transcript_preprocesssing
 
 def wav_to_transcript(wav_file_path,model_name="base"):
     model = whisper.load_model(model_name)
@@ -64,7 +65,18 @@ class ModelSelect():
         else:
             print("\nModel not loaded\n")
             print("\nModel not loaded\n")
-        
+            
+    def nlp_extractive_summary(self, list_output = False):
+        #Basic NLP extractive summary
+        extract_sentence,questions_and_answers = extract_sentences(self.text) #list of sentences
+        joined_sentences = " ".join(extract_sentence)
+        if list_output:
+            return extract_sentence
+        return joined_sentences
+    
+    def extractive_summary(self):
+        #Extractive summary
+        return self.text
             
 # newmodel = ModelSelect("bart")
 # model = newmodel.load_model()
