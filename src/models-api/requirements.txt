@@ -13,3 +13,6 @@ spacy
 pyspellchecker
 deep_translator
 nltk
+scikit-learn 
+scipy 
+matplotlib

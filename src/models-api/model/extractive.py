@@ -38,6 +38,7 @@ def extract_sentences(text, n_sentences=5, n_topics=3):
     top_sentence_indices = sim_scores.argsort()[-n_sentences:][::-1]
     top_sentences = [sentences[i].text.strip() for i in top_sentence_indices]
 
+    #remove questions and answers from top sentences    
     total_questions,top_answers = [],[]
     for sentence in top_sentences:
         q,a = detect_questions_answers(sentence)
@@ -48,9 +49,10 @@ def extract_sentences(text, n_sentences=5, n_topics=3):
             top_answers.append(a)
             top_sentences.remove(sentence)
         
+    # Remove Sentences with "thanks"
+    for sentence in top_sentences:
+        if "thanks" in sentence.lower():
+            print("\nThanks sentence removed: ",sentence)
+            top_sentences.remove(sentence)
+    
     return top_sentences,[total_questions,top_answers]
-
-# extract_sentence = extract_sentences(transcript2)
-# extract_sentence joined_sentences = ' '.join(extract_sentence)
-#thanks everyone
-#2 in context follows q and answer or inside one

@@ -1,10 +1,10 @@
-from preprocessing import transcript_preprocesssing, email_grabber, date_grabber, get_phone_numbers, get_human_name, address_grabber, correct_sentence, get_jargon_sentences, detect_meeting_structure,detect_questions_answers, g_translation_en
-from postprocessing import clean_summary, format_summary
+from views.preprocessing import transcript_preprocesssing, email_grabber, date_grabber, get_phone_numbers, get_human_name, address_grabber, correct_sentence, get_jargon_sentences, detect_meeting_structure,detect_questions_answers, g_translation_en
+from views.postprocessing import clean_summary, format_summary
 from spellchecker import SpellChecker
 
 spell = SpellChecker()
 
-class pre_processsor():
+class PreProcesssor():
     
     def __init__(self, text):
         self.text = transcript_preprocesssing(text)
@@ -41,7 +41,7 @@ class pre_processsor():
         text = g_translation_en(text)
         return text
     
-class post_processsor():
+class PostProcesssor():
     
     def __init__(self, text):
         self.text = text
@@ -50,6 +50,6 @@ class post_processsor():
         clean_summaries = clean_summary(self.text)
         return clean_summaries
     
-    def get_formatted_summary(self):
-        formatted_summary = format_summary(self.text)
+    def get_formatted_summary(self,cleaned_summary):
+        formatted_summary = format_summary(cleaned_summary)
         return formatted_summary

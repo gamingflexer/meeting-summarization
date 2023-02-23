@@ -8,7 +8,8 @@ from utils import allowed_file
 
 from decouple import config
 from config import MODEL_FOLDER
-from model.models import bart_summarize
+from views.models import ModelSelect
+from views.helperFun import PreProcesssor,PostProcesssor
 
 DEBUG = config('DEBUG', cast=bool)
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'media')
@@ -39,8 +40,36 @@ class SummaryApi(Resource):
     def post(self):
         data = request.get_json()
         transcript = data.get('transcript')
-        summary = bart_summarize(transcript, os.path.join(MODEL_FOLDER, 'v1.0.0-bart'))
-        return {"summary": summary}, 200
+        
+        """START HERE TO GET SUMMARY"""
+        #preprocessing
+        pre_processor = PreProcesssor(transcript)
+        email,date,phone_numbers,human_name,addresses = pre_processor.get_entites()
+        jargon_sentences = pre_processor.get_jargon_sentences()
+        get_meeting_structure = pre_processor.get_meeting_structure()
+        if data['translate'] == 1:
+            transcript = pre_processor.tranlate_text()
+            
+        #summary generation
+        new_model = ModelSelect(data['model'],transcript,max_new_tokens=200)
+        model = new_model.load_model()
+        results = new_model.generate_summary(model)
+        
+        #postprocessing
+        post_processor = PostProcesssor(results)
+        clean_summary = post_processor.get_clean_summary()
+        formatted_summary = post_processor.get_formatted_summary(clean_summary)
+        
+        #return summary
+        return {"summary": formatted_summary,
+                "meta_data":{"email":email,
+                             "dates":date,
+                             "phone_numbers":phone_numbers,
+                             "human_names":human_name,
+                             "addresses":addresses,
+                             "jargon_sentences":jargon_sentences,
+                             "meeting_structure":get_meeting_structure}
+                }, 200
     
 class EntitiesApi(Resource):
     def post(self):
