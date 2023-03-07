@@ -12,6 +12,8 @@ import noisereduce as nr
 import librosa as rosa
 import soundfile as sf
 import random as rd
+import whisper
+from datetime import timedelta
 import os
 
 from config import AUDIO_FOLDER
@@ -22,6 +24,12 @@ def audio_enhance(file):
     path_to_save = os.path.join(AUDIO_FOLDER,f"file_{rd.random(0.1)}.wav")
     sf.write(path_to_save,reduced_noise,sample_rate, 'PCM_24')
     return path_to_save 
+
+def audio_srt(path):
+    model = whisper.load_model("base")
+    transcribe = model.transcribe(path)
+    segments = transcribe['segments']
+    return segments
 
 def wav_to_transcript(wav_file_path,model_name="base"):
     model = whisper.load_model(model_name)
