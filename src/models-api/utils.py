@@ -1,6 +1,6 @@
 import gdown
 
-ALLOWED_EXTENSIONS = (['wav','csv','mp3'])
+ALLOWED_EXTENSIONS = (['wav','csv','mp3','.acc'])
 
 def drive_download(url, output):
     gdown.download(url, output, quiet=False)
@@ -11,10 +11,6 @@ def allowed_file(filename):
 import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
 from nltk.corpus import wordnet
-
-nltk.download('wordnet')
-nltk.download('vader_lexicon')
-nltk.download('averaged_perceptron_tagger')
 
 def sentiment_check(text):
     sia = SentimentIntensityAnalyzer()

@@ -2,7 +2,18 @@ from distutils.log import debug
 from flask import Flask, redirect, url_for, session
 from flask.helpers import flash
 from flask_restful import Api
+
+from decouple import config
 import os
+
+
+DEBUG = config('DEBUG', cast=bool)
+
+if not DEBUG:
+    import nltk
+    nltk.download('wordnet')
+    nltk.download('vader_lexicon')
+    nltk.download('averaged_perceptron_tagger')
 
 def create_app():
     # create and configure the app
