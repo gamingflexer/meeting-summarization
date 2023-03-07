@@ -7,7 +7,7 @@ from pytz import timezone
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dp.settings')
 
-app = Celery('sih')
+app = Celery('dp')
 app.conf.enable_utc = True
 
 app.conf.update(timezone = 'Asia/Kolkata')
