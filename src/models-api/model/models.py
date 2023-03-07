@@ -1,5 +1,6 @@
 from transformers import pipeline
-from transformers import AutoTokenizer
+from transformers import AutoTokenizer,AutoModelForSeq2SeqLM
+from utils import sentiment_check
 
 def bart_summarize(summarizer,text):
     #summarizer = pipeline("summarization", model=hub_model_id)
@@ -20,3 +21,25 @@ def pegasus_summarize(model,text):
     inputs = tokenizer(text, max_length=1024, return_tensors="pt")
     summary_ids = model.generate(inputs["input_ids"])
     return tokenizer.batch_decode(summary_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+
+def sshleifer_distilbart_xsum_12_3(model,text):
+    model_name = "sshleifer/distilbart-xsum-12-3"
+    model = AutoModelForSeq2SeqLM.from_pretrained("")
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    
+    encoder_max_length = 256  # demo
+    decoder_max_length = 64
+    inputs = tokenizer(
+        text,
+        padding="max_length",
+        truncation=True,
+        max_length=encoder_max_length,
+        return_tensors="pt",
+    )
+    input_ids = inputs.input_ids.to(model.device)
+    attention_mask = inputs.attention_mask.to(model.device)
+    outputs = model.generate(input_ids, attention_mask=attention_mask)
+    outputs_str = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+    return sentiment_check(outputs_str)
+  
+    
