@@ -4,6 +4,7 @@ from flask.helpers import flash
 from flask_restful import Api
 
 from decouple import config
+import spacy
 import os
 
 
@@ -14,6 +15,10 @@ if not DEBUG:
     nltk.download('wordnet')
     nltk.download('vader_lexicon')
     nltk.download('averaged_perceptron_tagger')
+    nlp = spacy.load('en_core_web_lg')
+else:
+    nlp = spacy.load('en_core_web_sm')
+
 
 def create_app():
     # create and configure the app
