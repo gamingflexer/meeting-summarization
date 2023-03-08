@@ -107,3 +107,18 @@ class ModelSelect():
 # newmodel = ModelSelect("bart")
 # model = newmodel.load_model()
 # results = newmodel.generate_summary(model)
+
+class ChatBot():
+    def __init__(self,question,transcript,summary,model_name="sentence-transformers/paraphrase-MiniLM-L6-v2"):
+        self.question = question
+        self.transcript = transcript
+        self.summary = summary
+        self.model_name = model_name
+        
+    def load_chatbot(self):
+        model = AutoModel.from_pretrained(self.model_name)
+        tokenizer = AutoTokenizer.from_pretrained(self.model_name)
+        return model,tokenizer
+        
+    def chatbot_answer(self,tokenizer,model):
+        return chatbot_response(self.question,self.transcript,self.summary,tokenizer,model)
