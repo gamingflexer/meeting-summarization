@@ -12,7 +12,7 @@ import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
 from nltk.corpus import wordnet
 
-def sentiment_check(text):
+def sentiment_reverser(text):
     sia = SentimentIntensityAnalyzer()
     sentiment_score = sia.polarity_scores(text)['compound']
     if sentiment_score < 0:
@@ -38,3 +38,8 @@ def sentiment_check(text):
     else:
         # if sentiment is positive or neutral, return original text
         return text
+    
+def transcript_cleaner(file_path):
+    with open(file_path, 'r') as f:
+        text = f.read()
+    return text
