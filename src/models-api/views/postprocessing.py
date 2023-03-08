@@ -1,6 +1,20 @@
 import nltk
 
+key_words = ["summary", "transcript", "details", "main points", "highlights", 
+            "key points", "key takeaways", "key takeaways", "meeting minutes"]
+
+# Test out !
+def remove_words_repeat(summary):
+    i = 0
+    splitted = summary.split(" ")
+    for word in splitted:
+        if word[i] == word[i+1]:
+            splitted.pop(i)
+        i += 1
+    return " ".join(splitted)
+        
 def clean_summary(summary):
+    summary = remove_words_repeat(summary)
     tokens = nltk.word_tokenize(summary)
     pos_tags = nltk.pos_tag(tokens)
 
@@ -19,4 +33,4 @@ def format_summary(summary):
     # Add line breaks after each sentence and indent with bullet points
     formatted_summary = "\n".join(["• " + sentence.strip() for sentence in sentences])
 
-    return formatted_summary
+    return formatted_summary.capitalize()

@@ -2,10 +2,11 @@ import whisper
 import spacy
 
 from transformers import pipeline
-from transformers import TFAutoModelForSeq2SeqLM,PegasusForConditionalGeneration
+from transformers import TFAutoModelForSeq2SeqLM,PegasusForConditionalGeneration,AutoModel,AutoTokenizer,AutoModelForSeq2SeqLM
 
-from model.models import bart_summarize,longformer_summarize,pegasus_summarize
+from model.models import bart_summarize, longformer_summarize, pegasus_summarize, bart_title_summarizer
 from model.extractive import extract_sentences
+from model.retrieval import chatbot_response
 from views.preprocessing import transcript_preprocesssing
 
 import noisereduce as nr
@@ -25,15 +26,11 @@ def audio_enhance(file):
     sf.write(path_to_save,reduced_noise,sample_rate, 'PCM_24')
     return path_to_save 
 
-def audio_srt(path):
-    model = whisper.load_model("base")
-    transcribe = model.transcribe(path)
-    segments = transcribe['segments']
-    return segments
-
-def wav_to_transcript(wav_file_path,model_name="base"):
+def wav_to_transcript(wav_file_path,model_name="base", segments = False):
     model = whisper.load_model(model_name)
     result = model.transcribe(wav_file_path)
+    if segments:
+        return result['segments']
     return result
 
 def transcript_to_summary(transcript):
@@ -63,8 +60,11 @@ class ModelSelect():
             return model
         elif self.modelname == "pegasus":
             model = PegasusForConditionalGeneration.from_pretrained(model_id_or_path)
+        elif self.modename == "title":
+            model = AutoModelForSeq2SeqLM.from_pretrained(model_id_or_path)
         else:
             print("\nModel not found\n")
+        return model
             
     def de_load_all_model(self):
         del model
@@ -76,7 +76,7 @@ class ModelSelect():
             device = cuda.get_current_device()
             device.reset()
             
-    def generate_summary(self,model):
+    def generate_summary(self,model,model_path_local):
         if self.modelname == "bart":
             summary = bart_summarize(model,self.text)
             return summary
@@ -85,8 +85,10 @@ class ModelSelect():
             return summary
         elif self.modelname == "pegasus":
             summary = pegasus_summarize(model, self.text)
+        elif self.modename == "title":
+            summary = bart_title_summarizer(model,model_path_local,self.text)
+            return summary
         else:
-            print("\nModel not loaded\n")
             print("\nModel not loaded\n")
             
     def nlp_extractive_summary(self, list_output = False):
@@ -100,6 +102,7 @@ class ModelSelect():
     def extractive_summary(self):
         #Extractive summary
         return self.text
+    
             
 # newmodel = ModelSelect("bart")
 # model = newmodel.load_model()
