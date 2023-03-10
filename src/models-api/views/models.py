@@ -39,29 +39,29 @@ def transcript_to_summary(transcript):
 
 def transcript_to_entities(transcript):
     transcript = transcript_preprocesssing(transcript)
-    nlp = spacy.load("en_core_web_sm")
+    nlp = spacy.load("en_core_web_lg")
     doc = nlp(transcript)
     return doc.ents
 
 class ModelSelect():
     
-    def __init__(self,modelname,text,max_new_tokens):
+    def __init__(self,modelname,model_id_or_path,text,max_new_tokens):
         self.modelname = modelname
-        #self.model_id_or_path = self.model_id_or_path
+        self.model_id_or_path = model_id_or_path
         self.text = text
         self.max_new_tokens = max_new_tokens
         
-    def load_model(self,model_id_or_path):
+    def load_model(self):
         if self.modelname == "bart":
-            model = pipeline("summarization", model=model_id_or_path)
+            model = pipeline("summarization", model=self.model_id_or_path)
             return model
         elif self.modelname == "longformer":
-            model = TFAutoModelForSeq2SeqLM.from_pretrained(model_id_or_path,from_pt=True)
+            model = TFAutoModelForSeq2SeqLM.from_pretrained(self.model_id_or_path,from_pt=True)
             return model
         elif self.modelname == "pegasus":
-            model = PegasusForConditionalGeneration.from_pretrained(model_id_or_path)
+            model = PegasusForConditionalGeneration.from_pretrained(self.model_id_or_path)
         elif self.modename == "title":
-            model = AutoModelForSeq2SeqLM.from_pretrained(model_id_or_path)
+            model = AutoModelForSeq2SeqLM.from_pretrained(self.model_id_or_path)
         else:
             print("\nModel not found\n")
         return model
@@ -76,17 +76,17 @@ class ModelSelect():
             device = cuda.get_current_device()
             device.reset()
             
-    def generate_summary(self,model,model_path_local):
+    def generate_summary(self,model):
         if self.modelname == "bart":
             summary = bart_summarize(model,self.text)
             return summary
         elif self.modelname == "longformer":
-            summary = longformer_summarize(model, self.text, self.max_new_tokens)
+            summary = longformer_summarize(model,self.model_id_or_path, self.text, self.max_new_tokens)
             return summary
         elif self.modelname == "pegasus":
-            summary = pegasus_summarize(model, self.text)
+            summary = pegasus_summarize(model,self.model_id_or_path, self.text)
         elif self.modename == "title":
-            summary = bart_title_summarizer(model,model_path_local,self.text)
+            summary = bart_title_summarizer(model,self.model_path_local,self.text)
             return summary
         else:
             print("\nModel not loaded\n")

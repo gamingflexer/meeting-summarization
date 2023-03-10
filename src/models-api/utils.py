@@ -1,4 +1,7 @@
 import gdown
+import nltk
+from nltk.sentiment import SentimentIntensityAnalyzer
+from nltk.corpus import wordnet
 
 ALLOWED_EXTENSIONS = (['wav','csv','mp3','.acc'])
 
@@ -8,9 +11,6 @@ def drive_download(url, output):
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-import nltk
-from nltk.sentiment import SentimentIntensityAnalyzer
-from nltk.corpus import wordnet
 
 def sentiment_reverser(text):
     sia = SentimentIntensityAnalyzer()
