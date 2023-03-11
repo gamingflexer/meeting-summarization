@@ -148,3 +148,6 @@ test.ipynb
 src/dp/dp/static/*
 src/dp/api/Archive.zip
 src/main-api/config/*.json
+src/models-api/model/v1.0.0-action/model.pth
+test-gmeet.ipynb
+test-teams.ipynb
