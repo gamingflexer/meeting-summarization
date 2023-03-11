@@ -1,6 +1,7 @@
 from transformers import pipeline
-from transformers import AutoTokenizer
+from transformers import AutoTokenizer, DistilBertForSequenceClassification, DistilBertTokenizer
 from utils import sentiment_reverser
+import torch
 
 def bart_summarize(summarizer,text):
     #summarizer = pipeline("summarization", model=hub_model_id)
@@ -56,3 +57,42 @@ def bart_title_summarizer(model,model_path,text):
     outputs_str = tokenizer.batch_decode(outputs, skip_special_tokens=True)
     return outputs_str
     
+# Define prediction function
+def action_items_distil_bert(text_list,path_to_model):  
+    
+    top_action_items = []
+    
+    for text in text_list:
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        model_state_dict = torch.load(path_to_model,map_location=torch.device('cpu'))
+        tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
+        # Create model instance
+        model = DistilBertForSequenceClassification.from_pretrained('distilbert-base-uncased', num_labels=2)
+
+        # Load state dictionary into model
+        model.load_state_dict(model_state_dict)
+
+        model.eval()
+        
+        encoding = tokenizer.encode_plus(
+            text,
+            add_special_tokens=True,
+            max_length=512,
+            padding='max_length',
+            truncation=True,
+            return_attention_mask=True,
+            return_tensors='pt'
+        )
+        
+        input_ids = encoding['input_ids'].to(device)
+        attention_mask = encoding['attention_mask'].to(device)
+        
+        with torch.no_grad():
+            outputs = model(input_ids, attention_mask=attention_mask)
+            # Get predicted label
+        pred_label = torch.argmax(outputs.logits).item()
+        
+        if pred_label == 1:
+            top_action_items.append({"text":text,"label":pred_label})
+    
+    return top_action_items

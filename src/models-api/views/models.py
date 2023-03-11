@@ -90,7 +90,7 @@ class ModelSelect():
             return summary
         else:
             print("\nModel not loaded\n")
-            
+                        
     def nlp_extractive_summary(self, list_output = False):
         #Basic NLP extractive summary
         extract_sentence,questions_and_answers = extract_sentences(self.text) #list of sentences
