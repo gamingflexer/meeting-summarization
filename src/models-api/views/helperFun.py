@@ -1,5 +1,6 @@
 from views.preprocessing import transcript_preprocesssing, email_grabber, date_grabber, get_phone_numbers, get_human_name, address_grabber, correct_sentence, get_jargon_sentences, detect_meeting_structure,detect_questions_answers, g_translation_en
 from views.postprocessing import clean_summary, format_summary
+from model.models import action_items_distil_bert
 from spellchecker import SpellChecker
 
 spell = SpellChecker()
@@ -40,6 +41,14 @@ class PreProcesssor():
         #translate text
         text = g_translation_en(text)
         return text
+    
+    def get_action_items(self):
+        text = self.text
+        #getting top list
+        
+        
+        top_list = action_items_distil_bert(text)
+        return top_list.keys()
     
 class PostProcesssor():
     
