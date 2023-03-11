@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils.timezone import now
 # Create your models here.
 
 class User_info(models.Model):
@@ -11,8 +11,16 @@ class User_info(models.Model):
 class Summary(models.Model):
     meeting_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(User_info, on_delete=models.CASCADE)
-    scheduled_meeting = models.CharField(max_length=255, null=True)
-    scheduled_meeting_time = models.TimeField(blank=True)
+    calender_meeting_id = models.CharField(unique = True,max_length = 70)
+    title = models.CharField(max_length=100, null=True,default = '')
+    creator = models.CharField(max_length=50, null=True,default = '')
+    organizer = models.CharField(max_length=50, null=True,default = '')
+    creation_time = models.DateTimeField( null=True,blank=True)
+    start_time = models.DateTimeField( null=True,blank=True)
+    end_time = models.DateTimeField(null=True,blank=True)
+    attendees_count = models.IntegerField(default = 0,null = True)
+    meet_link = models.URLField(max_length = 200 ,default = '',null = True)
+    meet_platform = models.CharField(max_length=10, null=True,default = 'unknown')
     meeting_description = models.CharField(max_length=255)
     meeting_location = models.CharField(max_length=255)
     
