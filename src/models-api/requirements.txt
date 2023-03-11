@@ -19,3 +19,6 @@ matplotlib
 noisereduce
 librosa
 soundfile
+pyconverse
+sentence-transformers
+flask-ngrok
