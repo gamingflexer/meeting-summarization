@@ -96,7 +96,6 @@ class GoogleCalendarEventsView(View):
         #     **request.session['credentials']
         # )
         credentials =Credentials.from_authorized_user_file('../main-api/config/token.json')
-        # credentials = Credentials({'token': 'ya29.a0AVvZVsrzbZGlgLGvuuBScAp6jxZS1YMp0mhC5KGwYTyLbJ2Uqn2CcsFRSUqY2ibDgtIK4b3PVAk6nPQUbJk0ORF_kNpkgYUZ_qjxbI7hJ_QH3Pb_kDOvz8UKlvSMYa-KAM9kW7uWksxoKjCdYGbs2af9o8Oy4waCgYKAakSARASFQGbdwaI0Fky5Xqkueqc8ndi9eA9XQ0165', 'refresh_token': None, 'token_uri': 'https://oauth2.googleapis.com/token', 'client_id': '212330917311-vl2i5r6dq3kaabt5votbd6n043d3sng3.apps.googleusercontent.com', 'client_secret': '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', 'scopes': ['https://www.googleapis.com/auth/calendar.readonly', '"https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile']})
 
         service = build('calendar', 'v3', credentials=credentials)
 
@@ -120,12 +119,11 @@ class GoogleCalendarMultipleEventsView(View):
     """
 
     def get(self, request,api_keyword, *args, **kwargs):
-        # credentials = Credentials(
-        #     **request.session['credentials']
-        # )
+
         if (api_keyword == 'all' or api_keyword == 'sync' or api_keyword == 'past' or api_keyword=='upcoming'):
-            credentials =Credentials.from_authorized_user_file('../main-api/config/token.json')
-            # credentials = Credentials({'token': 'ya29.a0AVvZVsrzbZGlgLGvuuBScAp6jxZS1YMp0mhC5KGwYTyLbJ2Uqn2CcsFRSUqY2ibDgtIK4b3PVAk6nPQUbJk0ORF_kNpkgYUZ_qjxbI7hJ_QH3Pb_kDOvz8UKlvSMYa-KAM9kW7uWksxoKjCdYGbs2af9o8Oy4waCgYKAakSARASFQGbdwaI0Fky5Xqkueqc8ndi9eA9XQ0165', 'refresh_token': None, 'token_uri': 'https://oauth2.googleapis.com/token', 'client_id': '212330917311-vl2i5r6dq3kaabt5votbd6n043d3sng3.apps.googleusercontent.com', 'client_secret': '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', 'scopes': ['https://www.googleapis.com/auth/calendar.readonly', '"https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile']})
+            credentials = Credentials(
+                **request.session['credentials']
+            )
 
             service = build('calendar', 'v3', credentials=credentials)
 
