@@ -1,42 +1,6 @@
 {
     "longformer": [
         {
-            "model_id": "skashyap96/longformer-samsum-summarization",
-            "path": "skashyap96/longformer-samsum-summarization",
-            "dataset": "samsum",
-            "perfomance": 0,
-            "topics": [],
-            "notes": "",
-            "type": "Abstractive"
-        },
-        {
-            "model_id": "mikeadimech/longformer-qmsum-meeting-summarization",
-            "path": "mikeadimech/longformer-qmsum-meeting-summarization",
-            "dataset": "qmsum",
-            "perfomance": 0,
-            "topics": [],
-            "notes": "",
-            "type": "Abstractive"
-        },
-        {
-            "model_id": "debbiesoon/longformer_summarise 1-epoch",
-            "path": "debbiesoon/longformer_summarise 1-epoch",
-            "dataset": "scientific_papers",
-            "perfomance": 0,
-            "topics": [],
-            "notes": "",
-            "type": "Abstractive"
-        },
-        {
-            "model_id": "debbiesoon/longformer_summarise_large",
-            "path": "debbiesoon/longformer_summarise_large",
-            "dataset": "pubmed",
-            "perfomance": 0,
-            "topics": [],
-            "notes": "large model",
-            "type": "Abstractive"
-        },
-        {
             "model_id": "MingZhong/DialogLED-base-16384",
             "path": "MingZhong/DialogLED-base-16384",
             "dataset": "DialogSum",
@@ -44,68 +8,24 @@
             "topics": [],
             "notes": "large model",
             "type": "Abstractive"
-            
         }
     ],
     "pegasus": [
         {
-            "model_id": "ftasrSymend/my_pegasus_summarizer",
-            "path": "ftasrSymend/my_pegasus_summarizer",
-            "dataset": "pubmed",
-            "perfomance": 0,
-            "topics": [],
-            "notes": "",
-            "type": ""
-        },
-        {
-            "model_id": "tuner007/pegasus_summarizer cnn-daily",
-            "path": "tuner007/pegasus_summarizer cnn-daily",
-            "dataset": "Cnn daily",
-            "perfomance": 0,
-            "topics": [],
-            "notes": "",
-            "type": ""
-        },
-        {
-            "model_id": "mikeadimech/pegasus-qmsum-meeting-summarization",
-            "path": "mikeadimech/pegasus-qmsum-meeting-summarization",
-            "dataset": "qsum",
-            "perfomance": 0,
-            "topics": [],
-            "notes": "",
-            "type": ""
-        },
-        {
-            "model_id": "abhijithneilabraham/pubmed-summarisation-pegasus",
-            "path": "abhijithneilabraham/pubmed-summarisation-pegasus",
-            "dataset": "pubmed",
-            "perfomance": 0,
-            "topics": [],
-            "notes": "",
-            "type": ""
-        },
-        {
-            "model_id": "Qiliang/pegasus-xsum-whole_summary_chatGPT_and_tweetsum",
-            "path": "Qiliang/pegasus-xsum-whole_summary_chatGPT_and_tweetsum",
-            "dataset": "twitter",
-            "perfomance": 0,
-            "topics": [],
-            "notes": "",
-            "type": ""
-        },
-        {
-            "model_id": "psriraj17/pegasus-xsum-summarization-model-t5-small",
-            "path": "psriraj17/pegasus-xsum-summarization-model-t5-small",
-            "dataset": "",
-            "perfomance": 0,
-            "topics": [],
-            "notes": "",
-            "type": ""
-        },
-        {
-            "model_id": "hobab185/pegasus-pn_summary",
+            "model_id": "google/pegasus-xsum",
             "path": "hobab185/pegasus-pn_summary",
             "dataset": "",
+            "perfomance": 0,
+            "topics": [],
+            "notes": "",
+            "type": ""
+        }
+    ],
+    "bart": [
+        {
+            "model_id": "knkarthick/meeting-summary-samsum",
+            "path": "knkarthick/meeting-summary-samsum",
+            "dataset": "samsum",
             "perfomance": 0,
             "topics": [],
             "notes": "",
