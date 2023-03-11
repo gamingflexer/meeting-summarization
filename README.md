@@ -20,7 +20,7 @@ Project features Implementated are
 
 ## Requirements
 
-## Usage
+## Usage in Development
 
 #### Start the main application
 
@@ -51,6 +51,14 @@ celery -A dp.celery worker -l info -P solo
 ```
 cd src/models-api
 python __init__.py
+```
+
+## Usage in Production
+
+Some extra steps are required to run the application in production.
+
+```
+python -m spacy download en_core_web_lg
 ```
 
 ## Project Structure

@@ -31,6 +31,7 @@ MONGO_DB_URL = config('MONGO_DB_URL')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Cors settings
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDITENTIALS = True
