@@ -14,7 +14,7 @@ class User_info(models.Model):
 class Summary(models.Model):  # all meeting data
     meeting_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(User_info, on_delete=models.CASCADE)
-    calender_meeting_id = models.CharField(unique=True, max_length=70)
+    calender_meeting_id = models.CharField(unique=True, max_length=70, null=True)
     title = models.CharField(max_length=100, null=True, default='')
     creator = models.CharField(max_length=50, null=True, default='')
     organizer = models.CharField(max_length=50, null=True, default='')
@@ -25,7 +25,7 @@ class Summary(models.Model):  # all meeting data
     meet_link = models.URLField(max_length=200, default='', null=True)
     meet_platform = models.CharField(max_length=10, null=True, default='unknown')
     meeting_description = models.CharField(max_length=255)
-    meeting_location = models.CharField(max_length=255)
+    meeting_location = models.CharField(max_length=255, null=True)
 
     meeting_transcript = models.CharField(max_length=10000)
     meeting_audio_file_link = models.CharField(max_length=255)

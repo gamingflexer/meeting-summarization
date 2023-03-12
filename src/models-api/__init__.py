@@ -67,12 +67,7 @@ if __name__ == "__main__":
                                     model = chatbot_model,
                                     tokenizer = chatbot_tokenizer)
         emit('response', response)
-
-    # Generate chatbot response
-    def generate_chatbot_response(message):
-        # Your chatbot logic goes here
-        return "Response from chatbot for message: " + message
-    
+        
     
     """ Run app """
     
