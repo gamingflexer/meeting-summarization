@@ -15,3 +15,8 @@ class FileSerializer(serializers.ModelSerializer):
     class Meta():
         model = File
         fields = ('file', 'timestamp')
+
+class CalendarEventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Summary
+        fields = ('meeting_id','calender_meeting_id','user_id','title','creator','organizer','creation_time','start_time','end_time','attendees_count','meet_link','meet_platform','start_time','end_time')

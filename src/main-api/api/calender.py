@@ -11,7 +11,12 @@ from googleapiclient.errors import HttpError
 from django.views import View
 from django.http import JsonResponse
 from django.shortcuts import redirect
-
+from api.serializers import CalendarEventSerializer
+from api.models import Summary
+from rest_framework.response import Response
+from rest_framework import status
+from django.db.models import Q
+import datetime
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
@@ -98,7 +103,7 @@ class GoogleCalendarEventsView(View):
 
         # Call the Calendar API
         events_result = service.events().list(calendarId='primary', timeMin=now,
-                                              maxResults=10, singleEvents=True, orderBy='startTime').execute()
+                                              maxResults=15, singleEvents=True, orderBy='startTime').execute()
         events = events_result.get('items', [])
 
         return JsonResponse({'status': 'success',
@@ -107,6 +112,85 @@ class GoogleCalendarEventsView(View):
                              })
 
 
+class GoogleCalendarMultipleEventsView(View):
+    """
+    Fetch events from Google Calendar.
+    """
+
+    def get(self, request,api_keyword, *args, **kwargs):
+
+        if (api_keyword == 'all' or api_keyword == 'sync' or api_keyword == 'past' or api_keyword=='upcoming'):
+            credentials = Credentials(
+                **request.session['credentials']
+            )
+
+            service = build('calendar', 'v3', credentials=credentials)
+
+            # Min time
+            now = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
+
+            #just to fetch 5 event
+            event_count=5
+            #fetch upcoming new events
+            if api_keyword == 'sync':
+                event_count = 20
+            events_result = service.events().list(calendarId='primary',timeMin=now,
+                                                  maxResults=event_count, singleEvents=True, orderBy='startTime').execute()
+            events = events_result.get('items', [])
+            eventslist =[]
+
+            for event in events :
+                eventdict = {}
+                eventdict['user_id'] = 1
+                eventdict['calender_meeting_id'] = event.get('id')
+                eventdict['title'] = event.get('summary')
+                eventdict['creator'] = (event.get('creator')).get('email')
+                eventdict['organizer'] = (event.get('organizer')).get('email')
+                eventdict['creation_time'] = event.get('created')
+                eventdict['start_time'] = (event.get('start')).get('dateTime')
+                eventdict['end_time'] = (event.get('end')).get('dateTime')
+                if event.get('attendees') is None :
+                    eventdict['attendees_count'] = 0
+                else :
+                    eventdict['attendees_count'] = len(event.get('attendees'))
+                eventdict['meet_link'] = event.get('location')
+                eventdict['meet_platform'] = 'unknown'
+                if eventdict['meet_link'] is None :
+                    eventdict['meet_link'] = event.get('hangoutLink')
+                if eventdict['meet_link'] is not None :
+                    if eventdict['meet_link'] == "" or eventdict['meet_link'].find('https://') == -1 :
+                        eventdict['meet_link'] = event.get('hangoutLink')
+
+                if eventdict['meet_link'] is None:
+                    eventdict['meet_link'] = ''
+                if (eventdict['meet_link']).find('google') !=-1 :
+                    eventdict['meet_platform'] = 'google'
+                elif (eventdict['meet_link']).find('zoom') !=-1  :
+                    eventdict['meet_platform'] = 'zoom'
+                elif (eventdict['meet_link']).find('team') !=-1  :
+                    eventdict['meet_platform'] = 'team'
+
+                calender_event_serializer=CalendarEventSerializer(data=eventdict)
+                # calender_event_serializer.is_valid(raise_exception=True)
+                if (calender_event_serializer.is_valid()):
+                    calender_event_serializer.save()
+                if api_keyword == 'all' :
+                    event_data = Summary.objects.filter(user_id=1)
+                    calender_event_serializer_data = CalendarEventSerializer(event_data,many=True)
+                elif api_keyword=='sync' or api_keyword=='upcoming':
+                    event_data = Summary.objects.filter(start_time__gte=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ") ,user_id = 1)
+                    calender_event_serializer_data = CalendarEventSerializer(event_data, many=True)
+                elif api_keyword=='past':
+                    event_data = Summary.objects.filter(start_time__lt=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"), user_id=1)
+                    calender_event_serializer_data = CalendarEventSerializer(event_data, many=True)
+
+
+
+            return JsonResponse({
+                                 'data': calender_event_serializer_data.data
+                                 })
+        else :
+            Response(status=status.HTTP_404_NOT_FOUND)
 
 
 
