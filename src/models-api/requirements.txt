@@ -1,3 +1,5 @@
+setuptools 
+wheel
 Flask==2.2.2
 flask_restful==0.3.9
 python-decouple==3.7
@@ -19,3 +21,6 @@ matplotlib
 noisereduce
 librosa
 soundfile
+pyconverse
+sentence-transformers
+flask-ngrok
