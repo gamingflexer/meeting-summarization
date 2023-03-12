@@ -156,3 +156,17 @@ class EditUserDataAPI(APIView) :
             return Response(status=status.HTTP_200_OK)
         except Exception as e :
             return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+# FEEEDBACK API
+
+class FeedBackAPI(APIView) :
+    
+    permission_classes = user_auth_required()
+    
+    def get(self,request,meeting_id,param,val):
+        if param == "is_good":
+            main_queryset = Summary.objects.filter(meeting_id=meeting_id).update(is_good = val)
+        if param == "factual_consistency":
+            main_queryset = Summary.objects.filter(meeting_id=meeting_id).update(factual_consistency = val)
+            
+        return Response(status=status.HTTP_200_OK)
