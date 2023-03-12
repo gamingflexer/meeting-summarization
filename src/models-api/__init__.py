@@ -5,24 +5,15 @@ from flask.helpers import flash
 from flask_restful import Api
 
 from decouple import config
-import spacy
-import os
 
 from model.retrieval import chatbot_response,chatbot_model_load
-from views.models import ModelSelect
+
+from utils import set_global_logging_level
+import logging
+set_global_logging_level(logging.ERROR)
 
 DEBUG = config('DEBUG', cast=bool)
 COLLAB = config('COLLAB', cast=bool)
-
-if not DEBUG:
-    import nltk
-    nltk.download('wordnet')
-    nltk.download('vader_lexicon')
-    nltk.download('averaged_perceptron_tagger')
-    nlp = spacy.load('en_core_web_lg')
-else:
-    nlp = spacy.load('en_core_web_sm')
-
 
 def create_app():
     # create and configure the app

@@ -4,7 +4,7 @@ import spacy
 from sklearn.metrics.pairwise import cosine_similarity
 from transformers import AutoTokenizer, AutoModel
 from transformers import pipeline
-from __init__ import nlp
+from utils import nlp
 
 # Preprocess transcript and summary data
 def preprocess_text(text):

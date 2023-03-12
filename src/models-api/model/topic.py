@@ -1,6 +1,7 @@
 import re
 from textblob import TextBlob
 
+# NOT USED
 def top_segmentor_v0_1(transcript):
     # Split transcript into sentences
     sentences = re.split('[.!?]', transcript)

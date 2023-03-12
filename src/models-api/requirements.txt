@@ -24,3 +24,5 @@ soundfile
 pyconverse
 sentence-transformers
 flask-ngrok
+simple-websocket
+Flask-SocketIO
