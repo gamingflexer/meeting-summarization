@@ -21,6 +21,22 @@ DEBUG = config('DEBUG', cast=bool)
 
 # View Starts here
 
+# ONBOARDING API
+
+class OnboardingAPI(APIView): # ???
+    
+    permission_classes = user_auth_required()
+    
+    def post(self, request):
+        data = JSONParser().parse(request)
+        user_id = data['user_id']
+        main_queryset = User_info.objects.get(user_id=user_id)
+        main_queryset_serializer = User_info_Serializers(main_queryset, data=data)
+        if main_queryset_serializer.is_valid():
+            main_queryset_serializer.save()
+            return Response({"data":main_queryset_serializer.data},status=status.HTTP_200_OK)
+        return Response(main_queryset_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
 class LandingPageAPI(APIView):
     
     permission_classes = user_auth_required()
@@ -170,3 +186,33 @@ class FeedBackAPI(APIView) :
             main_queryset = Summary.objects.filter(meeting_id=meeting_id).update(factual_consistency = val)
             
         return Response(status=status.HTTP_200_OK)
+    
+# ANALYTICS API
+
+class AnalyticsAPI(APIView) : # ??
+    
+    permission_classes = user_auth_required()
+    
+    def get(self,request,user_id):
+        main_queryset = Summary.objects.filter(meeting_id=user_id)
+        main_queryset_serializer = Summary_Serializers(main_queryset,many=True)
+        content = main_queryset_serializer.data
+        return Response({"data": {"analytics_data": content}}, status=status.HTTP_200_OK)
+    
+    
+# EDIT SUMMARY API
+
+class EditSummaryAPI(APIView) : # ??
+    
+    permission_classes = user_auth_required()
+    
+    @csrf_exempt
+    def post(self,request):
+        try :
+            data = JSONParser().parse(request)
+            meeting_id = data['meeting_id']
+            query_set = Summary.objects.get(meeting_id=meeting_id)
+            query_set.save()
+            return Response(status=status.HTTP_200_OK)
+        except Exception as e :
+            return Response(status=status.HTTP_400_BAD_REQUEST)
