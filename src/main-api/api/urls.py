@@ -36,8 +36,5 @@ urlpatterns = [
 
     # User API
     path('userinfo/<str:username>', EditUserDataAPI.as_view(), name='fetch_user_data'),
-    
-    path('microsoft_login/', microsoft_login, name='microsoft_login'),
-    path('microsoft_callback/', microsoft_callback, name='microsoft_callback'),
 
 ] 

@@ -48,7 +48,6 @@ ruamel.yaml.clib
 twitter-sdk
 facebook-sdk
 djangorestframework-simplejwt
-<<<<<<< Updated upstream
 celery == 5.2.7
 redis
 Redis
@@ -62,5 +61,4 @@ drf-yasg==1.20.0
 kombu
 click
 google_auth_oauthlib
-=======
->>>>>>> Stashed changes
+langdetect
