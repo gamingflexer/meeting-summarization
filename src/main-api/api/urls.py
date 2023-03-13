@@ -3,8 +3,6 @@ from django.urls import path
 from .views import LandingPageAPI,AddMeetingAPI,SummaryPageAPI,AddMeetingFileAPI,EditUserDataAPI,FeedBackAPI
 from .calender import GoogleCalendarInitView,GoogleCalendarEventsView,GoogleCalendarRedirectView,GoogleCalendarMultipleEventsView
 
-from .microsoft import microsoft_login, microsoft_callback
-
 urlpatterns = [
     # Landing Page API
     path('landing', LandingPageAPI.as_view(), name='landing'),

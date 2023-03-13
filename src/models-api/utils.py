@@ -13,6 +13,7 @@ if not DEBUG:
     import nltk
     nltk.download('wordnet')
     nltk.download('stopwords')
+    nltk.download('punkt')
     nltk.download('vader_lexicon')
     nltk.download('averaged_perceptron_tagger')
     nlp = spacy.load('en_core_web_lg')
