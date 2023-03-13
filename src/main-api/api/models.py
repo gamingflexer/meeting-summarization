@@ -49,9 +49,9 @@ class Summary(models.Model):  # all meeting data
     highlights = models.CharField(max_length=5000)
 
     # Feedbacks
-    is_good = models.BooleanField(default=False)
-    factual_consistency = models.CharField(max_length=255)
-    meeting_summary_old = models.CharField(max_length=200)
+    is_good = models.IntegerField(default=0) # 0 --> not rated, 1 --> good, 2 --> bad
+    factual_consistency = models.IntegerField(default=0)
+    meeting_summary_old = models.CharField(default="", max_length=3000)  # **
 
 
 class highlight_template(models.Model):
