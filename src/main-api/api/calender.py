@@ -17,6 +17,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Q
 import datetime
+from django.shortcuts import redirect
+from msal import PublicClientApplication
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
