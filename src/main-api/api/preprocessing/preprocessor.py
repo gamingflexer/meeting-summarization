@@ -14,7 +14,11 @@ def any_transcript_to_dataframe(file_path):
         df = transcript_html_to_dataframe(file_path)
         return df
     elif file_extension == '.txt':
-        df = transcript_to_dataframe(file_path)
+        try:
+            df = transcript_to_dataframe(file_path)
+        except Exception as e:
+            print(e,"\EXCEPTION : Transcript Conversion Exception\n")
+            return pd.read_csv(file_path, sep='\t', header=None)
         return df
     elif file_extension == '.json':
         with open(file_path, "r") as f:
@@ -27,7 +31,7 @@ def any_transcript_to_dataframe(file_path):
             try:
                 df = pd.json_normalize(data)
             except Exception as e:
-                print(e,"\nException : Transcript Conversion Exception\n")
+                print(e,"\EXCEPTION : Transcript Conversion Exception\n")
                 return pd.read_json(file_path)
             
         return df

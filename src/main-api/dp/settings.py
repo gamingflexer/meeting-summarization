@@ -109,15 +109,7 @@ WSGI_APPLICATION = 'dp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-if DEBUG == "True":
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
-else:
-    DATABASES = {
+DATABASES = {
         'default': {
             'ENGINE': 'djongo',
             'NAME': 'dp',
@@ -128,6 +120,7 @@ else:
             }
         }
     }
+    
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 

@@ -1,5 +1,5 @@
-from distutils.log import debug
 from flask import Flask, redirect, url_for, session
+from distutils.log import debug
 from flask.helpers import flash
 from flask_restful import Api
 
@@ -9,6 +9,7 @@ import os
 
 
 DEBUG = config('DEBUG', cast=bool)
+COLLAB = config('COLLAB', cast=bool)
 
 if not DEBUG:
     import nltk
@@ -40,4 +41,10 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(debug=True)
+    if COLLAB and not DEBUG:
+        from flask_ngrok import run_with_ngrok
+        run_with_ngrok(app)
+    if DEBUG:
+        app.run(debug=True)
+    if not DEBUG:
+        app.run()
