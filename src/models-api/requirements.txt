@@ -40,3 +40,10 @@ requests
 huggingface-hub
 bs4
 moviepy
+tensorflow
+cffi
+lazy_loader
+date_extractor
+numba
+tiktoken
+future
