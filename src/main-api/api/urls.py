@@ -1,10 +1,11 @@
 from django.urls import path
 
-from .views import LandingPageAPI,AddMeetingAPI,SummaryPageAPI,AddMeetingFileAPI,EditUserDataAPI,FeedBackAPI
+from .views import LandingPageAPI,AddMeetingAPI,SummaryPageAPI,AddMeetingFileAPI,EditUserDataAPI,FeedBackAPI,OnboardingAPI,DownloadpdfAPI
 from .calender import GoogleCalendarInitView,GoogleCalendarEventsView,GoogleCalendarRedirectView,GoogleCalendarMultipleEventsView
 
 urlpatterns = [
     # Landing Page API
+    path('onboarding', OnboardingAPI.as_view(), name='onboarding'),
     path('landing', LandingPageAPI.as_view(), name='landing'),
 
     # Meetings API
@@ -15,7 +16,7 @@ urlpatterns = [
     path('summary/<int:meeting_id>', SummaryPageAPI.as_view(), name='summary'),
     path('userinfo/<str:username>', EditUserDataAPI.as_view(), name='fetch_user_data'),
     path('summary/<int:meeting_id>', SummaryPageAPI.as_view(), name='summary'),
-    path('summary/<int:meeting_id>/pdf', SummaryPageAPI.as_view(), name='summary_pdf'),
+    path('summary/<int:meeting_id>/pdf', DownloadpdfAPI.as_view(), name='summary_pdf'),
     
     path('summary/feedback/<int:meeting_id>/<str:param>/<int:val>', FeedBackAPI.as_view(), name='summary_feedback'), #is_good #factual_consistency
 

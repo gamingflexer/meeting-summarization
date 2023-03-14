@@ -17,6 +17,8 @@ from utils import txt_to_pdf
 import datetime
 import os
 
+from django.core.exceptions import ObjectDoesNotExist
+
 DEBUG = config('DEBUG', cast=bool)
 
 # View Starts here
@@ -27,11 +29,14 @@ class OnboardingAPI(APIView): # ???
     
     permission_classes = user_auth_required()
     
-    def post(self, request):
-        data = JSONParser().parse(request)
+    def post(self, request):        
+        data = (JSONParser().parse(request))['data']
         user_id = data['user_id']
         main_queryset = User_info.objects.get(user_id=user_id)
-        main_queryset_serializer = User_info_Serializers(main_queryset, data=data)
+        data_inserted = {"user_prof_type":data['user_prof_type'],
+                         "user_meeting_category":data['user_meeting_category'],
+                         "email" : data['email']}
+        main_queryset_serializer = User_info_Serializers(main_queryset,data=data_inserted)
         if main_queryset_serializer.is_valid():
             main_queryset_serializer.save()
             return Response({"data":main_queryset_serializer.data},status=status.HTTP_200_OK)
@@ -124,16 +129,18 @@ class SummaryPageAPI(APIView):
     
     def get(self, request, meeting_id):
         email = "surve790@gmail.com" #request.email
-        main_queryset = Summary.objects.filter(meeting_id=meeting_id)
-        main_queryset_serializer = Summary_Serializers(main_queryset,many=True)
+        try:
+            main_queryset = Summary.objects.get(meeting_id=meeting_id)
+        except ObjectDoesNotExist:
+            return Response({"data":{"error":"Meeting Summary does not exist"}},status=status.HTTP_400_BAD_REQUEST)
+        main_queryset_serializer = Summary_Serializers(main_queryset)
         content = main_queryset_serializer.data
-        for i in content:
-            i['top_keywords'] = i['top_keywords'].split(',')
-            i['top_speaker'] = i['top_speaker'].split(',')
-            i['highlights'] = i['highlights'].split(',')
-            i['reading_time'] = str((len(i['meeting_summary'].split(' '))//3 )//60) + ' mins'
+        content['top_keywords'] = content['top_keywords'].split(',')
+        content['top_speaker'] = content['top_speaker'].split(',')
+        content['highlights'] = content['highlights'].split(',')
+        content['reading_time'] = str((len(content['meeting_summary'].split(' '))//3 )//60) + ' mins'
         path = os.path.join(base_path_file,"media",f'{meeting_id}.pdf')
-        txt_to_pdf(content[0]['meeting_summary'],path)
+        txt_to_pdf(content['meeting_summary'],path)
         return Response({"data":{
             "meeting_data":content,
             "email_redirect":f"mailto:{email}",
