@@ -9,7 +9,7 @@ transformers>=4.19.0
 tqdm
 setuptools-rust
 numpy
-torch
+# torch
 gdown
 spacy
 pyspellchecker
@@ -26,3 +26,17 @@ sentence-transformers
 flask-ngrok
 simple-websocket
 Flask-SocketIO
+markupsafe
+werkzeug
+Jinja2
+click
+itsdangerous
+python-SocketIO
+pandas
+thinc
+langcodes
+typer
+requests
+huggingface-hub
+bs4
+moviepy
