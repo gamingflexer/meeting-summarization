@@ -39,7 +39,7 @@ data = {
 for model_name in data:
     for model in data[model_name]:
         newmodel = ModelSelect(modelname = model_name,
-                            model_id_or_path = "facebook/bart-large-cnn")
+                            model_id_or_path = model['model_id'])
         model = newmodel.load_model()
         del model
 
