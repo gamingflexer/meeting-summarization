@@ -21,24 +21,23 @@ class AudioApi(Resource):
     def post(self):
         if 'file' not in request.files:
             resp = ({'message' : 'No file part in the request'})
-            resp.status_code = 400
             return resp
         file = request.files['file']
         if file.filename == '':
             resp = ({'message' : 'No file selected for uploading'})
-            resp.status_code = 400
             return resp
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(UPLOAD_FOLDER, filename))
-            if DEBUG:
-                return ({"summary":"summary"}),200
+            print(" ---> File saved")
             audio_mp3_path = extract_audio_from_any_file(os.path.join(UPLOAD_FOLDER, filename))
-            new_audio_path = audio_enhance(audio_mp3_path)
+            print(" ---> Audio extracted")
+            #new_audio_path = audio_enhance(audio_mp3_path)
             result_base = wav_to_transcript(audio_mp3_path,segments=True)
-            result_denoised  = wav_to_transcript(new_audio_path,segments=True)
+            print(" ---> Transcript generated")
+            #result_denoised  = wav_to_transcript(new_audio_path,segments=True)
             return {
-                    "transcript":[result_base,result_denoised]
+                    "transcript":result_base
                     }
     
 class SummaryApi(Resource):
@@ -56,7 +55,7 @@ class SummaryApi(Resource):
             transcript = pre_processor.tranlate_text()
             
         #summary generation
-        new_model = ModelSelect(data['model'],transcript,max_new_tokens=200)
+        new_model = ModelSelect(modelname = 'bart',model_id_or_path= 'knkarthick/MEETING_SUMMARY',text = transcript,max_new_tokens=200)
         model = new_model.load_model()
         results = new_model.generate_summary(model)
         
