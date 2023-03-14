@@ -1,11 +1,14 @@
 import re
+import os
 import nltk
 import spacy
 import gdown
 import logging
 from decouple import config
+from config import AUDIO_FOLDER 
 from nltk.corpus import wordnet
 from nltk.sentiment import SentimentIntensityAnalyzer
+from moviepy.video.io.VideoFileClip import VideoFileClip
 
 DEBUG = config('DEBUG', cast=bool)
 
@@ -20,7 +23,10 @@ if not DEBUG:
 else:
     nlp = spacy.load('en_core_web_sm')
 
-ALLOWED_EXTENSIONS = (['wav','csv','mp3','.acc'])
+ALLOWED_EXTENSIONS = [
+    '.mp4', '.avi', '.mov', '.mkv', '.wmv', '.flv', '.m4v', '.webm', '.mpeg',
+    '.mp3', '.wav', '.m4a', '.aac', '.ogg', '.wma', '.flac', '.alac', '.opus'
+] 
 
 def drive_download(url, output):
     gdown.download(url, output, quiet=False)
@@ -60,6 +66,29 @@ def transcript_cleaner(file_path):
     with open(file_path, 'r') as f:
         text = f.read()
     return text
+
+def extract_audio_from_any_file(file_path):
+    # Check if file is a video
+    video_extensions = ['.mp4', '.avi', '.mov', '.mkv']
+    _, file_extension = os.path.splitext(file_path)
+    if file_extension not in video_extensions:
+        return file_path
+
+    # Create output directory if it does not exist
+    output_dir = os.path.join(AUDIO_FOLDER, 'audio')
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    # Load video file and extract audio
+    video = VideoFileClip(file_path)
+    audio = video.audio
+
+    # Generate output file path and save audio
+    output_file = os.path.join(output_dir, os.path.splitext(os.path.basename(file_path))[0] + '.mp3')
+    audio.write_audiofile(output_file)
+
+    return output_file
+
 
 def set_global_logging_level(level=logging.ERROR, prefices=[""]):
     """

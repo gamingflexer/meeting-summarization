@@ -27,6 +27,7 @@ Final comment
 Coda
 Epilogue
 Afterword
+conclude
 Postscript
 Final paragraph
 Endnote
