@@ -4,7 +4,7 @@ from flask import request, json
 import os
 
 from .models import wav_to_transcript, transcript_to_entities, audio_enhance
-from utils import allowed_file
+from utils import allowed_file,extract_audio_from_any_file
 
 from decouple import config
 from config import MODEL_FOLDER
@@ -33,9 +33,10 @@ class AudioApi(Resource):
             file.save(os.path.join(UPLOAD_FOLDER, filename))
             if DEBUG:
                 return ({"summary":"summary"}),200
-            new_audio_path = audio_enhance(os.path.join(UPLOAD_FOLDER, filename))
-            result_base = wav_to_transcript(os.path.join(UPLOAD_FOLDER, filename))
-            result_denoised  = wav_to_transcript(new_audio_path)
+            audio_mp3_path = extract_audio_from_any_file(os.path.join(UPLOAD_FOLDER, filename))
+            new_audio_path = audio_enhance(audio_mp3_path)
+            result_base = wav_to_transcript(audio_mp3_path,segments=True)
+            result_denoised  = wav_to_transcript(new_audio_path,segments=True)
             return {
                     "transcript":[result_base,result_denoised]
                     }

@@ -18,9 +18,6 @@ from datetime import timedelta
 import os
 
 from config import AUDIO_FOLDER
-from decouple import config
-
-HUGGING_FACE_KEY = config('HUGGING_FACE_KEY')
 
 def audio_enhance(file):
     audio_data, sample_rate = rosa.load(file, sr=16000)
@@ -110,21 +107,6 @@ class ModelSelect():
 # newmodel = ModelSelect("bart")
 # model = newmodel.load_model()
 # results = newmodel.generate_summary(model)
-
-def gpt_neo_summarization(trancript,summary = True):
-
-    API_URL = "https://api-inference.huggingface.co/models/togethercomputer/GPT-NeoXT-Chat-Base-20B"
-    headers = {"Authorization": f"Bearer {HUGGING_FACE_KEY}"}
-
-    def query(payload):
-        response = requests.post(API_URL, headers=headers, json=payload)
-        return response.json()
-        
-    if summary:
-        output = query({
-            "inputs": f"Summarize a long conversation : {trancript}",
-        })
-    return output
 
 """
 class ChatBot():
