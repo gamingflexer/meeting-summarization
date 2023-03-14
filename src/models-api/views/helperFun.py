@@ -5,9 +5,10 @@ from spellchecker import SpellChecker
 
 spell = SpellChecker()
 
-class PreProcesssor():
+class PreProcesssor(): # which features are taken totally depends on the meeting type
     
     def __init__(self, text):
+        
         self.text = transcript_preprocesssing(text)
         self.og_text = text
         
@@ -15,10 +16,13 @@ class PreProcesssor():
         text = self.text
         email = email_grabber(text) #set
         date = date_grabber(text) #list
-        phone_numbers = get_phone_numbers(text) #list
-        human_name = get_human_name(text) #list
+        phone_numbers = get_phone_numbers(text) #list 
         addresses = address_grabber(text) #list
-        return email,date,phone_numbers,human_name,addresses
+        return email,date,phone_numbers,addresses
+    
+    def speaker_names(self):
+        human_names = get_human_name(self.text)
+        return human_names
     
     def get_corrected_text(self):
         text = self.text
@@ -45,7 +49,6 @@ class PreProcesssor():
     def get_action_items(self):
         text = self.text
         #getting top list
-        
         
         top_list = action_items_distil_bert(text)
         return top_list.keys()

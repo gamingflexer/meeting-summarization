@@ -1,29 +1,24 @@
 from flask import Flask, redirect, url_for, session
+from flask_socketio import SocketIO, emit
 from distutils.log import debug
 from flask.helpers import flash
 from flask_restful import Api
 
 from decouple import config
-import spacy
-import os
 
+from model.retrieval import chatbot_response,chatbot_model_load
+
+from utils import set_global_logging_level
+import logging
+set_global_logging_level(logging.ERROR)
 
 DEBUG = config('DEBUG', cast=bool)
 COLLAB = config('COLLAB', cast=bool)
 
-if not DEBUG:
-    import nltk
-    nltk.download('wordnet')
-    nltk.download('vader_lexicon')
-    nltk.download('averaged_perceptron_tagger')
-    nlp = spacy.load('en_core_web_lg')
-else:
-    nlp = spacy.load('en_core_web_sm')
-
-
 def create_app():
     # create and configure the app
     app = Flask(__name__)
+    socketio = SocketIO(app, cors_allowed_origins="*")
     app.config.from_mapping()
     
     # register views
@@ -37,14 +32,40 @@ def create_app():
     api.add_resource(SummaryApi, "/summarization")
     api.add_resource(EntitiesApi, "/entites")
     
-    return app
+    return app, socketio
+
+
 
 if __name__ == "__main__":
-    app = create_app()
+    app,socketio = create_app()
+    
+    # Chatbot API's
+
+    # Handle connection from frontend
+    @socketio.on('connect')
+    def handle_connect():
+        print('Client connected')
+
+    # Handle message from frontend
+    @socketio.on('message')
+    def handle_message(message,transcript,summary):
+        chatbot_model,chatbot_tokenizer = chatbot_model_load()
+        
+        print('Received message: ' + message)
+        response = chatbot_response(question = message,
+                                    transcript = transcript,
+                                    summary = summary,
+                                    model = chatbot_model,
+                                    tokenizer = chatbot_tokenizer)
+        emit('response', response)
+        
+    
+    """ Run app """
+    
     if COLLAB and not DEBUG:
         from flask_ngrok import run_with_ngrok
         run_with_ngrok(app)
     if DEBUG:
-        app.run(debug=True)
+        socketio.run(app,debug=True)
     if not DEBUG:
-        app.run()
+        socketio.run(app)

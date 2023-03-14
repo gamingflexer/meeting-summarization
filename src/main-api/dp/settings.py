@@ -50,6 +50,7 @@ CELERY_RESULT_BACKEND = "redis://localhost:6379"
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
     'api',
     'authentication',
     'social_auth',

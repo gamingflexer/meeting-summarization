@@ -1,12 +1,12 @@
 import whisper
 import spacy
+import requests
 
 from transformers import pipeline
 from transformers import TFAutoModelForSeq2SeqLM,PegasusForConditionalGeneration,AutoModel,AutoTokenizer,AutoModelForSeq2SeqLM
 
 from model.models import bart_summarize, longformer_summarize, pegasus_summarize, bart_title_summarizer
 from model.extractive import extract_sentences
-from model.retrieval import chatbot_response
 from views.preprocessing import transcript_preprocesssing
 
 import noisereduce as nr
@@ -18,6 +18,9 @@ from datetime import timedelta
 import os
 
 from config import AUDIO_FOLDER
+from decouple import config
+
+HUGGING_FACE_KEY = config('HUGGING_FACE_KEY')
 
 def audio_enhance(file):
     audio_data, sample_rate = rosa.load(file, sr=16000)
@@ -108,6 +111,22 @@ class ModelSelect():
 # model = newmodel.load_model()
 # results = newmodel.generate_summary(model)
 
+def gpt_neo_summarization(trancript,summary = True):
+
+    API_URL = "https://api-inference.huggingface.co/models/togethercomputer/GPT-NeoXT-Chat-Base-20B"
+    headers = {"Authorization": f"Bearer {HUGGING_FACE_KEY}"}
+
+    def query(payload):
+        response = requests.post(API_URL, headers=headers, json=payload)
+        return response.json()
+        
+    if summary:
+        output = query({
+            "inputs": f"Summarize a long conversation : {trancript}",
+        })
+    return output
+
+"""
 class ChatBot():
     def __init__(self,question,transcript,summary,model_name="sentence-transformers/paraphrase-MiniLM-L6-v2"):
         self.question = question
@@ -122,3 +141,5 @@ class ChatBot():
         
     def chatbot_answer(self,tokenizer,model):
         return chatbot_response(self.question,self.transcript,self.summary,tokenizer,model)
+        
+"""

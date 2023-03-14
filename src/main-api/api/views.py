@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from drf_yasg import openapi
-
+from django.http import JsonResponse
 from api.serializers import User_info_Serializers,Summary_Serializers,FileSerializer
 from api.models import User_info,Summary
 from api.tasks import summarization_function
@@ -16,10 +16,28 @@ from decouple import config
 from utils import txt_to_pdf
 import datetime
 import os
-
+from .utility import  preprocess_hocr
+from .global_constant import *
+import json
 DEBUG = config('DEBUG', cast=bool)
 
 # View Starts here
+
+# ONBOARDING API
+
+class OnboardingAPI(APIView): # ???
+    
+    permission_classes = user_auth_required()
+    
+    def post(self, request):
+        data = JSONParser().parse(request)
+        user_id = data['user_id']
+        main_queryset = User_info.objects.get(user_id=user_id)
+        main_queryset_serializer = User_info_Serializers(main_queryset, data=data)
+        if main_queryset_serializer.is_valid():
+            main_queryset_serializer.save()
+            return Response({"data":main_queryset_serializer.data},status=status.HTTP_200_OK)
+        return Response(main_queryset_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 class LandingPageAPI(APIView):
     
@@ -57,7 +75,8 @@ class AddMeetingAPI(APIView):
     
     @csrf_exempt
     def post(self, request):
-        data = JSONParser().parse(request)
+        response_data = JSONParser().parse(request)
+        data = response_data.get('data')
         user_id = data['user_id']
         meeting_audio_file_link_new = ""
         if data.get("is_summarized"):
@@ -107,21 +126,41 @@ class SummaryPageAPI(APIView):
     permission_classes = user_auth_required()
     
     def get(self, request, meeting_id):
-        email = "surve790@gmail.com" #request.email
-        main_queryset = Summary.objects.filter(meeting_id=meeting_id)
-        main_queryset_serializer = Summary_Serializers(main_queryset,many=True)
-        content = main_queryset_serializer.data
-        for i in content:
-            i['top_keywords'] = i['top_keywords'].split(',')
-            i['top_speaker'] = i['top_speaker'].split(',')
-            i['highlights'] = i['highlights'].split(',')
-            i['reading_time'] = str((len(i['meeting_summary'].split(' '))//3 )//60) + ' mins'
-        path = os.path.join(base_path_file,"media",f'{meeting_id}.pdf')
-        txt_to_pdf(content[0]['meeting_summary'],path)
-        return Response({"data":{
-            "meeting_data":content,
-            "email_redirect":f"mailto:{email}",
-            }},status=status.HTTP_200_OK)
+        data_dict = {}
+        meta_data_dict={}
+        meta_data_list=[]
+        meeting_data_dict = {}
+        meeting_data_list = []
+        summary_dict = {}
+        summary_data_list =[]
+        main_queryset = Summary.objects.get(meeting_id=meeting_id)
+        summary_serializer = Summary_Serializers(main_queryset)
+        content = summary_serializer.data
+        data_dict['meeting_type'] = content.get("meeting_type")
+        data_dict['meeting_id']  = content.get("meeting_id")
+        data_dict['is_summarized'] = content.get("is_summarized")
+
+        data_dict["transcript"] = [content.get("meeting_transcript")]
+
+        for single_key in listofkeys:
+            meta_data_dict[single_key] = content.get(single_key)
+        meta_data_dict['speaker']=[""]  #om will do
+        meta_data_list.append(meta_data_dict)
+        meeting_data_dict["metadata"] = meta_data_list
+
+        for single_key in summary_dict_key:
+            summary_dict[single_key] = content.get(single_key)
+        summary_dict['agenda'] = ['']  #agenda wala handle kar na hai
+
+        summary_dict['highlights'] = [" "]   #om will do
+        summary_data_list.append(summary_dict)
+        meeting_data_dict['summary'] = summary_data_list
+        meeting_data_dict['trascript'] = [""] #om will do
+        print(meeting_data_dict)
+        meeting_data_list.append(meeting_data_dict)
+        data_dict['meeting_data'] = meeting_data_list
+
+        return JsonResponse({'data':data_dict})
     
     
 class DownloadpdfAPI(APIView):
@@ -156,3 +195,71 @@ class EditUserDataAPI(APIView) :
             return Response(status=status.HTTP_200_OK)
         except Exception as e :
             return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+# FEEEDBACK API
+
+class FeedBackAPI(APIView) :
+    
+    permission_classes = user_auth_required()
+    
+    def get(self,request,meeting_id,param):
+        if param == "upvote":
+            main_queryset = Summary.objects.filter(meeting_id=meeting_id)
+            main_queryset_serializer = Summary_Serializers(main_queryset)
+            content = main_queryset_serializer.data
+            if content['is_good'] == 0:
+                main_queryset.is_good = 1
+            else :
+                main_queryset.is_good = 0
+            main_queryset.save()
+        if param == "downvote":
+            main_queryset = Summary.objects.filter(meeting_id=meeting_id)
+            main_queryset_serializer = Summary_Serializers(main_queryset)
+            content = main_queryset_serializer.data
+            if content['is_good'] == 2:
+                main_queryset.is_good = 0
+            else:
+                main_queryset.is_good = 2
+            main_queryset.save()
+            
+        return Response(status=status.HTTP_200_OK)
+    
+# ANALYTICS API
+
+class AnalyticsAPI(APIView) : # ??
+    
+    permission_classes = user_auth_required()
+    
+    def get(self,request,user_id):
+        main_queryset = Summary.objects.filter(meeting_id=user_id)
+        main_queryset_serializer = Summary_Serializers(main_queryset,many=True)
+        content = main_queryset_serializer.data
+        return Response({"data": {"analytics_data": content}}, status=status.HTTP_200_OK)
+    
+    
+# EDIT SUMMARY API
+
+class EditSummaryAPI(APIView) : # ??
+    
+    # permission_classes = user_auth_required()
+    
+    @csrf_exempt
+    def post(self,request,meeting_id):
+        try :
+            response_data = request.body.decode('utf-8')
+            query_set = Summary.objects.get(meeting_id=meeting_id)
+            main_queryset_serializer = Summary_Serializers(query_set)
+            content = main_queryset_serializer.data
+
+            #retrieving the old transcript
+            if not (content.get('is_summary_edited')):
+                query_set.meeting_old_summary = content.get('meeting_summary')
+                query_set.is_summary_edited = True
+            #saving user edited transcript
+            query_set.meeting_summary =  preprocess_hocr(response_data)
+            query_set.save()
+            return Response(status=status.HTTP_200_OK)
+        except Exception as e :
+            print(e)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+

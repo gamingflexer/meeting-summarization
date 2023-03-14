@@ -174,19 +174,19 @@ class GoogleCalendarMultipleEventsView(View):
 
                 calender_event_serializer=CalendarEventSerializer(data=eventdict)
                 # calender_event_serializer.is_valid(raise_exception=True)
-                if (calender_event_serializer.is_valid()):
-                    calender_event_serializer.save()
-                if api_keyword == 'all' :
-                    event_data = Summary.objects.filter(user_id=1)
-                    calender_event_serializer_data = CalendarEventSerializer(event_data,many=True)
-                elif api_keyword=='sync' or api_keyword=='upcoming':
-                    event_data = Summary.objects.filter(start_time__gte=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ") ,user_id = 1)
-                    calender_event_serializer_data = CalendarEventSerializer(event_data, many=True)
-                elif api_keyword=='past':
-                    event_data = Summary.objects.filter(start_time__lt=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"), user_id=1)
-                    calender_event_serializer_data = CalendarEventSerializer(event_data, many=True)
-
-
+            if (calender_event_serializer.is_valid()):
+                calender_event_serializer.save()
+            if api_keyword == 'all':
+                event_data = Summary.objects.filter(user_id=1)
+                calender_event_serializer_data = CalendarEventSerializer(event_data, many=True)
+            elif api_keyword == 'sync' or api_keyword == 'upcoming':
+                event_data = Summary.objects.filter(
+                    start_time__gte=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"), user_id=1)
+                calender_event_serializer_data = CalendarEventSerializer(event_data, many=True)
+            elif api_keyword == 'past':
+                event_data = Summary.objects.filter(
+                    start_time__lt=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"), user_id=1)
+                calender_event_serializer_data = CalendarEventSerializer(event_data, many=True)
 
             return JsonResponse({
                                  'data': calender_event_serializer_data.data

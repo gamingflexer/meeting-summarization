@@ -2,8 +2,9 @@ import pandas as pd
 import numpy as np
 import spacy
 from sklearn.metrics.pairwise import cosine_similarity
+from transformers import AutoTokenizer, AutoModel
 from transformers import pipeline
-from __init__ import nlp
+from utils import nlp
 
 # Preprocess transcript and summary data
 def preprocess_text(text):
@@ -26,6 +27,11 @@ def generate_answer(question,question_answering_pipeline,top_segments):
         answers.append(answer)
     best_answer = max(answers, key=lambda x: x['score'])
     return best_answer['answer']
+
+def chatbot_model_load(model_name = 'sentence-transformers/paraphrase-MiniLM-L6-v2'):
+    model = AutoModel.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    return model,tokenizer
 
 def chatbot_response(question, transcript, summary, tokenizer, model):
     
@@ -50,5 +56,4 @@ def chatbot_response(question, transcript, summary, tokenizer, model):
     # Initialize transformer-based pipeline for generating answers
     question_answering_pipeline = pipeline("question-answering", model="distilbert-base-cased-distilled-squad", tokenizer="distilbert-base-cased")
     
-    answer = generate_answer(question,question_answering_pipeline,top_segments)
-    return answer
+    return generate_answer(question,question_answering_pipeline,top_segments)

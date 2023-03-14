@@ -1,7 +1,9 @@
 # Transcipt Types
 import os
+import re
 import json
 import pandas as pd
+from langdetect import detect
 from utils import (transcript_html_to_dataframe, 
                    transcript_to_dataframe, 
                    transcript_webvtt_to_dataframe, 
@@ -40,3 +42,33 @@ def any_transcript_to_dataframe(file_path):
         return df
     else:
         return 'unknown'
+
+# Remaining to integrate
+def get_attendes_count(df):
+    return len(df['speaker'].unique())
+
+def identify_meeting_link(meeting_link):
+    # Check if link is for Google Meet
+    google_meet_pattern = r'https:\/\/meet.google.com\/[a-z]+-[a-z]+-[a-z]+'
+    if re.match(google_meet_pattern, meeting_link):
+        return 'Google Meet'
+
+    # Check if link is for Zoom
+    zoom_pattern = r'https:\/\/[a-z]+\.zoom\.us\/[a-z]+\/[0-9a-zA-Z?=&]+'
+    if re.match(zoom_pattern, meeting_link):
+        return 'Zoom'
+
+    # Check if link is for Microsoft Teams
+    teams_pattern = r'https:\/\/teams\.microsoft\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/[0-9a-zA-Z?=&]+'
+    if re.match(teams_pattern, meeting_link):
+        return 'Microsoft Teams'
+
+    # Return None if link is not recognized
+    return 'Unknown'
+
+def detect_language(text):
+    try:
+        language = detect(text)
+    except:
+        language = 'unknown'
+    return str(language)
