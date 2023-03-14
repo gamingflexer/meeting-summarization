@@ -6,6 +6,10 @@ from nltk.tree import Tree
 from date_extractor import extract_dates
 from deep_translator import GoogleTranslator
 
+import numpy as np
+import pandas as pd
+from sklearn.cluster import KMeans
+
 # load the English language model
 nlp = spacy.load("en_core_web_sm")
 
@@ -155,3 +159,90 @@ def g_translation_en(inText):
   except Exception as e:
     print(e)
     pass
+
+"""
+GET CLUSTTERS IN THE TRANSCRIPT | NOT USED
+"""
+
+def return_q_a_others(sentences, max_check=True):
+    
+    if max_check:
+        max_check_num = 5 
+    else:
+        max_check_num = len(sentences)
+        
+    num_questions = 0
+    num_answers = 0
+    
+    question_verbs = ['ask', 'answer', 'question', 'answer', 'tell', 'explain', 'describe', 'define', 'clarify', 'elaborate', 'demonstrate', 'illustrate', 'show', 'state', 'mention', 'discuss','What','how','I have a','Is there', 'One more', 'Can we']
+    
+    # Loop through each sentence and count the number of questions and answers
+    for sent in sentences[:max_check_num]:
+        doc = nlp(sent)
+        
+        # Check if the sentence is a question
+        if doc[-1].text == '?':
+            num_questions += 1
+
+        else:
+            for verb in question_verbs:
+                if verb in sent:
+                    num_questions += 1
+                else:
+                    num_answers += 1
+        
+    
+    # Check which type of sentence occurs more frequently
+    if num_questions > num_answers:
+        return "questions"
+    elif num_answers > num_questions:
+        return "answers"
+    elif len(doc) > 6:
+        return "others"
+    else:
+        return "mixed_type"
+
+def transcript_clusterer(transcript_text, n_clusters=4):
+    # Load the English language model in spacy
+    nlp = spacy.load("en_core_web_sm")
+
+    # Split the transcript into individual sentences
+    doc = nlp(transcript_text)
+    sentences = [str(sent).strip() for sent in doc.sents]
+
+    # Create a feature matrix using spacy's vector representation of each sentence
+    X = np.array([sent.vector for sent in doc.sents])
+
+    # Determine the optimal number of clusters using the elbow method
+    wcss = []
+    for i in range(1, 11):
+        kmeans = KMeans(n_clusters=i, init='k-means++', max_iter=300, n_init=10, random_state=0)
+        kmeans.fit(X)
+        wcss.append(kmeans.inertia_)
+
+    # Fit the k-means clustering model to the data
+    kmeans = KMeans(n_clusters=n_clusters, init='k-means++', max_iter=300, n_init=10, random_state=0)
+    y_kmeans = kmeans.fit_predict(X)
+
+    # Add cluster labels to each sentence
+    df = pd.DataFrame({'sentences': sentences, 'cluster': y_kmeans})
+
+    # Group the sentences by cluster label and return a dictionary
+    clusters = {}
+    for i in range(n_clusters):
+        clusters[f'Cluster {i}'] = {"sentences" :(df.loc[df['cluster'] == i, 'sentences'])}
+    
+    return clusters
+
+#main Function
+def get_clusters(transcript):
+    cls = transcript_clusterer(transcript)
+    for k, v in cls.items():
+        if len(v['sentences']) > 6:
+            for sentence in v['sentences']:
+                sentiment = return_q_a_others(sentence)
+            cls[k]['label'] = sentiment
+        else:
+            cls[k]['label'] = "others"
+            
+    return cls
