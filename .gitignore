@@ -151,3 +151,5 @@ src/main-api/config/*.json
 src/models-api/model/v1.0.0-action/model.pth
 test-gmeet.ipynb
 test-teams.ipynb
+src/main-api/test.json
+src/models-api/data/audio/*

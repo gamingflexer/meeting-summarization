@@ -16,13 +16,14 @@ import random as rd
 import whisper
 from datetime import timedelta
 import os
+import uuid
 
 from config import AUDIO_FOLDER
 
 def audio_enhance(file):
     audio_data, sample_rate = rosa.load(file, sr=16000)
     reduced_noise = nr.reduce_noise(y = audio_data, sr=sample_rate, n_std_thresh_stationary=1.5,stationary=True)
-    path_to_save = os.path.join(AUDIO_FOLDER,f"file_{rd.random(0.1)}.wav")
+    path_to_save = os.path.join(AUDIO_FOLDER,f"file_{str(uuid.uuid4())}.wav")
     sf.write(path_to_save,reduced_noise,sample_rate, 'PCM_24')
     return path_to_save 
 
@@ -30,6 +31,12 @@ def wav_to_transcript(wav_file_path,model_name="base", segments = False):
     model = whisper.load_model(model_name)
     result = model.transcribe(wav_file_path)
     if segments:
+        for segment in result['segments']:
+            segment.pop('tokens')
+            segment.pop('temperature')
+            segment.pop('avg_logprob')
+            segment.pop('compression_ratio')
+            segment.pop('no_speech_prob')
         return result['segments']
     return result
 

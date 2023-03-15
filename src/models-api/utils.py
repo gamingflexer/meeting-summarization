@@ -32,8 +32,8 @@ def drive_download(url, output):
     gdown.download(url, output, quiet=False)
     
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    _, file_extension = os.path.splitext(filename)
+    return file_extension.lower() in ALLOWED_EXTENSIONS
 
 def sentiment_reverser(text):
     sia = SentimentIntensityAnalyzer()
