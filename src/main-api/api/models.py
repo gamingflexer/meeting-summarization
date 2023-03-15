@@ -24,34 +24,37 @@ class Summary(models.Model):  # all meeting data
     attendees_count = models.IntegerField(default=0, null=True)
     meet_link = models.URLField(max_length=200, default='', null=True, blank=True)
     meet_platform = models.CharField(max_length=10, null=True, default='unknown')
-    meeting_description = models.CharField(max_length=255)
+    meeting_description = models.CharField(max_length=255,null=True)
     meeting_location = models.CharField(max_length=255, null=True)
 
-    meeting_transcript = models.CharField(max_length=10000)
-    meeting_audio_file_link = models.CharField(max_length=255)
+    meeting_transcript = models.CharField(max_length=10000,default = "")
+    meeting_old_transcript = models.CharField(max_length=10000,null=True,default=" ")
+    meeting_audio_file_link = models.CharField(max_length=255,default="",null=True)
     is_multilingual = models.BooleanField(default=False)
-    language = models.CharField(max_length=255)
+    language = models.CharField(max_length=255,default="",null=True)
 
     is_summarized = models.BooleanField(default=False, null=False)
     meeting_summary = models.CharField(default="", max_length=3000)  # **Summary**
+    meeting_old_summary = models.CharField(default="", max_length=3000)
+    is_summary_edited = models.BooleanField(default=False,null=True)
     summary_gen_date = models.DateField(null=True)
-    reading_time = models.CharField(max_length=30)  # in minutes & no of words
-    meeting_category_assgined = models.CharField(default="general", max_length=255)
-    model_used = models.CharField(max_length=255)
+    reading_time = models.CharField(max_length=30,default="")  # in minutes & no of words
+    meeting_category_assigned = models.CharField(default="general", max_length=255)
+    model_used = models.CharField(max_length=255,default="")
 
     generated_title = models.CharField(default="", max_length=255)
-    topic = models.CharField(max_length=255)
-    top_keywords = models.CharField(max_length=255)
-    top_speaker = models.CharField(max_length=255)
-    roles_detected = models.CharField(max_length=255)
-    top_spent_time_person = models.CharField(max_length=255)
-    descions = models.CharField(max_length=1000)  # Action Items
-    highlights = models.CharField(max_length=5000)
+    topic = models.CharField(max_length=255,default="")
+    top_keywords = models.CharField(max_length=255,default="")
+    top_speaker = models.CharField(max_length=255,default="")
+    roles_detected = models.CharField(max_length=255,default="")
+    top_spent_time_person = models.CharField(max_length=255,default="")
+    decisions = models.CharField(max_length=1000,default="")  # Action Items
+    highlights = models.CharField(max_length=5000,default="")
 
     # Feedbacks
     is_good = models.IntegerField(default=0) # 0 --> not rated, 1 --> good, 2 --> bad
     factual_consistency = models.IntegerField(default=0)
-    meeting_summary_old = models.CharField(default="", max_length=3000)  # **
+    meeting_summary_old = models.CharField(default="", max_length=10000)  # **
 
 
 class highlight_template(models.Model):
