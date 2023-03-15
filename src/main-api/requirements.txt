@@ -70,3 +70,5 @@ sqlparse == 0.2.4
 pymongo[srv]
 google-auth-oauthlib==0.4.6
 langdetect
+pandas
+bs4

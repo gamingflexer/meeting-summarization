@@ -22,7 +22,6 @@ urlpatterns = [
     path('summary/<int:meeting_id>/pdf', DownloadpdfAPI.as_view(), name='summary_pdf'),
     path('summary/feedback/<int:meeting_id>/<str:param>/<int:val>', FeedBackAPI.as_view(), name='summary_feedback'), #is_good #factual_consistency
 
-
     # Google Calendar API
     path('rest/v1/calendar/init/',
          GoogleCalendarInitView.as_view(), name='calendar_init'),
