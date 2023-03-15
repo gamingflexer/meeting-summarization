@@ -164,14 +164,16 @@ class GoogleCalendarMultipleEventsView(View):
                 if eventdict['meet_link'] is None:
                     eventdict['meet_link'] = ''
                 if (eventdict['meet_link']).find('google') !=-1 :
-                    eventdict['meet_platform'] = 'google'
+                    eventdict['meet_platform'] = 'Google Meet'
                 elif (eventdict['meet_link']).find('zoom') !=-1  :
-                    eventdict['meet_platform'] = 'zoom'
+                    eventdict['meet_platform'] = 'Zoom'
                 elif (eventdict['meet_link']).find('team') !=-1  :
-                    eventdict['meet_platform'] = 'team'
+                    eventdict['meet_platform'] = 'Teams'
 
                 calender_event_serializer=CalendarEventSerializer(data=eventdict)
                 # calender_event_serializer.is_valid(raise_exception=True)
+                print(calender_event_serializer.is_valid())
+                print(calender_event_serializer.errors)
                 if (calender_event_serializer.is_valid()):
                     calender_event_serializer.save()
                 if api_keyword == 'all' :
