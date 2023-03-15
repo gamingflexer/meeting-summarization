@@ -81,19 +81,21 @@ class AddMeetingAPI(APIView):
         data = JSONParser().parse(request)
         user_id = data['user_id']
         meeting_audio_file_link_new = ""
-        if data.get("is_summarized"):
-            meeting_audio_file_link_new = data.get("meeting_audio_file_link")
+        # if data.get("is_summarized"):
+        #     meeting_audio_file_link_new = data.get("meeting_audio_file_link")
         main_queryset = User_info.objects.get(user_id=user_id)
         Summary.objects.create(user_id = main_queryset,
-                                scheduled_meeting = data.get("scheduled_meeting"), 
+                                title = data.get("meeting_title"),
+                                meet_platform = data.get("meeting_platform"),
                                 meeting_description = data.get("meeting_description"),
-                                scheduled_meeting_time = datetime.datetime.strptime(data.get("scheduled_meeting_time"), '%Y-%m-%d %H:%M:%S'),
+                                attendees_count = data.get("attendees_count"),
+                                start_time = datetime.datetime.strptime(data.get("start_time"), '%Y-%m-%d %H:%M:%S'),
+                                end_time = datetime.datetime.strptime(data.get("end_time"), '%Y-%m-%d %H:%M:%S'),
                                 meeting_location = data.get("meeting_location"),
                                 meeting_transcript = data.get("meeting_transcript"),
                                 is_multilingual = data.get("is_multilingual"),
                                 language = data.get("language"),
-                                is_summarized = False,
-                                meeting_audio_file_link = meeting_audio_file_link_new,
+                                meeting_audio_file_link = meeting_audio_file_link_new
                                 )
         main_queryset_summary = Summary.objects.filter(user_id=user_id).latest('meeting_id')
         main_queryset_summary_serializer = Summary_Serializers(main_queryset_summary)
