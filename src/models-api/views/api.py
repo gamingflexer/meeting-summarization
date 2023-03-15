@@ -41,9 +41,36 @@ class AudioApi(Resource):
                     }
     
 class SummaryApi(Resource):
+    
     def post(self):
         data = request.get_json()
-        transcript = data.get('transcript')
+        
+        if data is None:
+            return {"message": "No data provided"}, 400
+        
+        meeting_type = data['data'].get('meeting_type')
+        
+        if meeting_type == 'from_video_audio':
+            transcript = data['data'].get('transcript') # this is a json
+            transcript_joined = ""
+            for segment in transcript:
+                transcript_joined += segment['text'] # no speaker info
+                
+                # what waht fucntions to call
+                
+                
+            
+            return {"message": "Not implemented yet"}, 400
+        
+        if meeting_type == 'from_transcript':
+            transcript = data['data'].get('transcript') # this is a json
+            
+            return {"message": "Not implemented yet"}, 400
+        
+        if meeting_type == 'from_extension':
+            transcript = data['data'].get('transcript') # this is a string
+            
+            return {"message": "Not implemented yet"}, 400
         
         """START HERE TO GET SUMMARY"""
         #preprocessing
