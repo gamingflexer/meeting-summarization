@@ -3,7 +3,7 @@ from django.urls import path
 from .views import LandingPageAPI,AddMeetingAPI,SummaryPageAPI,AddMeetingFileAPI,EditUserDataAPI,FeedBackAPI,OnboardingAPI,DownloadpdfAPI,AnalyticsAPI
 
 from .calender import GoogleCalendarInitView,GoogleCalendarEventsView,GoogleCalendarRedirectView,GoogleCalendarMultipleEventsView
-from .microsoftauth import microsoft_login, microsoft_callback
+# from ...scripts.microsoftauth import microsoft_login, microsoft_callback
 
 urlpatterns = [
     # Landing Page API
@@ -39,6 +39,6 @@ urlpatterns = [
     # Analytics API
     path('analytics/<user_id>', AnalyticsAPI.as_view(), name='analytics'),
 
-    path('microsoft_login/', microsoft_login, name='microsoft_login'),
-    path('microsoft_callback/', microsoft_callback, name='microsoft_callback')
+#     path('microsoft_login/', microsoft_login, name='microsoft_login'),
+#     path('microsoft_callback/', microsoft_callback, name='microsoft_callback')
 ] 

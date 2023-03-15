@@ -6,7 +6,6 @@ from rest_framework.views import APIView
 from rest_framework import status
 from drf_yasg import openapi
 
-from django.http import JsonResponse
 from api.serializers import User_info_Serializers,Summary_Serializers,FileSerializer,CalendarEventSerializer
 from api.models import User_info,Summary
 from api.tasks import summarization_function
@@ -19,7 +18,6 @@ from utils import txt_to_pdf
 from .utility import  preprocess_hocr
 from .global_constant import *
 import datetime
-import json
 import os
 
 from django.core.exceptions import ObjectDoesNotExist
