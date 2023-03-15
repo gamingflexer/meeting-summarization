@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from drf_yasg import openapi
 
-from api.serializers import User_info_Serializers,Summary_Serializers,FileSerializer
+from api.serializers import User_info_Serializers,Summary_Serializers,FileSerializer,CalendarEventSerializer
 from api.models import User_info,Summary
 from api.tasks import summarization_function
 from .permissions import user_auth_required
@@ -50,25 +50,36 @@ class LandingPageAPI(APIView):
         user = request.user
         email = "test0991@test.com" #request.email
         user_id = 1
-        main_queryset = User_info.objects.filter(email=email)
-        if main_queryset.exists():
-            main_queryset = main_queryset.first()
-            main_queryset_serializer = User_info_Serializers(main_queryset)
-            user_id = main_queryset.user_id
-        else:
-            main_queryset = User_info.objects.create(email=email)
-            main_queryset_serializer = User_info_Serializers(data = main_queryset)
-            if main_queryset_serializer.is_valid():
-                main_queryset_serializer.save()
+        # main_queryset = User_info.objects.filter(email=email)
+        # if main_queryset.exists():
+        #     main_queryset = main_queryset.first()
+        #     main_queryset_serializer = User_info_Serializers(main_queryset)
+        #     user_id = main_queryset.user_id
+        # else:
+        #     main_queryset = User_info.objects.create(email=email)
+        #     main_queryset_serializer = User_info_Serializers(data = main_queryset)
+        #     if main_queryset_serializer.is_valid():
+        #         main_queryset_serializer.save()
                 
+        # All Meetings
         main_queryset_total_meetings = Summary.objects.filter(user_id=user_id)
         main_queryset_summarized = Summary.objects.filter(user_id=user_id)
         main_queryset = Summary.objects.filter(user_id=user_id).order_by('-meeting_id')[:4][::-1]
         main_queryset_serializer = Summary_Serializers(reversed(main_queryset), many=True)
+        
+        # Upcoming Meetings
+        event_data = Summary.objects.filter(start_time__gte=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ") ,user_id = 1)
+        calender_event_serializer_data_upcoming = CalendarEventSerializer(event_data, many=True)
+        
+        # Past Meetings
+        event_data = Summary.objects.filter(start_time__lt=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"), user_id=1)
+        calender_event_serializer_data_past = CalendarEventSerializer(event_data, many=True)
+
+        
         return Response({"data":{"meetings":(main_queryset_serializer.data),
                                  "total_meetings":len(main_queryset_total_meetings),
-                                 "recent_meetings":"",
-                                 "scheduled_meetings":"",
+                                 "recent_meetings":(calender_event_serializer_data_past.data),
+                                 "scheduled_meetings": (calender_event_serializer_data_upcoming.data),
                                  "summrized_meetings":len(main_queryset_summarized)}
                          },status=status.HTTP_200_OK)
     
@@ -81,8 +92,6 @@ class AddMeetingAPI(APIView):
         data = JSONParser().parse(request)
         user_id = data['user_id']
         meeting_audio_file_link_new = ""
-        # if data.get("is_summarized"):
-        #     meeting_audio_file_link_new = data.get("meeting_audio_file_link")
         main_queryset = User_info.objects.get(user_id=user_id)
         Summary.objects.create(user_id = main_queryset,
                                 title = data.get("meeting_title"),
@@ -101,6 +110,7 @@ class AddMeetingAPI(APIView):
         main_queryset_summary_serializer = Summary_Serializers(main_queryset_summary)
         #celery task
         #summarization_function(meeting_audio_file_link_new,file=False)
+        # save summary data in db
         return Response({"data":
                         {"meeting_data":main_queryset_summary_serializer.data}},
                         status=status.HTTP_201_CREATED)

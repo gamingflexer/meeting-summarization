@@ -24,7 +24,7 @@ urlpatterns = [
          GoogleCalendarRedirectView.as_view(), name='calendar_redirect'),
     path('rest/v1/calendar/events/',
          GoogleCalendarEventsView.as_view(), name='calendar_redirect'),
-    path('calendar/multipleevents/<api_keyword>',
+    path('meetings-data/<api_keyword>',
          GoogleCalendarMultipleEventsView.as_view(), name='calendar_upcoming_event'),
 
     # User API
