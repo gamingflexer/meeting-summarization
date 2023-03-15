@@ -14,7 +14,7 @@ class User_info(models.Model):
 class Summary(models.Model):  # all meeting data
     meeting_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(User_info, on_delete=models.CASCADE)
-    calender_meeting_id = models.CharField(unique=True, max_length=70, null=True)
+    calender_meeting_id = models.CharField(max_length=70, null=True, default='')
     title = models.CharField(max_length=100, null=True, default='')
     creator = models.CharField(max_length=50, null=True, default='')
     organizer = models.CharField(max_length=50, null=True, default='')

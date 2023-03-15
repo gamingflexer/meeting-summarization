@@ -146,6 +146,9 @@ class SummaryPageAPI(APIView):
     permission_classes = user_auth_required()
     
     def get(self, request, meeting_id):
+        
+        email = "surve790@gmail.com"
+        
         data_dict = {}
         meta_data_dict={}
         meta_data_list=[]
@@ -153,7 +156,10 @@ class SummaryPageAPI(APIView):
         meeting_data_list = []
         summary_dict = {}
         summary_data_list =[]
-        main_queryset = Summary.objects.get(meeting_id=meeting_id)
+        try:
+            main_queryset = Summary.objects.get(meeting_id=meeting_id)
+        except ObjectDoesNotExist:
+            return Response({"data":{"error":"Meeting Summary does not exist"}},status=status.HTTP_400_BAD_REQUEST)
         summary_serializer = Summary_Serializers(main_queryset)
         content = summary_serializer.data
         data_dict['meeting_type'] = content.get("meeting_type")
@@ -176,31 +182,31 @@ class SummaryPageAPI(APIView):
         summary_data_list.append(summary_dict)
         meeting_data_dict['summary'] = summary_data_list
         meeting_data_dict['trascript'] = [""] #om will do
-        print(meeting_data_dict)
         meeting_data_list.append(meeting_data_dict)
         data_dict['meeting_data'] = meeting_data_list
+        data_dict["email_redirect"] = f"mailto:{email}"
 
-        return JsonResponse({'data':data_dict})
- ###############
-        email = "surve790@gmail.com" #request.email
-        try:
-            main_queryset = Summary.objects.get(meeting_id=meeting_id)
-        except ObjectDoesNotExist:
-            return Response({"data":{"error":"Meeting Summary does not exist"}},status=status.HTTP_400_BAD_REQUEST)
-        main_queryset_serializer = Summary_Serializers(main_queryset)
-        content = main_queryset_serializer.data
-        content['top_keywords'] = content['top_keywords'].split(',')
-        content['top_speaker'] = content['top_speaker'].split(',')
-        content['highlights'] = content['highlights'].split(',')
-        content['reading_time'] = str((len(content['meeting_summary'].split(' '))//3 )//60) + ' mins'
-        path = os.path.join(base_path_file,"media",f'{meeting_id}.pdf')
-        txt_to_pdf(content['meeting_summary'],path)
-        return Response({"data":{
-            "meeting_data":content,
-            "email_redirect":f"mailto:{email}",
-            }},status=status.HTTP_200_OK)
+        return Response({"data":data_dict},status=status.HTTP_200_OK)
     
-    
+    def post(self,request,meeting_id):
+        try :
+            response_data = request.body.decode('utf-8')
+            query_set = Summary.objects.get(meeting_id=meeting_id)
+            main_queryset_serializer = Summary_Serializers(query_set)
+            content = main_queryset_serializer.data
+
+            #retrieving the old transcript
+            if not (content.get('is_summary_edited')):
+                query_set.meeting_old_summary = content.get('meeting_summary')
+                query_set.is_summary_edited = True
+            #saving user edited transcript
+            query_set.meeting_summary =  preprocess_hocr(response_data)
+            query_set.save()
+            return Response(status=status.HTTP_200_OK)
+        except Exception as e :
+            print(e)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
 class DownloadpdfAPI(APIView):
     
     permission_classes = user_auth_required()
@@ -273,31 +279,4 @@ class AnalyticsAPI(APIView) : # ??
         main_queryset_serializer = Summary_Serializers(main_queryset,many=True)
         content = main_queryset_serializer.data
         return Response({"data": {"analytics_data": content}}, status=status.HTTP_200_OK)
-    
-    
-# EDIT SUMMARY API
-
-class EditSummaryAPI(APIView) : # ??
-    
-    # permission_classes = user_auth_required()
-    
-    @csrf_exempt
-    def post(self,request,meeting_id):
-        try :
-            response_data = request.body.decode('utf-8')
-            query_set = Summary.objects.get(meeting_id=meeting_id)
-            main_queryset_serializer = Summary_Serializers(query_set)
-            content = main_queryset_serializer.data
-
-            #retrieving the old transcript
-            if not (content.get('is_summary_edited')):
-                query_set.meeting_old_summary = content.get('meeting_summary')
-                query_set.is_summary_edited = True
-            #saving user edited transcript
-            query_set.meeting_summary =  preprocess_hocr(response_data)
-            query_set.save()
-            return Response(status=status.HTTP_200_OK)
-        except Exception as e :
-            print(e)
-            return Response(status=status.HTTP_400_BAD_REQUEST)
 
