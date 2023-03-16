@@ -1,0 +1,204 @@
+{
+    "data": [
+        {
+            "meeting_type": "from_video_audio",
+            "meeting_id": "1234567890",
+            "is_summarized": true,
+            "trascript": [],
+            "meeting_data": [
+                {
+                    "metadata": [
+                        {
+                            "title": "Meeting Title",
+                            "creator": "Meeting Creator",
+                            "organizer": "Meeting Organizer",
+                            "creation_time": "2020-01-01 00:00:00",
+                            "start_time": "2020-01-01 00:00:00",
+                            "end_time": "2020-01-01 00:00:00",
+                            "duration": "10min",
+                            "attendees_count": 10,
+                            "meet_link": "https://www.google.com",
+                            "meet_platform": "Google Meet",
+                            "meeting_description": "Meeting Description",
+                            "meeting_location": "Meeting Location",
+                            "meeting_audio_file_link": "https://www.google.com",
+                            "is_multilingual": false,
+                            "language": "English",
+                            "meeting_category_assgined": "General",
+                            "generated_title": "Meeting Title",
+                            "next_meet_scheduled": "Daily Work Assigment - 2020-01-01 00:00:00",
+                            "sepakers": [
+                                {
+                                    "sepaker_name": "sepaker1",
+                                    "sepaker_duration": 10,
+                                    "sepaker_quality": [
+                                        "good",
+                                        "bad"
+                                    ],
+                                    "roles_detected": [
+                                        "role1",
+                                        "role2"
+                                    ]
+                                },
+                                {
+                                    "sepaker_name": "sepaker2",
+                                    "sepaker_duration": 10,
+                                    "sepaker_quality": [
+                                        "good",
+                                        "bad"
+                                    ],
+                                    "roles_detected": [
+                                        "role1"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "summary": [
+                        {
+                            "meeting_summary": "hello",
+                            "summary_gen_date": "2020-01-01 00:00:00",
+                            "reading_time": "10min",
+                            "agenda": [
+                                "agenda1",
+                                "agenda2"
+                            ],
+                            "highlights": [
+                                {
+                                    "main_timestamps": [
+                                        {
+                                            "timestamp": "00:00:00",
+                                            "headline": "Meeting started",
+                                            "internal_timestamp": [
+                                                {
+                                                    "time": "00:00:00",
+                                                    "text": "Meeting started"
+                                                },
+                                                {
+                                                    "time": "00:01:00",
+                                                    "text": "Meeting started"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "timestamp": "1:00:00",
+                                            "headline": "Meeting started",
+                                            "internal_timestamp": [
+                                                {
+                                                    "time": "00:00:00",
+                                                    "text": "Meeting started"
+                                                },
+                                                {
+                                                    "time": "00:01:00",
+                                                    "text": "Meeting started"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "timestamp": "3:00:00",
+                                            "headline": "Meeting started",
+                                            "internal_timestamp": [
+                                                {
+                                                    "time": "00:00:00",
+                                                    "text": "Meeting started"
+                                                },
+                                                {
+                                                    "time": "00:01:00",
+                                                    "text": "Meeting started"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "timestamp": "4:00:00",
+                                            "headline": "Meeting started",
+                                            "internal_timestamp": [
+                                                {
+                                                    "time": "00:00:00",
+                                                    "text": "Meeting started"
+                                                },
+                                                {
+                                                    "time": "00:01:00",
+                                                    "text": "Meeting started"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "trascript": [
+                        {
+                            "meeting_transcript": "hello",
+                            "meeting_transcript_with_actions": [
+                                {
+                                    "time_stamp": 0,
+                                    "speaker": " Speaker 1",
+                                    "text": "Good morning everyone and welcome to our weekly team meeting. Today wel be discussing the progress of our ongoing projects and planning for the next quarter.",
+                                    "end_time": 0,
+                                    "start_time": 0,
+                                    "attributes": [
+                                        {
+                                            "is_question": true,
+                                            "back_channel": [
+                                                "yes",
+                                                "no"
+                                            ],
+                                            "is_answer": false
+                                        }
+                                    ]
+                                },
+                                {
+                                    "time_stamp": 75200,
+                                    "speaker": " Speaker 2",
+                                    "text": "Thanks, Speaker 1. I'd like to start by sharing an update on the marketing campaign we launched last month. Our initial metrics are looking very promising and we're already seeing an uptick in website traffic and engagement.",
+                                    "end_time": 75200,
+                                    "start_time": 0,
+                                    "attributes": [
+                                        {
+                                            "is_question": true,
+                                            "back_channel": [
+                                                "yes",
+                                                "no"
+                                            ],
+                                            "is_answer": false
+                                        }
+                                    ]
+                                },
+                                {
+                                    "time_stamp": 150500,
+                                    "speaker": " Speaker 3",
+                                    "text": "Thats great to hear, Speaker 2. I think we should also consider expanding our reach to new markets, especially in Europe where we've seen a lot of interest lately.",
+                                    "end_time": 225700,
+                                    "start_time": 75200,
+                                    "attributes": [
+                                        {
+                                            "is_question": false,
+                                            "back_channel": [
+                                                "yes",
+                                                "no"
+                                            ],
+                                            "is_answer": true
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "meeting_type": "from_transcript",
+            "meeting_id": "1234567890",
+            "trascript": [],
+            "meeting_data": []
+        },
+        {
+            "meeting_type": "from_extension",
+            "meeting_id": "1234567890",
+            "trascript": [],
+            "meeting_data": []
+        }
+    ]
+}
