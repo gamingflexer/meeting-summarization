@@ -9,7 +9,7 @@ from utils import allowed_file,extract_audio_from_any_file
 from decouple import config
 from config import MODEL_FOLDER
 from views.models import ModelSelect
-from views.helperFun import PreProcesssor,PostProcesssor
+from views.helperFun import PreProcesssor,PostProcesssor,processors_call_on_trancript
 
 DEBUG = config('DEBUG', cast=bool)
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'media')
@@ -50,58 +50,44 @@ class SummaryApi(Resource):
         
         meeting_type = data['data'].get('meeting_type')
         
-        if meeting_type == 'from_video_audio':
+        if meeting_type == 'from_video_audio': # no speaker info
             transcript = data['data'].get('transcript') # this is a json
             transcript_joined = ""
-            for segment in transcript:
-                transcript_joined += segment['text'] # no speaker info
-                
-                # what waht fucntions to call
-                
-                
+            data_json = processors_call_on_trancript(data)
+            return data_json
             
-            return {"message": "Not implemented yet"}, 400
-        
         if meeting_type == 'from_transcript':
-            transcript = data['data'].get('transcript') # this is a json
-            
-            return {"message": "Not implemented yet"}, 400
-        
+            transcript = data['data'].get('transcript') # this is a json but in text in request also
+            data_json = processors_call_on_trancript(data)
+            return data_json
+
         if meeting_type == 'from_extension':
             transcript = data['data'].get('transcript') # this is a string
-            
-            return {"message": "Not implemented yet"}, 400
-        
+            data_json = processors_call_on_trancript(data)
+            return data_json
+
+
         """START HERE TO GET SUMMARY"""
-        #preprocessing
-        pre_processor = PreProcesssor(transcript)
-        email,date,phone_numbers,human_name,addresses = pre_processor.get_entites()
-        jargon_sentences = pre_processor.get_jargon_sentences()
-        get_meeting_structure = pre_processor.get_meeting_structure()
-        if data['translate'] == 1:
-            transcript = pre_processor.tranlate_text()
-            
-        #summary generation
-        new_model = ModelSelect(modelname = 'bart',model_id_or_path= 'knkarthick/MEETING_SUMMARY',text = transcript,max_new_tokens=200)
-        model = new_model.load_model()
-        results = new_model.generate_summary(model)
+
+        # #get entites
+        # df_formatted = 
+        # transcript_analysis = TranscriptPreProcessor(transcript = df_formatted) 
+
+
+        # #preprocessing
+        # pre_processor = PreProcesssor(transcript) # unformatted simple trancript
+        # email,date,phone_numbers,human_name,addresses = pre_processor.get_entites()
+        # jargon_sentences = pre_processor.get_jargon_sentences()
+        # get_meeting_structure = pre_processor.get_meeting_structure()
+
+        # if data['translate'] == 1: #hold on for now
+        #     transcript = pre_processor.tranlate_text()
         
-        #postprocessing
-        post_processor = PostProcesssor(results)
-        clean_summary = post_processor.get_clean_summary()
-        formatted_summary = post_processor.get_formatted_summary(clean_summary)
+        # #postprocessing
+        # post_processor = PostProcesssor(main_summary)
+        # clean_summary = post_processor.get_clean_summary()
+        # formatted_summary = post_processor.get_formatted_summary(clean_summary)
         
-        #return summary
-        return {"summary": formatted_summary,
-                "meta_data":{"email":email,
-                             "dates":date,
-                             "phone_numbers":phone_numbers,
-                             "human_names":human_name,
-                             "addresses":addresses,
-                             "jargon_sentences":jargon_sentences,
-                             "meeting_structure":get_meeting_structure}
-                }, 200
-    
 class EntitiesApi(Resource):
     def post(self):
         data = request.get_json()
