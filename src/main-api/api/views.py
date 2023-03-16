@@ -150,47 +150,25 @@ class AddMeetingFileAPI(APIView):
                                                                  is_summarized=True)
             
             file_extention = newPath.split("/")[-1].split(".")[-1]
-
+            if DEBUG not true:
             # if from_transcript file type then send to
-            if file_extention in TRANCRIPT_EXT:
-                print("\n TRANCRIPT DETECTED")
-                meeting_type = 'from_transcript'
-                
-                # with open(newPath, 'rb') as f:
-                #     transcript_readed = f.read()
-            
-                # preprocess it and add new data using preprocessor function {Expecting the files in our format}
-                segmented_df,speaker_dialogue,durations,attendeces_count = any_transcript_to_dataframe(newPath)
-                print("segmented_df",segmented_df)
-                print("speaker_dialogue",speaker_dialogue)
-                print("durations",durations)
-                """
-                
-                #--> send to summarization
-                try:
-                    response = requests.post(URL_MICRO + "summarization" , data=json.dumps({"transcript":speaker_dialogue}))
-                    response.raise_for_status()
-                    transcript_from_res = json.loads(response.json())
-                except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-                    print("Down")
-                except requests.exceptions.HTTPError:
-                    print("4xx, 5xx")
+                if file_extention in TRANCRIPT_EXT:
+                    print("\n TRANCRIPT DETECTED")
+                    meeting_type = 'from_transcript'
                     
-                #save data
-                query_set = Summary.objects.get(meeting_id=meeting_id)
-                main_queryset_serializer = Summary_Serializers(query_set)
-                query_set.meeting_summary =  "NEW SUMMARY"
-                query_set.save()
-                                
+                    # with open(newPath, 'rb') as f:
+                    #     transcript_readed = f.read()
                 
-            if file_extention in VIDEO_EXT:
-                # if from_video_audio
-                #--> send to trancription & get the trancript +
-                print("\n VIDEO FILE DETECTED \n")
-                meeting_type = 'from_video_audio'
-                with open(newPath, 'rb') as f:
+                    # preprocess it and add new data using preprocessor function {Expecting the files in our format}
+                    segmented_df,speaker_dialogue,durations,attendeces_count = any_transcript_to_dataframe(newPath)
+                    print("segmented_df",segmented_df)
+                    print("speaker_dialogue",speaker_dialogue)
+                    print("durations",durations)
+                    """
+                    
+                    #--> send to summarization
                     try:
-                        response = requests.post(URL_MICRO + "transcript" , files={'file': f})
+                        response = requests.post(URL_MICRO + "summarization" , data=json.dumps({"transcript":speaker_dialogue}))
                         response.raise_for_status()
                         transcript_from_res = json.loads(response.json())
                     except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
@@ -198,30 +176,77 @@ class AddMeetingFileAPI(APIView):
                     except requests.exceptions.HTTPError:
                         print("4xx, 5xx")
                         
-                
-                # preprocess it and add new data using preprocessor function
-            
-                #--> send to summarization
-                try:
-                    response = requests.post(URL_MICRO + "summarization" ,data=json.dumps({"transcript":"data"}))
-                    response.raise_for_status()
-                    transcript_from_res = json.loads(response.json())
-                except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-                    print("Down")
-                except requests.exceptions.HTTPError:
-                    print("4xx, 5xx")
+                    #save data
+                    query_set = Summary.objects.get(meeting_id=meeting_id)
+                    main_queryset_serializer = Summary_Serializers(query_set)
+                    query_set.meeting_summary =  "NEW SUMMARY"
+                    query_set.save()
+                                    
                     
-                #save data
-                query_set = Summary.objects.get(meeting_id=meeting_id)
-                main_queryset_serializer = Summary_Serializers(query_set)
-                query_set.meeting_summary =  "NEW SUMMARY"
-                query_set.save()
-            
-            #make it celery task
-            #summary,transcript = summarization_function(newPath,file=True)
-            #Summary.objects.filter(meeting_id=meeting_id).update(meeting_summary=summary,meeting_transcript=transcript)
-        return Response({"data":{"meeting_id":meeting_id,"status":"File uploaded successfully"}},status=status.HTTP_201_CREATED)  # ADD A REDIRECT URL HERE
-    """
+                if file_extention in VIDEO_EXT:
+                    # if from_video_audio
+                    #--> send to trancription & get the trancript +
+                    print("\n VIDEO FILE DETECTED \n")
+                    meeting_type = 'from_video_audio'
+                    with open(newPath, 'rb') as f:
+                        try:
+                            response = requests.post(URL_MICRO + "transcript" , files={'file': f})
+                            response.raise_for_status()
+                            transcript_from_res = json.loads(response.json())
+                        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+                            print("Down")
+                        except requests.exceptions.HTTPError:
+                            print("4xx, 5xx")
+                            
+                    
+                    # preprocess it and add new data using preprocessor function
+                
+                    #--> send to summarization
+                    try:
+                        response = requests.post(URL_MICRO + "summarization" ,data=json.dumps({"transcript":"data"}))
+                        response.raise_for_status()
+                        transcript_from_res = json.loads(response.json())
+                    except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+                        print("Down")
+                    except requests.exceptions.HTTPError:
+                        print("4xx, 5xx")
+                        
+                    #save data
+                    query_set = Summary.objects.get(meeting_id=meeting_id)
+                    main_queryset_serializer = Summary_Serializers(query_set)
+                    query_set.meeting_summary =  "NEW SUMMARY"
+                    query_set.save()
+                
+                #make it celery task
+                #summary,transcript = summarization_function(newPath,file=True)
+                #Summary.objects.filter(meeting_id=meeting_id).update(meeting_summary=summary,meeting_transcript=transcript)
+            return Response({"data":{"meeting_id":meeting_id,"status":"File uploaded successfully"}},status=status.HTTP_201_CREATED)  # ADD A REDIRECT URL HERE
+        """
+            else:
+                with open("./data/summary.json", 'rb') as f:
+                    data = f.read()
+                    
+                meeting_data = json.loads(data)
+
+                if file_extention in TRANCRIPT_EXT:
+                    print("\n TRANCRIPT DETECTED")
+                    return { "data": {
+                            "meeting_type": "from_transcript",
+                            "meeting_id": meeting_id,
+                            "is_summarized": "true",
+                            "trascript": meeting_data
+                            }}
+
+                if file_extention in VIDEO_EXT:
+                    print("\n VIDEO FILE DETECTED \n")
+                    
+                    return { "data": {
+                            "meeting_type": "from_video_audio",
+                            "meeting_id": meeting_id,
+                            "is_summarized": "true",
+                            "trascript": meeting_data
+                            }}
+
 class SummaryPageAPI(APIView):
     
     permission_classes = user_auth_required()
