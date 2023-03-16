@@ -5,7 +5,7 @@ import urllib
 import json
 import os
 
-url_sumarization = config("URL_SUMMARIZATION")
+# url_sumarization = config("URL_SUMMARIZATION")
 
 #audio links?
 def summarization_function(file_path_or_link, file=False):

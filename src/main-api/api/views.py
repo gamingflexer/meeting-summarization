@@ -8,7 +8,6 @@ from drf_yasg import openapi
 
 from api.serializers import User_info_Serializers,Summary_Serializers,FileSerializer,CalendarEventSerializer
 from api.models import User_info,Summary
-from api.tasks import summarization_function
 from .permissions import user_auth_required
 from config import base_path_file
 from authentication.models import User
@@ -16,13 +15,17 @@ from decouple import config
 from utils import txt_to_pdf
 
 from .utility import  preprocess_hocr
+from .preprocessing.preprocessor import any_transcript_to_dataframe,identify_meeting_link,detect_language
 from .global_constant import *
 import datetime
+import requests
+import json
 import os
 
 from django.core.exceptions import ObjectDoesNotExist
 
 DEBUG = config('DEBUG', cast=bool)
+URL_MICRO = config('URL_MICRO')
 
 # View Starts here
 
@@ -133,12 +136,92 @@ class AddMeetingFileAPI(APIView):
             file_serializer.save()
             pathOfFile = file_serializer.data['file']
             newPath = base_path_file + '/' + pathOfFile
-            Summary.objects.filter(meeting_id=meeting_id).update(meeting_audio_file_link=newPath,is_summarized=True)
+            
+            main_queryset_summary = Summary.objects.filter(meeting_id=meeting_id, user_id = 1).first()
+            main_queryset_summary_serializer = Summary_Serializers(main_queryset_summary)
+
+            # Integfiy platform & detect lang
+            meet_platform = identify_meeting_link(main_queryset_summary_serializer.data["meet_link"])
+            detected_lang = detect_language(main_queryset_summary_serializer.data["meeting_transcript"])
+            
+            Summary.objects.filter(meeting_id=meeting_id).update(meeting_audio_file_link=newPath,
+                                                                 meet_platform = meet_platform,
+                                                                 language = detected_lang,
+                                                                 is_summarized=True)
+            
+            file_extention = newPath.split("/")[-1].split(".")[-1]
+
+            # if from_transcript file type then send to
+            if file_extention in TRANCRIPT_EXT:
+                print("\n TRANCRIPT DETECTED")
+                meeting_type = 'from_transcript'
+                
+                # with open(newPath, 'rb') as f:
+                #     transcript_readed = f.read()
+            
+                # preprocess it and add new data using preprocessor function {Expecting the files in our format}
+                segmented_df,speaker_dialogue,durations,attendeces_count = any_transcript_to_dataframe(newPath)
+                print("segmented_df",segmented_df)
+                print("speaker_dialogue",speaker_dialogue)
+                print("durations",durations)
+                """
+                
+                #--> send to summarization
+                try:
+                    response = requests.post(URL_MICRO + "summarization" , data=json.dumps({"transcript":speaker_dialogue}))
+                    response.raise_for_status()
+                    transcript_from_res = json.loads(response.json())
+                except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+                    print("Down")
+                except requests.exceptions.HTTPError:
+                    print("4xx, 5xx")
+                    
+                #save data
+                query_set = Summary.objects.get(meeting_id=meeting_id)
+                main_queryset_serializer = Summary_Serializers(query_set)
+                query_set.meeting_summary =  "NEW SUMMARY"
+                query_set.save()
+                                
+                
+            if file_extention in VIDEO_EXT:
+                # if from_video_audio
+                #--> send to trancription & get the trancript +
+                print("\n VIDEO FILE DETECTED \n")
+                meeting_type = 'from_video_audio'
+                with open(newPath, 'rb') as f:
+                    try:
+                        response = requests.post(URL_MICRO + "transcript" , files={'file': f})
+                        response.raise_for_status()
+                        transcript_from_res = json.loads(response.json())
+                    except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+                        print("Down")
+                    except requests.exceptions.HTTPError:
+                        print("4xx, 5xx")
+                        
+                
+                # preprocess it and add new data using preprocessor function
+            
+                #--> send to summarization
+                try:
+                    response = requests.post(URL_MICRO + "summarization" ,data=json.dumps({"transcript":"data"}))
+                    response.raise_for_status()
+                    transcript_from_res = json.loads(response.json())
+                except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+                    print("Down")
+                except requests.exceptions.HTTPError:
+                    print("4xx, 5xx")
+                    
+                #save data
+                query_set = Summary.objects.get(meeting_id=meeting_id)
+                main_queryset_serializer = Summary_Serializers(query_set)
+                query_set.meeting_summary =  "NEW SUMMARY"
+                query_set.save()
+            
             #make it celery task
-            summary,transcript = summarization_function(newPath,file=True)
-            Summary.objects.filter(meeting_id=meeting_id).update(meeting_summary=summary,meeting_transcript=transcript)
-        return Response({"data":{"meeting_id":meeting_id,"status":"File uploaded successfully"}},status=status.HTTP_201_CREATED)
-    
+            #summary,transcript = summarization_function(newPath,file=True)
+            #Summary.objects.filter(meeting_id=meeting_id).update(meeting_summary=summary,meeting_transcript=transcript)
+        return Response({"data":{"meeting_id":meeting_id,"status":"File uploaded successfully"}},status=status.HTTP_201_CREATED)  # ADD A REDIRECT URL HERE
+    """
 class SummaryPageAPI(APIView):
     
     permission_classes = user_auth_required()
