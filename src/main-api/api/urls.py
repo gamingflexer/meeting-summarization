@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import LandingPageAPI,AddMeetingAPI,SummaryPageAPI,AddMeetingFileAPI,EditUserDataAPI,FeedBackAPI,OnboardingAPI,DownloadpdfAPI,AnalyticsAPI
+from .views import LandingPageAPI,AddMeetingAPI,SummaryPageAPI,AddMeetingFileAPI,EditUserDataAPI,FeedBackAPI,OnboardingAPI,DownloadpdfAPI,AnalyticsAPI,StartSummarization
 
 from .calender import GoogleCalendarInitView,GoogleCalendarEventsView,GoogleCalendarRedirectView,GoogleCalendarMultipleEventsView
 # from ...scripts.microsoftauth import microsoft_login, microsoft_callback
@@ -19,6 +19,7 @@ urlpatterns = [
     
     path('userinfo/<str:username>', EditUserDataAPI.as_view(), name='fetch_user_data'),
     path('summary/<int:meeting_id>', SummaryPageAPI.as_view(), name='summary'), # Edit summary also in this
+    path('summary/<int:meeting_id>/start', StartSummarization.as_view(), name='summary_start'),
     path('summary/<int:meeting_id>/pdf', DownloadpdfAPI.as_view(), name='summary_pdf'),
     path('summary/feedback/<int:meeting_id>/<str:param>/<int:val>', FeedBackAPI.as_view(), name='summary_feedback'), #is_good #factual_consistency
 

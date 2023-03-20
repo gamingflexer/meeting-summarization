@@ -150,7 +150,12 @@ class AddMeetingFileAPI(APIView):
                                                                  is_summarized=True)
             
             file_extention = newPath.split("/")[-1].split(".")[-1]
-            if DEBUG not true:
+            with open(os.path.join(base_path_file,"api","data","summary.json"), 'rb') as f:
+                data = f.read()
+            
+            meeting_data = json.loads(data)
+            
+            if DEBUG  != True:
             # if from_transcript file type then send to
                 if file_extention in TRANCRIPT_EXT:
                     print("\n TRANCRIPT DETECTED")
@@ -223,29 +228,27 @@ class AddMeetingFileAPI(APIView):
             return Response({"data":{"meeting_id":meeting_id,"status":"File uploaded successfully"}},status=status.HTTP_201_CREATED)  # ADD A REDIRECT URL HERE
         """
             else:
-                with open("./data/summary.json", 'rb') as f:
-                    data = f.read()
-                    
-                meeting_data = json.loads(data)
-
+                debug_data = meeting_data['data'][0]['meeting_data']
                 if file_extention in TRANCRIPT_EXT:
                     print("\n TRANCRIPT DETECTED")
-                    return { "data": {
+                    return Response({ "data": {
                             "meeting_type": "from_transcript",
                             "meeting_id": meeting_id,
                             "is_summarized": "true",
-                            "trascript": meeting_data
-                            }}
+                            "trascript": [],
+                            "meeting_data": debug_data
+                            }})
 
                 if file_extention in VIDEO_EXT:
                     print("\n VIDEO FILE DETECTED \n")
                     
-                    return { "data": {
+                    return Response({ "data": {
                             "meeting_type": "from_video_audio",
                             "meeting_id": meeting_id,
                             "is_summarized": "true",
-                            "trascript": meeting_data
-                            }}
+                            "trascript": [],
+                            "meeting_data": debug_data
+                            }})
 
 class SummaryPageAPI(APIView):
     
@@ -255,6 +258,11 @@ class SummaryPageAPI(APIView):
         
         email = "surve790@gmail.com"
         
+        with open(os.path.join(base_path_file,"api","data","summary.json"), 'rb') as f:
+                data = f.read()
+            
+        meeting_data = json.loads(data)
+        debug_data = meeting_data['data'][0]['meeting_data']
         data_dict = {}
         meta_data_dict={}
         meta_data_list=[]
@@ -276,7 +284,7 @@ class SummaryPageAPI(APIView):
 
         for single_key in listofkeys:
             meta_data_dict[single_key] = content.get(single_key)
-        meta_data_dict['speaker']=[""]  #om will do
+        meta_data_dict['speaker']=  debug_data[0]['metadata']['sepakers']  #[""]  #om will do
         meta_data_list.append(meta_data_dict)
         meeting_data_dict["metadata"] = meta_data_list
 
@@ -284,7 +292,7 @@ class SummaryPageAPI(APIView):
             summary_dict[single_key] = content.get(single_key)
         summary_dict['agenda'] = ['']  #agenda wala handle kar na hai
 
-        summary_dict['highlights'] = [" "]   #om will do
+        summary_dict['highlights'] = debug_data[0]['summary'][0]['highlights'] #[" "]   #om will do
         summary_data_list.append(summary_dict)
         meeting_data_dict['summary'] = summary_data_list
         meeting_data_dict['trascript'] = [""] #om will do
@@ -312,7 +320,18 @@ class SummaryPageAPI(APIView):
         except Exception as e :
             print(e)
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        
+   
+class StartSummarization(APIView):
+    permission_classes = user_auth_required()
+    
+    def get(self, request, meeting_id):
+        try:
+            main_queryset = Summary.objects.get(meeting_id=meeting_id)
+        except ObjectDoesNotExist:
+            return Response({"data":{"error":"Meeting Summary does not exist"}},status=status.HTTP_400_BAD_REQUEST)
+        summary_serializer = Summary_Serializers(main_queryset)
+        main_queryset.is_summarized = True
+        return Response({"data":{"meeting_id":meeting_id,"status":"Summarization started"}},status=status.HTTP_200_OK)
 class DownloadpdfAPI(APIView):
     
     permission_classes = user_auth_required()
