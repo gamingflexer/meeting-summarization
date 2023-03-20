@@ -7,53 +7,51 @@
             "trascript": [],
             "meeting_data": [
                 {
-                    "metadata": [
-                        {
-                            "title": "Meeting Title",
-                            "creator": "Meeting Creator",
-                            "organizer": "Meeting Organizer",
-                            "creation_time": "2020-01-01 00:00:00",
-                            "start_time": "2020-01-01 00:00:00",
-                            "end_time": "2020-01-01 00:00:00",
-                            "duration": "10min",
-                            "attendees_count": 10,
-                            "meet_link": "https://meet.google.com/dts-qmvz-dqj",
-                            "meet_platform": "Google Meet",
-                            "meeting_description": "Meeting Description",
-                            "meeting_location": "Meeting Location",
-                            "meeting_audio_file_link": "https://www.google.com",
-                            "is_multilingual": false,
-                            "language": "English",
-                            "meeting_category_assgined": "General",
-                            "generated_title": "Meeting Title",
-                            "next_meet_scheduled": "Daily Work Assigment - 2020-01-01 00:00:00",
-                            "sepakers": [
-                                {
-                                    "sepaker_name": "sepaker1",
-                                    "sepaker_duration": 10,
-                                    "sepaker_quality": [
-                                        "good",
-                                        "bad"
-                                    ],
-                                    "roles_detected": [
-                                        "role1",
-                                        "role2"
-                                    ]
-                                },
-                                {
-                                    "sepaker_name": "sepaker2",
-                                    "sepaker_duration": 10,
-                                    "sepaker_quality": [
-                                        "good",
-                                        "bad"
-                                    ],
-                                    "roles_detected": [
-                                        "role1"
-                                    ]
-                                }
-                            ]
-                        }
-                    ],
+                    "metadata": {
+                        "title": "Meeting Title",
+                        "creator": "Meeting Creator",
+                        "organizer": "Meeting Organizer",
+                        "creation_time": "2020-01-01 00:00:00",
+                        "start_time": "2020-01-01 00:00:00",
+                        "end_time": "2020-01-01 00:00:00",
+                        "duration": "10min",
+                        "attendees_count": 10,
+                        "meet_link": "https://meet.google.com/dts-qmvz-dqj",
+                        "meet_platform": "Google Meet",
+                        "meeting_description": "Meeting Description",
+                        "meeting_location": "Meeting Location",
+                        "meeting_audio_file_link": "https://www.google.com",
+                        "is_multilingual": false,
+                        "language": "English",
+                        "meeting_category_assgined": "General",
+                        "generated_title": "Meeting Title",
+                        "next_meet_scheduled": "Daily Work Assigment - 2020-01-01 00:00:00",
+                        "sepakers": [
+                            {
+                                "sepaker_name": "sepaker1",
+                                "sepaker_duration": 10,
+                                "sepaker_quality": [
+                                    "good",
+                                    "bad"
+                                ],
+                                "roles_detected": [
+                                    "role1",
+                                    "role2"
+                                ]
+                            },
+                            {
+                                "sepaker_name": "sepaker2",
+                                "sepaker_duration": 10,
+                                "sepaker_quality": [
+                                    "good",
+                                    "bad"
+                                ],
+                                "roles_detected": [
+                                    "role1"
+                                ]
+                            }
+                        ]
+                    },
                     "summary": [
                         {
                             "meeting_summary": "hello",
