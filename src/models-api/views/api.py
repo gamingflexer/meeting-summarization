@@ -4,12 +4,13 @@ from flask import request, json
 import os
 
 from .models import wav_to_transcript, transcript_to_entities, audio_enhance
-from utils import allowed_file,extract_audio_from_any_file
+from utils import allowed_file,extract_audio_from_any_file, processors_call_on_trancript
 
 from decouple import config
 from config import MODEL_FOLDER
 from views.models import ModelSelect
-from views.helperFun import PreProcesssor,PostProcesssor,processors_call_on_trancript
+from views.helperFun import PreProcesssor,PostProcesssor
+from views.transcript import TranscriptPreProcessor
 
 DEBUG = config('DEBUG', cast=bool)
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'media')
@@ -82,6 +83,28 @@ class SummaryApi(Resource):
 
         # if data['translate'] == 1: #hold on for now
         #     transcript = pre_processor.tranlate_text()
+        #preprocessing
+        pre_processor = PreProcesssor(transcript)
+        email,date,phone_numbers,human_name,addresses = pre_processor.get_entites()
+        jargon_sentences = pre_processor.get_jargon_sentences()
+        get_meeting_structure = pre_processor.get_meeting_structure()
+        
+        # Configs
+        if data['translate'] == 1:
+            transcript = pre_processor.tranlate_text()
+        
+        backchannels_config = data.get('backchannels')
+        if backchannels_config == None:
+            backchannels_config = 'nlp'
+            
+            
+        #MAIN functions  ---> make a functions to convert into proper dataframe
+        transcript_analysis = TranscriptPreProcessor(transcript = transcript, backchannels=backchannels_config)
+        
+        #summary generation
+        new_model = ModelSelect(modelname = 'bart',model_id_or_path= 'knkarthick/MEETING_SUMMARY',text = transcript,max_new_tokens=200)
+        model = new_model.load_model()
+        results = new_model.generate_summary(model)
         
         # #postprocessing
         # post_processor = PostProcesssor(main_summary)
