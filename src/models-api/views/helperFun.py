@@ -71,10 +71,7 @@ class PostProcesssor():
         formatted_summary = format_summary(cleaned_summary)
         return formatted_summary
     
-def processors_call_on_trancript(transcript): # in the format of the json | whisper
-    transcript_joined = ""
-    for segment in transcript:
-        transcript_joined += segment['text'] # no speaker info
+def processors_call_on_trancript(transcript_df,transcript_joined): # in the format of the json | whisper
             
     # non-formatted transcript preprocessor [WORKS NON FORMATTED]
     trancript_object = PreProcesssor(transcript_joined)
@@ -84,28 +81,14 @@ def processors_call_on_trancript(transcript): # in the format of the json | whis
     jargon_sentences = trancript_object.get_jargon_sentences(corrected_text)
     action_items_list = trancript_object.get_action_items(corrected_text)
     
-    # formatted transcript preprocessor [NEED TO FORMAT !!]
-    
-    #Convert to DataFrame
-    df = pd.DataFrame(transcript) ########## this is the transcript
-    
-    trancript_prepocessor_object = TranscriptPreProcessor()
-    analyse_transcript_var = trancript_prepocessor_object.analyse_transcript(df)
-    get_interactions_silence = trancript_prepocessor_object.get_interactions_silence(df)
-    backchannels = trancript_prepocessor_object.get_backchannels(df)
-    stats = trancript_prepocessor_object.get_stats(df)
-    df_cluster = trancript_prepocessor_object.get_cluster(df).to_json(orient='records') # what to do with this?
-    
-    new_model = ModelSelect(modelname = 'bart',model_id_or_path= 'knkarthick/MEETING_SUMMARY',text = transcript,max_new_tokens=200)
-    model = new_model.load_model()
-    summary_main = new_model.generate_summary(model)
-    
-    # postprocessor on the summary [WORKS NON FORMATTED]
-    summary_main_object = PostProcesssor(summary_main)
-    clean_summary = summary_main_object.get_clean_summary()
-    formatted_summary = summary_main_object.get_formatted_summary(clean_summary)
-    
-    return {"summary": formatted_summary, 
+    trancript_prepocessor_object = TranscriptPreProcessor(backchannels = "nlp")
+    analyse_transcript_var = trancript_prepocessor_object.analyse_transcript(transcript_df)
+    get_interactions_silence = trancript_prepocessor_object.get_interactions_silence(transcript_df)
+    backchannels = trancript_prepocessor_object.get_backchannels(transcript_df)
+    stats = trancript_prepocessor_object.get_stats(transcript_df) #speaker stats
+    #df_cluster = trancript_prepocessor_object.get_cluster(df).to_json(orient='records') # what to do with this?
+
+    return {
             "meta_data":{"email":email,
                         "imp_dates":date,
                         "phone_numbers":phone_numbers,
@@ -117,4 +100,5 @@ def processors_call_on_trancript(transcript): # in the format of the json | whis
                         "get_interactions_silence":get_interactions_silence,
                         "backchannels":backchannels,
                         "stats":stats,
-                        "df_cluster":df_cluster}} 
+                        #"df_cluster":df_cluster
+                        }} 
