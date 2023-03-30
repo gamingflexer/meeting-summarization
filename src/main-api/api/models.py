@@ -14,7 +14,7 @@ class User_info(models.Model):
 class Summary(models.Model):  # all meeting data
     meeting_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(User_info, on_delete=models.CASCADE)
-    calender_meeting_id = models.CharField(unique=True, max_length=70, null=True)
+    calender_meeting_id = models.CharField(unique=True, max_length=250, null=True)
     title = models.CharField(max_length=100, null=True, default='')
     creator = models.CharField(max_length=50, null=True, default='')
     organizer = models.CharField(max_length=50, null=True, default='')
@@ -50,7 +50,9 @@ class Summary(models.Model):  # all meeting data
     top_spent_time_person = models.CharField(max_length=255,default="")
     decisions = models.CharField(max_length=1000,default="")  # Action Items
     highlights = models.CharField(max_length=5000,default="")
-
+    #microsoft
+    lastModifiedDateTime_microsoft = models.DateTimeField(null=True,blank=True)
+    calendar_platform = models.CharField(null=True,default='Google',max_length=10,blank=True)
     # Feedbacks
     is_good = models.IntegerField(default=0) # 0 --> not rated, 1 --> good, 2 --> bad
     factual_consistency = models.IntegerField(default=0)

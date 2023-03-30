@@ -2,7 +2,7 @@ from django.urls import path
 
 from .views import LandingPageAPI,AddMeetingAPI,SummaryPageAPI,AddMeetingFileAPI,EditUserDataAPI,FeedBackAPI,EditSummaryAPI
 from .calender import GoogleCalendarInitView,GoogleCalendarEventsView,GoogleCalendarRedirectView,GoogleCalendarMultipleEventsView
-from .microsoftauth import microsoft_login, microsoft_callback
+from .microsoftauth import MicrosoftCalendarInitView, MicrosoftCallback,MicrosoftEvent
 
 urlpatterns = [
     # Landing Page API
@@ -36,8 +36,9 @@ urlpatterns = [
     # User API
     path('userinfo/<str:username>', EditUserDataAPI.as_view(), name='fetch_user_data'),
 
-    path('microsoft_login/', microsoft_login, name='microsoft_login'),
-    path('microsoft_callback/', microsoft_callback, name='microsoft_callback'),
+    path('microsoft_login/', MicrosoftCalendarInitView.as_view(), name='microsoft_login'),
+    path('microsoft_callback/', MicrosoftCallback.as_view(), name='microsoft_callback'),
+    path('get_microsoft_event/', MicrosoftEvent.as_view(), name='get_microsoft_event'),
     path('editsummary/<int:meeting_id>',EditSummaryAPI.as_view(),name = 'edit_summary')
 
 ] 
