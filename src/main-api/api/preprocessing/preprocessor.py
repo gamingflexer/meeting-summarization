@@ -4,7 +4,7 @@ import re
 import json
 import pandas as pd
 from langdetect import detect
-from utils import (transcript_html_to_dataframe, 
+from .utils import (transcript_html_to_dataframe, 
                    transcript_to_dataframe, 
                    transcript_webvtt_to_dataframe, 
                    json_zoom_transcript_file,
@@ -53,14 +53,10 @@ def any_transcript_to_dataframe(file_path):
     speaker_dialogue = df_grouped['speaker_dialogue'].str.cat(sep='\n')
     segmented_df = segment_transcript(df)
     durations = duration_from_transcript(segmented_df)
-    
-    return segmented_df,speaker_dialogue,durations
+    attendeces_count = len(df['speaker'].unique())
+    print(segmented_df,speaker_dialogue,durations,attendeces_count)
+    return segmented_df,speaker_dialogue,durations,attendeces_count
 
-
-"""Remaining to integrate  """
-
-def get_attendes_count(df):
-    return len(df['speaker'].unique())
 
 def identify_meeting_link(meeting_link):
     # Check if link is for Google Meet
@@ -79,7 +75,7 @@ def identify_meeting_link(meeting_link):
         return 'Teams'
 
     # Return None if link is not recognized
-    return 'Unknown'
+    return ''
 
 def detect_language(text):
     try:

@@ -17,8 +17,15 @@ def main():
 
     common_voice = DatasetDict()
 
-    common_voice["train"] = load_dataset("esb/datasets", "ami", split="train+validation",cache_dir=r"E:\\cache\\")
-    common_voice["test"] = load_dataset("esb/datasets", "ami", split="test",cache_dir=r"E:\\cache\\")
+    #common_voice["train"] = load_dataset("esb/datasets", "ami", split="train+validation",cache_dir=r"E:\\cache\\")
+    #common_voice["test"] = load_dataset("esb/datasets", "ami", split="test",cache_dir=r"E:\\cache\\")
+    common_voice["train"] = load_dataset("esb/datasets", "ami", split="train+validation",cache_dir="/home/student/Documents/cache/")
+    common_voice["train"] = common_voice["train"].select(range(24104))
+
+    common_voice["test"] = load_dataset("esb/datasets", "ami", split="test",cache_dir="/home/student/Documents/cache/")
+    common_voice["test"] = common_voice["train"].select(range(2500))
+
+
 
     feature_extractor = WhisperFeatureExtractor.from_pretrained("openai/whisper-small")
     tokenizer = WhisperTokenizer.from_pretrained("openai/whisper-small", language="english", task="transcribe")
@@ -38,10 +45,10 @@ def main():
         batch["labels"] = tokenizer(batch["text"]).input_ids
         return batch
 
+    print(len(common_voice.column_names["train"]))
+    common_voice = common_voice.map(prepare_dataset, remove_columns=common_voice.column_names["train"], num_proc=28)
 
-    common_voice = common_voice.map(prepare_dataset, remove_columns=common_voice.column_names["train"], num_proc=2)
-
-
+    print("done \n")
     @dataclass
     class DataCollatorSpeechSeq2SeqWithPadding:
         processor: Any
@@ -97,15 +104,15 @@ def main():
 
     training_args = Seq2SeqTrainingArguments(
         output_dir="./whisper-small-ami-eng",  # change to a repo name of your choice
-        per_device_train_batch_size=16,
+        per_device_train_batch_size=22,
         gradient_accumulation_steps=1,  # increase by 2x for every 2x decrease in batch size
         learning_rate=1e-5,
         warmup_steps=500,
         max_steps=4000,
+        num_train_epochs=3,
         gradient_checkpointing=True,
-        fp16=True,
         evaluation_strategy="steps",
-        per_device_eval_batch_size=8,
+        per_device_eval_batch_size=10,
         predict_with_generate=True,
         generation_max_length=225,
         save_steps=1000,
@@ -128,7 +135,7 @@ def main():
     )
 
     processor.save_pretrained(training_args.output_dir)
-
+    print("\n Training started \n")
     trainer.train()
 
 

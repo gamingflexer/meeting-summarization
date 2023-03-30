@@ -1,0 +1,65 @@
+{
+    "meeting_id": "123456789",
+    "start_time": "2021-03-08T10:00:00Z",
+    "end_time": "2021-03-08T11:00:00Z",
+    "duration": 3600,
+    "recording_transcript": {
+        "total_size": 123456,
+        "status": "completed",
+        "pages": [
+            {
+                "page_number": 1,
+                "content": [
+                    {
+                        "speaker": "John",
+                        "start_time": 0.0,
+                        "duration": 3.0,
+                        "text": "Hello, and welcome to our meeting.",
+                        "action_items": [
+                            {
+                                "emotion" :["happy"]
+                            }
+                            
+                        ]
+
+                    },
+                    {
+                        "speaker": "Mary",
+                        "start_time": 3.0,
+                        "duration": 5.0,
+                        "text": "Thanks, John. It's great to be here."
+                    },
+                    {
+                        "speaker": "John",
+                        "start_time": 8.0,
+                        "duration": 4.0,
+                        "text": "Let's get started with the agenda."
+                    }
+                ]
+            },
+            {
+                "page_number": 2,
+                "content": [
+                    {
+                        "speaker": "John",
+                        "start_time": 0.0,
+                        "duration": 3.0,
+                        "text": "Hello, and welcome to our meeting."
+                    },
+                    {
+                        "speaker": "Mary",
+                        "start_time": 3.0,
+                        "duration": 5.0,
+                        "text": "Thanks, John. It's great to be here."
+                    },
+                    {
+                        "speaker": "John",
+                        "start_time": 8.0,
+                        "duration": 4.0,
+                        "text": "Let's get started with the agenda."
+                    }
+                ]
+            }
+        ]
+    }
+}

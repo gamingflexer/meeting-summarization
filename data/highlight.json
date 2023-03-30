@@ -1,0 +1,52 @@
+{
+    "main_timestamps": [
+        {
+            "0.0": {
+                "headline": "Meeting started",
+                "internal_timestamp": [
+                    {
+                        "00:00:00": "Intro",
+                        "00:00:30": "First topic",
+                        "00:01:00": "Second topic"
+                    }
+                ]
+            }
+        },
+        {
+            "0.1": {
+                "headline": "First part",
+                "internal_timestamp": [
+                    {
+                        "00:00:00": "Intro",
+                        "00:00:30": "First topic",
+                        "00:01:00": "Second topic"
+                    }
+                ]
+            }
+        },
+        {
+            "0.2": {
+                "headline": "Second part",
+                "internal_timestamp": [
+                    {
+                        "00:00:00": "Intro",
+                        "00:00:30": "First topic",
+                        "00:01:00": "Second topic"
+                    }
+                ]
+            }
+        },
+        {
+            "0.3": {
+                "headline": "Last part",
+                "internal_timestamp": [
+                    {
+                        "00:00:00": "Intro",
+                        "00:00:30": "First topic",
+                        "00:01:00": "Second topic"
+                    }
+                ]
+            }
+        }
+    ]
+}

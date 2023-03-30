@@ -3,7 +3,7 @@ from converse.pyconverse import Callyzer, SpeakerStats
 from converse.pyconverse.segmentation import SemanticTextSegmentation
 from converse.pyconverse.zeroshot_topic_model import  ZeroShotTopicFinder
 print("\n Done \n")
-from preprocessing import get_clusters
+from .preprocessing import get_clusters
 
 import pandas as pd
 import spacy

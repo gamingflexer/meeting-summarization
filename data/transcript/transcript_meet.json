@@ -1,0 +1,53 @@
+{
+    "results": [
+        {
+            "alternatives": [
+                {
+                    "transcript": "Hello, can you hear me?",
+                    "confidence": 0.9822131
+                }
+            ],
+            "final": true
+        },
+        {
+            "alternatives": [
+                {
+                    "transcript": "Yes, I can hear you. How are you doing today?",
+                    "confidence": 0.98746234
+                }
+            ],
+            "final": true
+        },
+        {
+            "alternatives": [
+                {
+                    "transcript": "Hello, can you hear me?",
+                    "confidence": 0.9822131
+                },
+                {
+                    "transcript": "Hello, can you hear me?",
+                    "confidence": 0.9822131
+                },
+                {
+                    "transcript": "Hello, can you hear me?",
+                    "confidence": 0.9822131
+                }
+            ],
+            "final": true
+        },
+        {
+            "alternatives": [
+                {
+                    "transcript": "Hello, can you hear me?",
+                    "confidence": 0.9822131
+                },
+                {
+                    "transcript": "Hello, can you hear me?",
+                    "confidence": 0.9822131
+                }
+            ],
+            "final": true
+        }
+    ],
+    "result_index": 0
+}

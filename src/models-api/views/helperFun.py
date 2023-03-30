@@ -4,7 +4,7 @@ from model.models import action_items_distil_bert
 from views.transcript import TranscriptPreProcessor
 from spellchecker import SpellChecker
 import pandas as pd
-from model.models import ModelSelect
+from .models import ModelSelect
 
 spell = SpellChecker()
 
@@ -72,7 +72,7 @@ def processors_call_on_trancript(transcript): # in the format of the json | whis
     for segment in transcript:
         transcript_joined += segment['text'] # no speaker info
             
-    # non-formatted transcript preprocessor
+    # non-formatted transcript preprocessor [WORKS NON FORMATTED]
     trancript_object = PreProcesssor(transcript_joined)
     email,date,phone_numbers,addresses = trancript_object.get_entites()
     speaker_names = trancript_object.get_speaker_names()
@@ -80,7 +80,7 @@ def processors_call_on_trancript(transcript): # in the format of the json | whis
     jargon_sentences = trancript_object.get_jargon_sentences(corrected_text)
     action_items_list = trancript_object.get_action_items(corrected_text)
     
-    # formatted transcript preprocessor
+    # formatted transcript preprocessor [NEED TO FORMAT !!]
     
     #Convert to DataFrame
     df = pd.DataFrame(transcript) ########## this is the transcript
@@ -90,13 +90,13 @@ def processors_call_on_trancript(transcript): # in the format of the json | whis
     get_interactions_silence = trancript_prepocessor_object.get_interactions_silence(df)
     backchannels = trancript_prepocessor_object.get_backchannels(df)
     stats = trancript_prepocessor_object.get_stats(df)
-    df_cluster = trancript_prepocessor_object.get_cluster(df) # what to do with this?
+    df_cluster = trancript_prepocessor_object.get_cluster(df).to_json(orient='records') # what to do with this?
     
     new_model = ModelSelect(modelname = 'bart',model_id_or_path= 'knkarthick/MEETING_SUMMARY',text = transcript,max_new_tokens=200)
     model = new_model.load_model()
     summary_main = new_model.generate_summary(model)
     
-    # postprocessor on the summary
+    # postprocessor on the summary [WORKS NON FORMATTED]
     summary_main_object = PostProcesssor(summary_main)
     clean_summary = summary_main_object.get_clean_summary()
     formatted_summary = summary_main_object.get_formatted_summary(clean_summary)

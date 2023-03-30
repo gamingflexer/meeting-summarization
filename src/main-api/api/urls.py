@@ -1,6 +1,7 @@
 from django.urls import path
 
-from .views import LandingPageAPI,AddMeetingAPI,SummaryPageAPI,AddMeetingFileAPI,EditUserDataAPI,FeedBackAPI,OnboardingAPI,DownloadpdfAPI,AnalyticsAPI
+from .views import LandingPageAPI,AddMeetingAPI,SummaryPageAPI,AddMeetingFileAPI,EditUserDataAPI,FeedBackAPI,OnboardingAPI,DownloadpdfAPI,AnalyticsAPI,StartSummarization
+
 from .calender import GoogleCalendarInitView,GoogleCalendarEventsView,GoogleCalendarRedirectView,GoogleCalendarMultipleEventsView
 from .microsoftauth import MicrosoftCalendarInitView, MicrosoftCallback,MicrosoftEvent
 
@@ -17,8 +18,8 @@ urlpatterns = [
     path('summary/<int:meeting_id>', SummaryPageAPI.as_view(), name='summary'),
     
     path('userinfo/<str:username>', EditUserDataAPI.as_view(), name='fetch_user_data'),
-    path('summary/<int:meeting_id>', SummaryPageAPI.as_view(), name='summary'),
-    path('summary/<int:meeting_id>/pdf', SummaryPageAPI.as_view(), name='summary_pdf'),
+    path('summary/<int:meeting_id>', SummaryPageAPI.as_view(), name='summary'), # Edit summary also in this
+    path('summary/<int:meeting_id>/start', StartSummarization.as_view(), name='summary_start'),
     path('summary/<int:meeting_id>/pdf', DownloadpdfAPI.as_view(), name='summary_pdf'),
     path('summary/feedback/<int:meeting_id>/<str:param>/<int:val>', FeedBackAPI.as_view(), name='summary_feedback'), #is_good #factual_consistency
 
@@ -42,6 +43,6 @@ urlpatterns = [
     path('microsoft_login/', MicrosoftCalendarInitView.as_view(), name='microsoft_login'),
     path('microsoft_callback/', MicrosoftCallback.as_view(), name='microsoft_callback'),
     path('get_microsoft_event/', MicrosoftEvent.as_view(), name='get_microsoft_event'),
-    path('editsummary/<int:meeting_id>',EditSummaryAPI.as_view(),name = 'edit_summary')
+    # path('editsummary/<int:meeting_id>',EditSummaryAPI.as_view(),name = 'edit_summary')
 
 ] 
