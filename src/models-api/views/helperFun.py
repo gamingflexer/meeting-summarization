@@ -1,10 +1,14 @@
 from views.preprocessing import transcript_preprocesssing, email_grabber, date_grabber, get_phone_numbers, get_human_name, address_grabber, correct_sentence, get_jargon_sentences, detect_meeting_structure,detect_questions_answers, g_translation_en
 from views.postprocessing import clean_summary, format_summary
 from model.models import action_items_distil_bert
-from views.transcript import TranscriptPreProcessor
 from spellchecker import SpellChecker
 import pandas as pd
 from .models import ModelSelect
+
+from decouple import config
+DEBUG = config('DEBUG', cast=bool)
+if DEBUG == False:
+    from views.transcript import TranscriptPreProcessor
 
 spell = SpellChecker()
 

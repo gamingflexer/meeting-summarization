@@ -1,22 +1,35 @@
 from werkzeug.utils import secure_filename
 from flask_restful import Resource
-from flask import request, json
+from flask import request, json, render_template, make_response
 import os
-
 from .models import wav_to_transcript, transcript_to_entities, audio_enhance
-from utils import allowed_file,extract_audio_from_any_file, processors_call_on_trancript
+from model.retrieval import ChatBot
+from utils import allowed_file,extract_audio_from_any_file, format_server_time
+from .helperFun import processors_call_on_trancript
 
 from decouple import config
 from config import MODEL_FOLDER
 from views.models import ModelSelect
-from views.helperFun import PreProcesssor,PostProcesssor
-from views.transcript import TranscriptPreProcessor
+from views.helperFun import PreProcesssor
 
 DEBUG = config('DEBUG', cast=bool)
-UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'media')
 
+if DEBUG == False:
+    from views.transcript import TranscriptPreProcessor
+    model_chat,tokenizer_chat = chat.load_chatbot()
+
+UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'media')
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
+    
+
+class IndexPage(Resource):
+    def __init__(self):
+        pass
+
+    def get(self):
+        context = { 'server_time': format_server_time() }
+        return make_response(render_template('index.html', context=context))
 
 class AudioApi(Resource):
     def post(self):
@@ -99,7 +112,7 @@ class SummaryApi(Resource):
             
             
         #MAIN functions  ---> make a functions to convert into proper dataframe
-        transcript_analysis = TranscriptPreProcessor(transcript = transcript, backchannels=backchannels_config)
+        #transcript_analysis = TranscriptPreProcessor(transcript = transcript, backchannels=backchannels_config)
         
         #summary generation
         new_model = ModelSelect(modelname = 'bart',model_id_or_path= 'knkarthick/MEETING_SUMMARY',text = transcript,max_new_tokens=200)
@@ -107,12 +120,25 @@ class SummaryApi(Resource):
         results = new_model.generate_summary(model)
         
         # #postprocessing
-        # post_processor = PostProcesssor(main_summary)
-        # clean_summary = post_processor.get_clean_summary()
-        # formatted_summary = post_processor.get_formatted_summary(clean_summary)
+        post_processor = PostProcesssor(main_summary)
+        clean_summary = post_processor.get_clean_summary()
+        formatted_summary = post_processor.get_formatted_summary(clean_summary)
+
+        return {"data":[
+                        {"summary":results},
+                        ]
+                    }
         
 class EntitiesApi(Resource):
     def post(self):
         data = request.get_json()
         entites = transcript_to_entities(data['transcript'])
         return {"result": entites}, 200
+
+class ChatApi(Resource):
+
+    def post(self):
+        data = request.get_json()
+        chat = ChatBot(question= data['question'],transcript = data['document'])
+        response = chat.chatbot_response(tokenizer_chat,model_chat)
+        return {"data": response}, 200

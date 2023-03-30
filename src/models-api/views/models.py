@@ -6,7 +6,7 @@ from transformers import pipeline
 from transformers import TFAutoModelForSeq2SeqLM,PegasusForConditionalGeneration,AutoModel,AutoTokenizer,AutoModelForSeq2SeqLM
 
 from model.models import bart_summarize, longformer_summarize, pegasus_summarize, bart_title_summarizer
-from model.extractive import extract_sentences
+# from model.extractive import extract_sentences
 from views.preprocessing import transcript_preprocesssing
 
 import noisereduce as nr
@@ -20,7 +20,7 @@ import uuid
 
 from config import AUDIO_FOLDER
 
-def audio_enhance(file):
+def audio_enhance(file): #NOT TO USED IF YOU USING FINETUNED MODEL
     audio_data, sample_rate = rosa.load(file, sr=16000)
     reduced_noise = nr.reduce_noise(y = audio_data, sr=sample_rate, n_std_thresh_stationary=1.5,stationary=True)
     path_to_save = os.path.join(AUDIO_FOLDER,f"file_{str(uuid.uuid4())}.wav")
@@ -28,8 +28,9 @@ def audio_enhance(file):
     return path_to_save 
 
 def wav_to_transcript(wav_file_path,model_name="base", segments = False):
-    model = whisper.load_model(model_name)
-    result = model.transcribe(wav_file_path)
+    whisper2 = pipeline('automatic-speech-recognition', model = 'asach/whisper_ami_finetuned-added', device = 0,chunk_length_s=30) #'/home/student/Documents/dp/v1.1/whisper_ami
+    whisper2.model.generation_config = GenerationConfig.from_pretrained("openai/whisper-medium")
+    result = whisper2(wav_file_path, return_timestamps=True)['text']
     if segments:
         for segment in result['segments']:
             segment.pop('tokens')
@@ -98,37 +99,19 @@ class ModelSelect():
         else:
             print("\nModel not loaded\n")
                         
-    def nlp_extractive_summary(self, list_output = False):
-        #Basic NLP extractive summary
-        extract_sentence,questions_and_answers = extract_sentences(self.text) #list of sentences
-        joined_sentences = " ".join(extract_sentence)
-        if list_output:
-            return extract_sentence
-        return joined_sentences
+    # def nlp_extractive_summary(self, list_output = False):
+    #     #Basic NLP extractive summary
+    #     extract_sentence,questions_and_answers = extract_sentences(self.text) #list of sentences
+    #     joined_sentences = " ".join(extract_sentence)
+    #     if list_output:
+    #         return extract_sentence
+    #     return joined_sentences
     
-    def extractive_summary(self):
-        #Extractive summary
-        return self.text
+    # def extractive_summary(self):
+    #     #Extractive summary
+    #     return self.text
     
             
 # newmodel = ModelSelect("bart")
 # model = newmodel.load_model()
 # results = newmodel.generate_summary(model)
-
-"""
-class ChatBot():
-    def __init__(self,question,transcript,summary,model_name="sentence-transformers/paraphrase-MiniLM-L6-v2"):
-        self.question = question
-        self.transcript = transcript
-        self.summary = summary
-        self.model_name = model_name
-        
-    def load_chatbot(self):
-        model = AutoModel.from_pretrained(self.model_name)
-        tokenizer = AutoTokenizer.from_pretrained(self.model_name)
-        return model,tokenizer
-        
-    def chatbot_answer(self,tokenizer,model):
-        return chatbot_response(self.question,self.transcript,self.summary,tokenizer,model)
-        
-"""
