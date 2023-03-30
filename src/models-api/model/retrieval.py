@@ -1,3 +1,41 @@
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+
+class ChatBot():
+    def __init__(self,
+                question,
+                transcript,
+                instruction = f'Instruction: given a dialog context, you need to responed.',
+                model_name="microsoft/GODEL-v1_1-large-seq2seq"):
+
+        self.dialog = question
+        self.instruction = instruction
+        self.knowledge = transcript
+        self.model_name = model_name
+        
+    def load_chatbot(self):
+        model = AutoModelForSeq2SeqLM.from_pretrained(self.model_name)
+        tokenizer = AutoTokenizer.from_pretrained(self.model_name)
+        return model,tokenizer
+
+    def chatbot_response(self,tokenizer,model):
+        if self.knowledge != '':
+            self.knowledge = '[KNOWLEDGE] ' + self.knowledge
+
+        dialog = ' EOS '.join(self.dialog)
+        query = f"{self.instruction} [CONTEXT] {self.dialog} {self.knowledge}"
+        print(query)
+        input_ids = tokenizer(f"{query}", return_tensors="pt").input_ids
+        outputs = model.generate(input_ids,max_length=128, min_length=8, top_p=0.9, do_sample=True)
+        output = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        return output
+
+
+# chat = ChatBot(question= "Hi what is your name?",transcript = "d")
+# model,tokenizer = chat.load_chatbot()
+# print(chat.chatbot_response(tokenizer,model))
+"""
+NOTE: This function is not used in the final version of the app. It is kept here for reference. | GODEL MODEL IS REPLCAED FOR THIS FUNCTION
+
 import pandas as pd
 import numpy as np
 import spacy
@@ -5,6 +43,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from transformers import AutoTokenizer, AutoModel
 from transformers import pipeline
 from utils import nlp
+
 
 # Preprocess transcript and summary data
 def preprocess_text(text):
@@ -57,3 +96,5 @@ def chatbot_response(question, transcript, summary, tokenizer, model):
     question_answering_pipeline = pipeline("question-answering", model="distilbert-base-cased-distilled-squad", tokenizer="distilbert-base-cased")
     
     return generate_answer(question,question_answering_pipeline,top_segments)
+
+"""

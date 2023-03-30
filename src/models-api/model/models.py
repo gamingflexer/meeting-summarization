@@ -4,6 +4,7 @@ import requests
 
 from decouple import config
 HUGGING_FACE_KEY = config('HUGGING_FACE_KEY')
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
 def bart_summarize(summarizer,text):
     #summarizer = pipeline("summarization", model=hub_model_id)
@@ -98,18 +99,3 @@ def action_items_distil_bert(text_list,path_to_model):
             top_action_items.append({"text":text,"label":pred_label})
     
     return top_action_items
-
-def gpt_neo_summarization(trancript,summary = True):
-
-    API_URL = "https://api-inference.huggingface.co/models/togethercomputer/GPT-NeoXT-Chat-Base-20B"
-    headers = {"Authorization": f"Bearer {HUGGING_FACE_KEY}"}
-
-    def query(payload):
-        response = requests.post(API_URL, headers=headers, json=payload)
-        return response.json()
-        
-    if summary:
-        output = query({
-            "inputs": f"Summarize a long conversation : {trancript}",
-        })
-    return output

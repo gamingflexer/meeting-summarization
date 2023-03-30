@@ -6,7 +6,7 @@ from flask_restful import Api
 
 from decouple import config
 
-from model.retrieval import chatbot_response,chatbot_model_load
+from model.retrieval import ChatBot
 
 from utils import set_global_logging_level
 import logging
@@ -14,6 +14,9 @@ set_global_logging_level(logging.ERROR)
 
 DEBUG = config('DEBUG', cast=bool)
 COLLAB = config('COLLAB', cast=bool)
+
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 def create_app():
     # create and configure the app
