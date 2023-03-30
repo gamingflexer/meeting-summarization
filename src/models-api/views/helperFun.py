@@ -100,5 +100,9 @@ def processors_call_on_trancript(transcript_df,transcript_joined): # in the form
                         "get_interactions_silence":get_interactions_silence,
                         "backchannels":backchannels,
                         "stats":stats,
+                        "meeting_category_assgined",
+                        "roles_detected": 
+                        "meeting_description": 
+                        "generated_title": 
                         #"df_cluster":df_cluster
                         }} 

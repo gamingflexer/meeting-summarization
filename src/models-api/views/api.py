@@ -9,8 +9,9 @@ from .helperFun import processors_call_on_trancript
 
 from decouple import config
 from config import MODEL_FOLDER
-from views.models import ModelSelect
 from views.helperFun import PreProcesssor
+from views.summary import ModelSelectFromLength
+from views.extras import summarize_conversation_extras
 
 DEBUG = config('DEBUG', cast=bool)
 
@@ -58,6 +59,17 @@ class SummaryApi(Resource):
     
     def post(self):
         data = request.get_json()
+
+        # Configs
+        # if data['translate'] == 1:  #hold on for now
+        #     trancript_object = PreProcesssor(transcript_joined)
+        #     transcript = pre_processor.tranlate_text()
+
+        # backchannels_config = data.get('backchannels')
+        # if backchannels_config == None:
+        #     backchannels_config = 'nlp'
+
+        # -------------------------------------------------------------------------------- #
         
         if data is None:
             return {"message": "No data provided"}, 400
@@ -67,69 +79,48 @@ class SummaryApi(Resource):
         if meeting_type == 'from_video_audio': # no speaker info
             transcript = data['data'].get('transcript') # this is a json
             transcript_joined = ""
-            data_json = processors_call_on_trancript(data)
-            return data_json
             
         if meeting_type == 'from_transcript':
             transcript = data['data'].get('transcript') # this is a json but in text in request also
-            data_json = processors_call_on_trancript(data)
-            return data_json
+            transcript_joined = ""
 
         if meeting_type == 'from_extension':
             transcript = data['data'].get('transcript') # this is a string
-            data_json = processors_call_on_trancript(data)
-            return data_json
+            transcript_joined = ""
 
 
         """START HERE TO GET SUMMARY"""
+        # formatted transcript preprocessor [NEED TO FORMAT !!]
 
-        # #get entites
-        # df_formatted = 
-        # transcript_analysis = TranscriptPreProcessor(transcript = df_formatted) 
+        #Convert to DataFrame
+        transcript_df = pd.DataFrame(transcript) ########## this is the transcript
 
-
-        # #preprocessing
-        # pre_processor = PreProcesssor(transcript) # unformatted simple trancript
-        # email,date,phone_numbers,human_name,addresses = pre_processor.get_entites()
-        # jargon_sentences = pre_processor.get_jargon_sentences()
-        # get_meeting_structure = pre_processor.get_meeting_structure()
-
-        # if data['translate'] == 1: #hold on for now
-        #     transcript = pre_processor.tranlate_text()
-        #preprocessing
-        pre_processor = PreProcesssor(transcript)
-        email,date,phone_numbers,human_name,addresses = pre_processor.get_entites()
-        jargon_sentences = pre_processor.get_jargon_sentences()
-        get_meeting_structure = pre_processor.get_meeting_structure()
-        
-        # Configs
-        if data['translate'] == 1:
-            transcript = pre_processor.tranlate_text()
-        
-        backchannels_config = data.get('backchannels')
-        if backchannels_config == None:
-            backchannels_config = 'nlp'
-            
+        # -------------------------------------------------------------------------------- #
             
         #MAIN functions  ---> make a functions to convert into proper dataframe
-        #transcript_analysis = TranscriptPreProcessor(transcript = transcript, backchannels=backchannels_config)
-        
+        meta_data = processors_call_on_trancript(transcript_joined = transcript_joined, transcript_df = transcript_df)
+
         #summary generation
-        new_model = ModelSelect(modelname = 'bart',model_id_or_path= 'knkarthick/MEETING_SUMMARY',text = transcript,max_new_tokens=200)
-        model = new_model.load_model()
-        results = new_model.generate_summary(model)
+        main_summary,models_used = ModelSelectFromLength(transcript)
         
         # #postprocessing
         post_processor = PostProcesssor(main_summary)
         clean_summary = post_processor.get_clean_summary()
         formatted_summary = post_processor.get_formatted_summary(clean_summary)
 
-        return {"data":[
-                        {"summary":results},
-                        ]
+        return {"data":
+                        {
+                            "summary":formatted_summary,
+                            "extras" : summarize_conversation_extras(transcript),
+                            "metadata" :meta_data['meta_data'],
+                            "transcript_analysis" : "",
+                            "models_used" : models_used,
+                        },
                     }
         
+
 class EntitiesApi(Resource):
+
     def post(self):
         data = request.get_json()
         entites = transcript_to_entities(data['transcript'])
