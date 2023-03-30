@@ -166,11 +166,11 @@ class GoogleCalendarMultipleEventsView(View):
                 if eventdict['meet_link'] is None:
                     eventdict['meet_link'] = ''
                 if (eventdict['meet_link']).find('google') !=-1 :
-                    eventdict['meet_platform'] = 'google'
+                    eventdict['meet_platform'] = 'Google Meet'
                 elif (eventdict['meet_link']).find('zoom') !=-1  :
-                    eventdict['meet_platform'] = 'zoom'
+                    eventdict['meet_platform'] = 'Zoom'
                 elif (eventdict['meet_link']).find('team') !=-1  :
-                    eventdict['meet_platform'] = 'team'
+                    eventdict['meet_platform'] = 'Teams'
 
                 calender_event_serializer=CalendarEventSerializer(data=eventdict)
                 # calender_event_serializer.is_valid(raise_exception=True)
@@ -187,7 +187,6 @@ class GoogleCalendarMultipleEventsView(View):
                 event_data = Summary.objects.filter(
                     start_time__lt=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"), user_id=1)
                 calender_event_serializer_data = CalendarEventSerializer(event_data, many=True)
-
             return JsonResponse({
                                  'data': calender_event_serializer_data.data
                                  })

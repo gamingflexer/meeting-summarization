@@ -7,7 +7,9 @@ from langdetect import detect
 from utils import (transcript_html_to_dataframe, 
                    transcript_to_dataframe, 
                    transcript_webvtt_to_dataframe, 
-                   json_zoom_transcript_file)
+                   json_zoom_transcript_file,
+                   segment_transcript,
+                   duration_from_transcript)
 
 def any_transcript_to_dataframe(file_path):
     file_extension = os.path.splitext(file_path)[1].lower()
@@ -15,13 +17,11 @@ def any_transcript_to_dataframe(file_path):
     if file_extension == '.html':
         df = transcript_html_to_dataframe(file_path)
         return df
+    
     elif file_extension == '.txt':
-        try:
-            df = transcript_to_dataframe(file_path)
-        except Exception as e:
-            print(e,"\EXCEPTION : Transcript Conversion Exception\n")
-            return pd.read_csv(file_path, sep='\t', header=None)
+        df = transcript_to_dataframe(file_path)
         return df
+    
     elif file_extension == '.json':
         with open(file_path, "r") as f:
             data = json.load(f)
@@ -33,17 +33,32 @@ def any_transcript_to_dataframe(file_path):
             try:
                 df = pd.json_normalize(data)
             except Exception as e:
-                print(e,"\EXCEPTION : Transcript Conversion Exception\n")
+                print(e,"\nException : Transcript Conversion Exception\n")
                 return pd.read_json(file_path)
-            
         return df
+    
     elif file_extension == '.vtt':
         df = transcript_webvtt_to_dataframe(file_path)
-        return df
+        
+    elif file_extension == '.csv':
+        df = pd.read_csv(file_path)
+        
     else:
-        return 'unknown'
+        raise Exception(' \n IMP ERROR :File extension not supported \n', file_extension)
+    
+    """PREPROCESSING FUNCTIONS"""
+    
+    df_grouped = pd.DataFrame()
+    df_grouped['speaker_dialogue'] = df['speaker'] + ': ' + df['text']
+    speaker_dialogue = df_grouped['speaker_dialogue'].str.cat(sep='\n')
+    segmented_df = segment_transcript(df)
+    durations = duration_from_transcript(segmented_df)
+    
+    return segmented_df,speaker_dialogue,durations
 
-# Remaining to integrate
+
+"""Remaining to integrate  """
+
 def get_attendes_count(df):
     return len(df['speaker'].unique())
 
@@ -61,7 +76,7 @@ def identify_meeting_link(meeting_link):
     # Check if link is for Microsoft Teams
     teams_pattern = r'https:\/\/teams\.microsoft\.com\/[a-z]+\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/[0-9a-zA-Z?=&]+'
     if re.match(teams_pattern, meeting_link):
-        return 'Microsoft Teams'
+        return 'Teams'
 
     # Return None if link is not recognized
     return 'Unknown'

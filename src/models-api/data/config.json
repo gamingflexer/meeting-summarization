@@ -30,6 +30,24 @@
             "topics": [],
             "notes": "",
             "type": ""
+        },
+        {
+            "model_id": "knkarthick/MEETING_SUMMARY",
+            "path": "knkarthick/MEETING_SUMMARY",
+            "dataset": "samsum",
+            "perfomance": 0,
+            "topics": [],
+            "notes": "",
+            "type": ""
+        },
+        {
+            "model_id": "knkarthick/TOPIC-DIALOGSUM",
+            "path": "knkarthick/TOPIC-DIALOGSUM",
+            "dataset": "samsum",
+            "perfomance": 0,
+            "topics": [],
+            "notes": "",
+            "type": ""
         }
     ]
 }

@@ -22,7 +22,7 @@ class Summary(models.Model):  # all meeting data
     start_time = models.DateTimeField(null=True, blank=True)
     end_time = models.DateTimeField(null=True, blank=True)
     attendees_count = models.IntegerField(default=0, null=True)
-    meet_link = models.URLField(max_length=200, default='', null=True)
+    meet_link = models.URLField(max_length=200, default='', null=True, blank=True)
     meet_platform = models.CharField(max_length=10, null=True, default='unknown')
     meeting_description = models.CharField(max_length=255,null=True)
     meeting_location = models.CharField(max_length=255, null=True)
