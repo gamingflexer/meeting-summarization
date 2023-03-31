@@ -4,10 +4,12 @@ from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from django.conf import settings
 from drf_yasg import openapi
 
 from api.serializers import User_info_Serializers,Summary_Serializers,FileSerializer,CalendarEventSerializer
 from api.models import User_info,Summary
+from authentication.models import User
 from .permissions import user_auth_required
 from config import base_path_file
 from authentication.models import User
@@ -23,10 +25,14 @@ import json
 import os
 
 from django.core.exceptions import ObjectDoesNotExist
+from firebase_admin import credentials,auth
+import firebase_admin
 
 DEBUG = config('DEBUG', cast=bool)
 URL_MICRO = config('URL_MICRO')
 
+cred = credentials.Certificate(settings.FIREBASE_CONFIG_PATH)
+firebase_app=firebase_admin.initialize_app(cred)
 # View Starts here
 
 # ONBOARDING API
@@ -35,59 +41,72 @@ class OnboardingAPI(APIView): # ???
     
     permission_classes = user_auth_required()
     
-    def post(self, request):        
-        data = (JSONParser().parse(request))['data']
-        user_id = data['user_id']
-        main_queryset = User_info.objects.get(user_id=user_id)
-        data_inserted = {"user_prof_type":data['user_prof_type'],
-                         "user_meeting_category":data['user_meeting_category'],
-                         "email" : data['email']}
-        main_queryset_serializer = User_info_Serializers(main_queryset,data=data_inserted)
-        if main_queryset_serializer.is_valid():
-            main_queryset_serializer.save()
-            return Response({"data":main_queryset_serializer.data},status=status.HTTP_200_OK)
-        return Response(main_queryset_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-
+    def post(self, request):
+        
+        authorization_header = request.META.get('HTTP_AUTHORIZATION')
+        token = authorization_header.replace("Bearer ", "")
+        
+        try:
+            decoded_token = auth.verify_id_token(token)
+            firebase_user_id = decoded_token['user_id']
+            firebase_user_email = decoded_token['email']
+            firebase_user_name = decoded_token['name']
+            User_info.objects.get(user_firebase_token=firebase_user_id)
+            return Response({"error":"User already exists"},status=status.HTTP_400_BAD_REQUEST)
+        
+        except User_info.DoesNotExist:
+            data = (JSONParser().parse(request))['data']
+            main_queryset = User_info.objects.create(user_firebase_token=firebase_user_id)
+            User.objects.create_user(email=firebase_user_email,username=firebase_user_name, password=firebase_user_id, is_verified = True)
+            data_inserted = {"user_prof_type":data['user_prof_type'],
+                            "user_meeting_category":data['user_meeting_category'],
+                            "email" : firebase_user_email}
+            main_queryset_serializer = User_info_Serializers(main_queryset,data=data_inserted)
+            
+            if main_queryset_serializer.is_valid():
+                main_queryset_serializer.save()
+                return Response({"data":main_queryset_serializer.data},status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response({"error":"Invalid Token or Token expired"},status=status.HTTP_400_BAD_REQUEST)
+        
 class LandingPageAPI(APIView):
     
     permission_classes = user_auth_required()
     
     def get(self, request):
-        user = request.user
-        email = "test0991@test.com" #request.email
-        user_id = 1
-        # main_queryset = User_info.objects.filter(email=email)
-        # if main_queryset.exists():
-        #     main_queryset = main_queryset.first()
-        #     main_queryset_serializer = User_info_Serializers(main_queryset)
-        #     user_id = main_queryset.user_id
-        # else:
-        #     main_queryset = User_info.objects.create(email=email)
-        #     main_queryset_serializer = User_info_Serializers(data = main_queryset)
-        #     if main_queryset_serializer.is_valid():
-        #         main_queryset_serializer.save()
+        
+        authorization_header = request.META.get('HTTP_AUTHORIZATION')
+        token = authorization_header.replace("Bearer ", "")
+        
+        try:
+            decoded_token = auth.verify_id_token(token)
+            firebase_user_id = decoded_token['user_id']
+            User_info.objects.get(user_firebase_token=firebase_user_id)
                 
-        # All Meetings
-        main_queryset_total_meetings = Summary.objects.filter(user_id=user_id)
-        main_queryset_summarized = Summary.objects.filter(user_id=user_id)
-        main_queryset = Summary.objects.filter(user_id=user_id).order_by('-meeting_id')[:4][::-1]
-        main_queryset_serializer = Summary_Serializers(reversed(main_queryset), many=True)
-        
-        # Upcoming Meetings
-        event_data = Summary.objects.filter(start_time__gte=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ") ,user_id = 1)
-        calender_event_serializer_data_upcoming = CalendarEventSerializer(event_data, many=True)
-        
-        # Past Meetings
-        event_data = Summary.objects.filter(start_time__lt=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"), user_id=1)
-        calender_event_serializer_data_past = CalendarEventSerializer(event_data, many=True)
-
-        
-        return Response({"data":{"meetings":(main_queryset_serializer.data),
-                                 "total_meetings":len(main_queryset_total_meetings),
-                                 "recent_meetings":(calender_event_serializer_data_past.data),
-                                 "scheduled_meetings": (calender_event_serializer_data_upcoming.data),
-                                 "summrized_meetings":len(main_queryset_summarized)}
-                         },status=status.HTTP_200_OK)
+            # All Meetings
+            main_queryset_total_meetings = Summary.objects.filter(user_firebase_token=firebase_user_id)
+            main_queryset_summarized = Summary.objects.filter(user_firebase_token=firebase_user_id)
+            main_queryset = Summary.objects.filter(user_firebase_token=firebase_user_id).order_by('-meeting_id')[:4][::-1]
+            main_queryset_serializer = Summary_Serializers(reversed(main_queryset), many=True)
+            
+            # Upcoming Meetings
+            event_data = Summary.objects.filter(start_time__gte=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ") ,user_firebase_token=firebase_user_id)
+            calender_event_serializer_data_upcoming = CalendarEventSerializer(event_data, many=True)
+            
+            # Past Meetings
+            event_data = Summary.objects.filter(start_time__lt=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"), user_firebase_token=firebase_user_id)
+            calender_event_serializer_data_past = CalendarEventSerializer(event_data, many=True)
+            
+            return Response({"data":{"meetings":(main_queryset_serializer.data),
+                                    "total_meetings":len(main_queryset_total_meetings),
+                                    "recent_meetings":(calender_event_serializer_data_past.data),
+                                    "scheduled_meetings": (calender_event_serializer_data_upcoming.data),
+                                    "summrized_meetings":len(main_queryset_summarized)}
+                                },status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response({"error":"Invalid Token or Token expired"},status=status.HTTP_400_BAD_REQUEST)
     
 class AddMeetingAPI(APIView):
     
@@ -95,33 +114,41 @@ class AddMeetingAPI(APIView):
     
     @csrf_exempt
     def post(self, request):
-        response_data = JSONParser().parse(request)
-        data = response_data.get('data')
-        user_id = data['user_id']
-        meeting_audio_file_link_new = ""
-        main_queryset = User_info.objects.get(user_id=user_id)
-        Summary.objects.create(user_id = main_queryset,
-                                title = data.get("meeting_title"),
-                                meet_platform = data.get("meeting_platform"),
-                                meeting_description = data.get("meeting_description"),
-                                attendees_count = data.get("attendees_count"),
-                                start_time = datetime.datetime.strptime(data.get("start_time"), '%Y-%m-%d %H:%M:%S'),
-                                end_time = datetime.datetime.strptime(data.get("end_time"), '%Y-%m-%d %H:%M:%S'),
-                                meeting_location = data.get("meeting_location"),
-                                meeting_transcript = data.get("meeting_transcript"),
-                                is_multilingual = data.get("is_multilingual"),
-                                language = data.get("language"),
-                                meeting_audio_file_link = meeting_audio_file_link_new
-                                )
-        main_queryset_summary = Summary.objects.filter(user_id=user_id).latest('meeting_id')
-        main_queryset_summary_serializer = Summary_Serializers(main_queryset_summary)
-        #celery task
-        #summarization_function(meeting_audio_file_link_new,file=False)
-        # save summary data in db
-        return Response({"data":
-                        {"meeting_data":main_queryset_summary_serializer.data}},
-                        status=status.HTTP_201_CREATED)
-    
+        
+        authorization_header = request.META.get('HTTP_AUTHORIZATION')
+        token = authorization_header.replace("Bearer ", "")
+        
+        try:
+            decoded_token = auth.verify_id_token(token)
+            firebase_user_id = decoded_token['user_id']
+            User_info.objects.get(user_firebase_token=firebase_user_id)
+            
+            response_data = JSONParser().parse(request)
+            data = response_data.get('data')
+            meeting_audio_file_link_new = ""
+            main_queryset = User_info.objects.get(user_firebase_token=firebase_user_id)
+            Summary.objects.create(user_firebase_token = main_queryset,
+                                    title = data.get("meeting_title"),
+                                    meet_platform = data.get("meeting_platform"),
+                                    meeting_description = data.get("meeting_description"),
+                                    attendees_count = data.get("attendees_count"),
+                                    # start_time = datetime.datetime.strptime(data.get("start_time"), '%Y-%m-%d %H:%M:%S'),
+                                    # end_time = datetime.datetime.strptime(data.get("end_time"), '%Y-%m-%d %H:%M:%S'),
+                                    meeting_location = data.get("meeting_location"),
+                                    meeting_transcript = data.get("meeting_transcript"),
+                                    is_multilingual = data.get("is_multilingual"),
+                                    language = data.get("language"),
+                                    meeting_audio_file_link = meeting_audio_file_link_new
+                                    )
+            main_queryset_summary = Summary.objects.filter(user_firebase_token=firebase_user_id).latest('meeting_id')
+            main_queryset_summary_serializer = Summary_Serializers(main_queryset_summary)
+            return Response({"data":
+                            {"meeting_data":main_queryset_summary_serializer.data}},
+                            status=status.HTTP_201_CREATED)
+        except Exception as e:
+                print(e)
+                return Response({"error":"Invalid Token or Token expired"},status=status.HTTP_400_BAD_REQUEST)
+        
 class AddMeetingFileAPI(APIView):
     
     permission_classes = user_auth_required()
@@ -131,13 +158,21 @@ class AddMeetingFileAPI(APIView):
     @swagger_auto_schema(manual_parameters=[token_param_config])
     @csrf_exempt
     def post(self, request, meeting_id):
+        
+        authorization_header = request.META.get('HTTP_AUTHORIZATION')
+        token = authorization_header.replace("Bearer ", "")
+        
+        decoded_token = auth.verify_id_token(token)
+        firebase_user_id = decoded_token['user_id']
+        User_info.objects.get(user_firebase_token=firebase_user_id)
+        
         file_serializer = FileSerializer(data=request.data)
         if file_serializer.is_valid():
             file_serializer.save()
             pathOfFile = file_serializer.data['file']
             newPath = base_path_file + '/' + pathOfFile
             
-            main_queryset_summary = Summary.objects.filter(meeting_id=meeting_id, user_id = 1).first()
+            main_queryset_summary = Summary.objects.filter(meeting_id=meeting_id, user_firebase_token=firebase_user_id).first()
             main_queryset_summary_serializer = Summary_Serializers(main_queryset_summary)
 
             # Integfiy platform & detect lang
@@ -155,25 +190,45 @@ class AddMeetingFileAPI(APIView):
             
             meeting_data = json.loads(data)
             
-            if DEBUG  != True:
             # if from_transcript file type then send to
-                if file_extention in TRANCRIPT_EXT:
-                    print("\n TRANCRIPT DETECTED")
-                    meeting_type = 'from_transcript'
-                    
-                    # with open(newPath, 'rb') as f:
-                    #     transcript_readed = f.read()
+            if file_extention in TRANCRIPT_EXT:
+                print("\n TRANCRIPT DETECTED")
+                meeting_type = 'from_transcript'
                 
-                    # preprocess it and add new data using preprocessor function {Expecting the files in our format}
-                    segmented_df,speaker_dialogue,durations,attendeces_count = any_transcript_to_dataframe(newPath)
-                    print("segmented_df",segmented_df)
-                    print("speaker_dialogue",speaker_dialogue)
-                    print("durations",durations)
-                    """
+                # with open(newPath, 'rb') as f:
+                #     transcript_readed = f.read()
+            
+                # preprocess it and add new data using preprocessor function {Expecting the files in our format}
+                segmented_df,speaker_dialogue,durations,attendeces_count = any_transcript_to_dataframe(newPath)
+                print("segmented_df",segmented_df)
+                print("speaker_dialogue",speaker_dialogue)
+                print("durations",durations)
+                
+                #--> send to summarization
+                try:
+                    response = requests.post(URL_MICRO + "summarization" , data=json.dumps({"transcript":speaker_dialogue}))
+                    response.raise_for_status()
+                    transcript_from_res = json.loads(response.json())
+                except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+                    print("Down")
+                except requests.exceptions.HTTPError:
+                    print("4xx, 5xx")
                     
-                    #--> send to summarization
+                #save data
+                query_set = Summary.objects.get(meeting_id=meeting_id)
+                main_queryset_serializer = Summary_Serializers(query_set)
+                query_set.meeting_summary =  "NEW SUMMARY"
+                query_set.save()
+                                
+                
+            if file_extention in VIDEO_EXT:
+                # if from_video_audio
+                #--> send to trancription & get the trancript +
+                print("\n VIDEO FILE DETECTED \n")
+                meeting_type = 'from_video_audio'
+                with open(newPath, 'rb') as f:
                     try:
-                        response = requests.post(URL_MICRO + "summarization" , data=json.dumps({"transcript":speaker_dialogue}))
+                        response = requests.post(URL_MICRO + "transcript" , files={'file': f})
                         response.raise_for_status()
                         transcript_from_res = json.loads(response.json())
                     except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
@@ -181,74 +236,29 @@ class AddMeetingFileAPI(APIView):
                     except requests.exceptions.HTTPError:
                         print("4xx, 5xx")
                         
-                    #save data
-                    query_set = Summary.objects.get(meeting_id=meeting_id)
-                    main_queryset_serializer = Summary_Serializers(query_set)
-                    query_set.meeting_summary =  "NEW SUMMARY"
-                    query_set.save()
-                                    
-                    
-                if file_extention in VIDEO_EXT:
-                    # if from_video_audio
-                    #--> send to trancription & get the trancript +
-                    print("\n VIDEO FILE DETECTED \n")
-                    meeting_type = 'from_video_audio'
-                    with open(newPath, 'rb') as f:
-                        try:
-                            response = requests.post(URL_MICRO + "transcript" , files={'file': f})
-                            response.raise_for_status()
-                            transcript_from_res = json.loads(response.json())
-                        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-                            print("Down")
-                        except requests.exceptions.HTTPError:
-                            print("4xx, 5xx")
-                            
-                    
-                    # preprocess it and add new data using preprocessor function
                 
-                    #--> send to summarization
-                    try:
-                        response = requests.post(URL_MICRO + "summarization" ,data=json.dumps({"transcript":"data"}))
-                        response.raise_for_status()
-                        transcript_from_res = json.loads(response.json())
-                    except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-                        print("Down")
-                    except requests.exceptions.HTTPError:
-                        print("4xx, 5xx")
-                        
-                    #save data
-                    query_set = Summary.objects.get(meeting_id=meeting_id)
-                    main_queryset_serializer = Summary_Serializers(query_set)
-                    query_set.meeting_summary =  "NEW SUMMARY"
-                    query_set.save()
-                
-                #make it celery task
-                #summary,transcript = summarization_function(newPath,file=True)
-                #Summary.objects.filter(meeting_id=meeting_id).update(meeting_summary=summary,meeting_transcript=transcript)
-            return Response({"data":{"meeting_id":meeting_id,"status":"File uploaded successfully"}},status=status.HTTP_201_CREATED)  # ADD A REDIRECT URL HERE
-        """
-            else:
-                debug_data = meeting_data['data'][0]['meeting_data']
-                if file_extention in TRANCRIPT_EXT:
-                    print("\n TRANCRIPT DETECTED")
-                    return Response({ "data": {
-                            "meeting_type": "from_transcript",
-                            "meeting_id": meeting_id,
-                            "is_summarized": "true",
-                            "trascript": [],
-                            "meeting_data": debug_data
-                            }})
-
-                if file_extention in VIDEO_EXT:
-                    print("\n VIDEO FILE DETECTED \n")
+                # preprocess it and add new data using preprocessor function
+            
+                #--> send to summarization
+                try:
+                    response = requests.post(URL_MICRO + "summarization" ,data=json.dumps({"transcript":"data"}))
+                    response.raise_for_status()
+                    transcript_from_res = json.loads(response.json())
+                except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+                    print("Down")
+                except requests.exceptions.HTTPError:
+                    print("4xx, 5xx")
                     
-                    return Response({ "data": {
-                            "meeting_type": "from_video_audio",
-                            "meeting_id": meeting_id,
-                            "is_summarized": "true",
-                            "trascript": [],
-                            "meeting_data": debug_data
-                            }})
+                #save data
+                query_set = Summary.objects.get(meeting_id=meeting_id)
+                main_queryset_serializer = Summary_Serializers(query_set)
+                query_set.meeting_summary =  "NEW SUMMARY"
+                query_set.save()
+            
+            #make it celery task
+            #summary,transcript = summarization_function(newPath,file=True)
+            #Summary.objects.filter(meeting_id=meeting_id).update(meeting_summary=summary,meeting_transcript=transcript)
+        return Response({"data":{"meeting_id":meeting_id,"status":"File uploaded successfully"}},status=status.HTTP_201_CREATED)  # ADD A REDIRECT URL HERE
 
 class SummaryPageAPI(APIView):
     
@@ -256,7 +266,12 @@ class SummaryPageAPI(APIView):
     
     def get(self, request, meeting_id):
         
-        email = "surve790@gmail.com"
+        authorization_header = request.META.get('HTTP_AUTHORIZATION')
+        token = authorization_header.replace("Bearer ", "")
+        
+        decoded_token = auth.verify_id_token(token)
+        firebase_user_id = decoded_token['user_id']
+        User_info.objects.get(user_firebase_token=firebase_user_id)
         
         with open(os.path.join(base_path_file,"api","data","summary.json"), 'rb') as f:
                 data = f.read()
@@ -284,7 +299,7 @@ class SummaryPageAPI(APIView):
 
         for single_key in listofkeys:
             meta_data_dict[single_key] = content.get(single_key)
-        meta_data_dict['speaker']=  debug_data[0]['metadata']['sepakers']  #[""]  #om will do
+        meta_data_dict['speaker']=  ""  #[""]  #om will do
         meta_data_list.append(meta_data_dict)
         meeting_data_dict["metadata"] = meta_data_list
 
@@ -292,13 +307,13 @@ class SummaryPageAPI(APIView):
             summary_dict[single_key] = content.get(single_key)
         summary_dict['agenda'] = ['']  #agenda wala handle kar na hai
 
-        summary_dict['highlights'] = debug_data[0]['summary'][0]['highlights'] #[" "]   #om will do
+        summary_dict['highlights'] = "" #[" "]   #om will do
         summary_data_list.append(summary_dict)
         meeting_data_dict['summary'] = summary_data_list
         meeting_data_dict['trascript'] = [""] #om will do
         meeting_data_list.append(meeting_data_dict)
         data_dict['meeting_data'] = meeting_data_list
-        data_dict["email_redirect"] = f"mailto:{email}"
+        data_dict["email_redirect"] = f"mailto:{decoded_token['email']}"
 
         return Response({"data":data_dict},status=status.HTTP_200_OK)
     
@@ -313,6 +328,7 @@ class SummaryPageAPI(APIView):
             if not (content.get('is_summary_edited')):
                 query_set.meeting_old_summary = content.get('meeting_summary')
                 query_set.is_summary_edited = True
+                
             #saving user edited transcript
             query_set.meeting_summary =  preprocess_hocr(response_data)
             query_set.save()
@@ -322,6 +338,7 @@ class SummaryPageAPI(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
    
 class StartSummarization(APIView):
+    
     permission_classes = user_auth_required()
     
     def get(self, request, meeting_id):
@@ -329,14 +346,26 @@ class StartSummarization(APIView):
             main_queryset = Summary.objects.get(meeting_id=meeting_id)
         except ObjectDoesNotExist:
             return Response({"data":{"error":"Meeting Summary does not exist"}},status=status.HTTP_400_BAD_REQUEST)
+        
+        # Start summarization ------------------------------------------------>
+        
         summary_serializer = Summary_Serializers(main_queryset)
         main_queryset.is_summarized = True
         return Response({"data":{"meeting_id":meeting_id,"status":"Summarization started"}},status=status.HTTP_200_OK)
+    
 class DownloadpdfAPI(APIView):
     
     permission_classes = user_auth_required()
     
     def get(self,request,meeting_id):
+        
+        authorization_header = request.META.get('HTTP_AUTHORIZATION')
+        token = authorization_header.replace("Bearer ", "")
+        
+        decoded_token = auth.verify_id_token(token)
+        firebase_user_id = decoded_token['user_id']
+        User_info.objects.get(user_firebase_token=firebase_user_id)
+        
         main_queryset = Summary.objects.filter(meeting_id=meeting_id)
         main_queryset_serializer = Summary_Serializers(main_queryset,many=True)
         content = main_queryset_serializer.data
@@ -350,6 +379,14 @@ class EditUserDataAPI(APIView) :
     permission_classes = user_auth_required()
     
     def get(self,request,username):
+        
+        authorization_header = request.META.get('HTTP_AUTHORIZATION')
+        token = authorization_header.replace("Bearer ", "")
+        
+        decoded_token = auth.verify_id_token(token)
+        firebase_user_id = decoded_token['user_id']
+        User_info.objects.get(user_firebase_token=firebase_user_id)
+        
         User_data = User.objects.get(username=username)
         User_data_serializer = User_info_Serializers(User_data)
         return Response({"data": {"user_data": User_data_serializer.data}}, status=status.HTTP_200_OK)
@@ -357,6 +394,15 @@ class EditUserDataAPI(APIView) :
     @csrf_exempt
     def post(self,request):
         try :
+            
+            authorization_header = request.META.get('HTTP_AUTHORIZATION')
+            token = authorization_header.replace("Bearer ", "")
+            
+            decoded_token = auth.verify_id_token(token)
+            firebase_user_id = decoded_token['user_id']
+            User_info.objects.get(user_firebase_token=firebase_user_id)
+
+            #getting the data from the request
             data = JSONParser().parse(request)
             user_name = data['username']
             query_set = User.objects.get(username=user_name)
@@ -371,27 +417,26 @@ class FeedBackAPI(APIView) :
     
     permission_classes = user_auth_required()
     
-    def get(self,request,meeting_id,param):
-        if param == "upvote":
-            main_queryset = Summary.objects.filter(meeting_id=meeting_id)
-            main_queryset_serializer = Summary_Serializers(main_queryset)
-            content = main_queryset_serializer.data
-            if content['is_good'] == 0:
-                main_queryset.is_good = 1
+    def get(self,request,meeting_id,param,val):
+        
+        authorization_header = request.META.get('HTTP_AUTHORIZATION')
+        token = authorization_header.replace("Bearer ", "")
+        decoded_token = auth.verify_id_token(token)
+        firebase_user_id = decoded_token['user_id']
+        User_info.objects.get(user_firebase_token=firebase_user_id)
+        
+        if param == "factual_consistency":
+            if val == 0:
+                Summary.objects.filter(meeting_id=meeting_id).update(factual_consistency=0)
             else :
-                main_queryset.is_good = 0
-            main_queryset.save()
-        if param == "downvote":
-            main_queryset = Summary.objects.filter(meeting_id=meeting_id)
-            main_queryset_serializer = Summary_Serializers(main_queryset)
-            content = main_queryset_serializer.data
-            if content['is_good'] == 2:
-                main_queryset.is_good = 0
+                Summary.objects.filter(meeting_id=meeting_id).update(factual_consistency=1)
+        if param == "is_good":
+            if val == 2:
+                Summary.objects.filter(meeting_id=meeting_id).update(is_good=2)
             else:
-                main_queryset.is_good = 2
-            main_queryset.save()
+                Summary.objects.filter(meeting_id=meeting_id).update(is_good=0)
             
-        return Response(status=status.HTTP_200_OK)
+        return Response({"status": "updated"},status=status.HTTP_200_OK)
     
 # ANALYTICS API
 
@@ -400,6 +445,13 @@ class AnalyticsAPI(APIView) : # ??
     permission_classes = user_auth_required()
     
     def get(self,request,user_id):
+        
+        authorization_header = request.META.get('HTTP_AUTHORIZATION')
+        token = authorization_header.replace("Bearer ", "")
+        decoded_token = auth.verify_id_token(token)
+        firebase_user_id = decoded_token['user_id']
+        User_info.objects.get(user_firebase_token=firebase_user_id)
+        
         main_queryset = Summary.objects.filter(meeting_id=user_id)
         main_queryset_serializer = Summary_Serializers(main_queryset,many=True)
         content = main_queryset_serializer.data
