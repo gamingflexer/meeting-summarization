@@ -30,13 +30,11 @@ def save_cache(request, cache):
 def get_msal_app(cache=None):
     # Initialize the MSAL confidential client
     auth_app = msal.ConfidentialClientApplication(
-        client_id ="",
-        authority="",
-        client_credential="",
-        token_cache=cache,
-    )
+        client_id ="aeadc4b8-6302-470f-b29c-76ede4906b4d",
+        authority="https://login.microsoftonline.com/common",
+        client_credential="1V-8Q~7BkOu.Dk5VV2OjfXKerDDIL2PLFrtM2ddM",
+        token_cache=cache)
     return auth_app
-
 
 def get_sign_in_flow():
     auth_app = get_msal_app()

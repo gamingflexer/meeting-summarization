@@ -122,11 +122,11 @@ class GoogleCalendarMultipleEventsView(View):
 
     def get(self, request,api_keyword, *args, **kwargs):
         
-        # authorization_header = request.META.get('HTTP_AUTHORIZATION')
-        # token = authorization_header.replace("Bearer ", "")
+        authorization_header = request.META.get('HTTP_AUTHORIZATION')
+        token = authorization_header.replace("Bearer ", "")
         
-        # decoded_token = auth.verify_id_token(token)
-        # firebase_user_id = decoded_token['user_id']
+        decoded_token = auth.verify_id_token(token)
+        firebase_user_id = decoded_token['user_id']
         firebase_user_id = "DL7rKD68CEYEpNd9eTIjBF6QDbt2"
         #User_info.objects.get(user_firebase_token=firebase_user_id)
 

@@ -10,13 +10,13 @@ from .micro_auth_utility import *
 from api.serializers import MicrosoftEventSerializer
 from api.models import Summary
 
+from .views import firebase_app,auth
+
 class MicrosoftCalendarInitView(APIView):
     def get(self, request, *args, **kwargs):
         flow = get_sign_in_flow()
         try:
             request.session['auth_flow'] = flow
-
-
         except Exception as e:
             print(e)
         return HttpResponseRedirect(flow['auth_uri'])
@@ -38,13 +38,16 @@ class MicrosoftCallback(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-
-
-
-
 class MicrosoftEvent(APIView):
     def get(self, request, *args, **kwargs):
         try :
+            # authorization_header = request.META.get('HTTP_AUTHORIZATION')
+            # token = authorization_header.replace("Bearer ", "")
+            
+            # decoded_token = auth.verify_id_token(token)
+            # firebase_user_id = decoded_token['user_id']
+            firebase_user_id = "DL7rKD68CEYEpNd9eTIjBF6QDbt2"
+        
             access_token = (request.session['micro_credentials']).get('access_token')
             graph_url = "https://graph.microsoft.com/v1.0/me/calendar/events"
             response = requests.get(
@@ -52,11 +55,12 @@ class MicrosoftEvent(APIView):
                 headers={"Authorization": "Bearer {0}".format(access_token)},
             )
             calender_event = response.json()
-            print(calender_event)
+            #print(calender_event)
             calender_event_value = calender_event.get('value')
             for event in calender_event_value:
                 event_dic = {}
                 if event.get('isOnlineMeeting'):
+                    event_dic['user_firebase_token'] = firebase_user_id
                     event_dic['calender_meeting_id'] = event.get('id')
                     event_dic['lastModifiedDateTime_microsoft'] = event.get('lastModifiedDateTime')
                     event_dic['start_time'] = event.get('start').get('dateTime')
@@ -78,12 +82,12 @@ class MicrosoftEvent(APIView):
                         event_dic['meet_platform'] = 'zoom'
                     elif (event_dic['meet_link']).find('team') != -1:
                         event_dic['meet_platform'] = 'team'
-                    print(event_dic)
+                    #print(event_dic)
                     microsoft_calender_event_serializer = MicrosoftEventSerializer(data=event_dic)
                     microsoft_calender_event_serializer.is_valid(raise_exception=True)
                     if (microsoft_calender_event_serializer.is_valid()):
                         microsoft_calender_event_serializer.save()
-                        print("here")
+                        #print("here")
             return Response(status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
