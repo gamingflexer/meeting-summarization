@@ -1,3 +1,6 @@
+"""
+NOTE: This function is not used in the final version of the app. It is kept here for reference. | GODEL MODEL IS REPLCAED FOR THIS FUNCTION
+
 import re
 from textblob import TextBlob
 
@@ -24,3 +27,5 @@ def top_segmentor_v0_1(transcript):
         sections[f'Section {i+1}'] = section
 
     return sections
+
+"""

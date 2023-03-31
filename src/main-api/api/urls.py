@@ -25,14 +25,10 @@ urlpatterns = [
 
 
     # Google Calendar API
-    path('rest/v1/calendar/init/',
-         GoogleCalendarInitView.as_view(), name='calendar_init'),
-    path('rest/v1/calendar/redirect/',
-         GoogleCalendarRedirectView.as_view(), name='calendar_redirect'),
-    path('rest/v1/calendar/events/',
-         GoogleCalendarEventsView.as_view(), name='calendar_redirect'),
-    path('meetings-data/<api_keyword>',
-         GoogleCalendarMultipleEventsView.as_view(), name='calendar_upcoming_event'),
+    path('rest/v1/calendar/init/', GoogleCalendarInitView.as_view(), name='calendar_init'),
+    path('rest/v1/calendar/redirect/', GoogleCalendarRedirectView.as_view(), name='calendar_redirect'),
+    path('rest/v1/calendar/events/', GoogleCalendarEventsView.as_view(), name='calendar_redirect'),
+    path('meetings-data/<api_keyword>', GoogleCalendarMultipleEventsView.as_view(), name='calendar_upcoming_event'),
 
     # User API
     path('userinfo/<str:username>', EditUserDataAPI.as_view(), name='fetch_user_data'),

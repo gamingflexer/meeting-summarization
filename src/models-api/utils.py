@@ -1,6 +1,7 @@
 import re
 import os
 import nltk
+import time
 import spacy
 import gdown
 import logging
@@ -27,6 +28,10 @@ ALLOWED_EXTENSIONS = [
     '.mp4', '.avi', '.mov', '.mkv', '.wmv', '.flv', '.m4v', '.webm', '.mpeg',
     '.mp3', '.wav', '.m4a', '.aac', '.ogg', '.wma', '.flac', '.alac', '.opus'
 ] 
+
+def format_server_time():
+  server_time = time.localtime()
+  return time.strftime("%I:%M:%S %p", server_time)
 
 def drive_download(url, output):
     gdown.download(url, output, quiet=False)

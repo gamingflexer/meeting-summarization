@@ -36,7 +36,7 @@ def transcript_preprocesssing(text):
 def email_grabber(text):
     try:
       emails = re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.[a-z]+", text)
-      emails=set(emails)
+      emails=list(set(emails))
     except:
       emails = "None"
     return(emails)

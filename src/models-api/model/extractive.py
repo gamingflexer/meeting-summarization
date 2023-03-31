@@ -6,6 +6,10 @@ import spacy
 
 from views.preprocessing import detect_questions_answers
 
+"""
+NOTE: This function is not used in the final version of the app. It is kept here for reference.
+
+
 # Load the spaCy model for English language
 nlp = spacy.load("en_core_web_sm")
 
@@ -56,3 +60,5 @@ def extract_sentences(text, n_sentences=5, n_topics=3):
             top_sentences.remove(sentence)
     
     return top_sentences,[total_questions,top_answers]
+
+"""

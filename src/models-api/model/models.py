@@ -4,6 +4,7 @@ import requests
 
 from decouple import config
 HUGGING_FACE_KEY = config('HUGGING_FACE_KEY')
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
 def bart_summarize(summarizer,text):
     #summarizer = pipeline("summarization", model=hub_model_id)
@@ -18,7 +19,7 @@ def longformer_summarize(model,model_id_or_path,text,max_new_tokens=200):
     #model = TFAutoModelForSeq2SeqLM.from_pretrained(hub_model_id,from_pt=True)
     try:
       text_final = "summarize: " + text
-      inputs = tokenizer(text_final, return_tensors="tf").input_ids
+      inputs = tokenizer(text_final, return_tensors="tf").input_ids.to("cuda")
       outputs = model.generate(inputs, max_new_tokens=max_new_tokens, do_sample=False)
       return tokenizer.decode(outputs[0], skip_special_tokens=True)
     except IndexError:
@@ -33,7 +34,8 @@ def pegasus_summarize(model,model_id_or_path,text):
     #model = PegasusForConditionalGeneration.from_pretrained("")
     try:
       inputs = tokenizer(text, max_length=1024, return_tensors="pt")
-      summary_ids = model.generate(inputs["input_ids"])
+      input_ids = inputs["input_ids"].to("cuda")
+      summary_ids = model.generate(input_ids)
       return tokenizer.batch_decode(summary_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
     except IndexError:
       print(f"\n ERROR: Model not compatible with the tokeinizer or no tokenizer exits at huggingface {model_id_or_path}")
@@ -59,6 +61,23 @@ def bart_title_summarizer(model,model_path,text):
     outputs_str = tokenizer.batch_decode(outputs, skip_special_tokens=True)
     return outputs_str
     
+
+def longt5_summarizer(model,model_id_or_path,text):
+  tokenizer = AutoTokenizer.from_pretrained(model_id_or_path)
+  inputs_dict = tokenizer(text, max_length=8192, return_tensors="pt")
+  input_ids = inputs_dict.input_ids.to("cuda")
+  predicted_abstract_ids = model.generate(input_ids)
+  results = tokenizer.decode(predicted_abstract_ids[0], skip_special_tokens=True)
+  return results
+
+def led_summarizer(model,model_id_or_path,text):
+  tokenizer = AutoTokenizer.from_pretrained(model_id_or_path)
+  inputs_dict = tokenizer(text, max_length=8192, return_tensors="pt")
+  input_ids = inputs_dict.input_ids.to("cuda")
+  predicted_abstract_ids = model.generate(input_ids)
+  results = tokenizer.decode(predicted_abstract_ids[0], skip_special_tokens=True)
+  return results
+
 # Define prediction function
 def action_items_distil_bert(text_list,path_to_model):  
     
@@ -98,18 +117,3 @@ def action_items_distil_bert(text_list,path_to_model):
             top_action_items.append({"text":text,"label":pred_label})
     
     return top_action_items
-
-def gpt_neo_summarization(trancript,summary = True):
-
-    API_URL = "https://api-inference.huggingface.co/models/togethercomputer/GPT-NeoXT-Chat-Base-20B"
-    headers = {"Authorization": f"Bearer {HUGGING_FACE_KEY}"}
-
-    def query(payload):
-        response = requests.post(API_URL, headers=headers, json=payload)
-        return response.json()
-        
-    if summary:
-        output = query({
-            "inputs": f"Summarize a long conversation : {trancript}",
-        })
-    return output
