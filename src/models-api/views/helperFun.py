@@ -1,15 +1,19 @@
 from views.preprocessing import transcript_preprocesssing, email_grabber, date_grabber, get_phone_numbers, get_human_name, address_grabber, correct_sentence, get_jargon_sentences, detect_meeting_structure,detect_questions_answers, g_translation_en
 from views.postprocessing import clean_summary, format_summary
 from model.models import action_items_distil_bert
+from model.retrieval import ChatBot,load_chatbot
 from spellchecker import SpellChecker
-import pandas as pd
 from .models import ModelSelect
-
+from .prompts import prompts
+import pandas as pd
 from decouple import config
+
 DEBUG = config('DEBUG', cast=bool)
 if DEBUG == False:
     from views.transcript import TranscriptPreProcessor
-
+    print("\nChatbot Model getting loaded\n")
+    model_chat,tokenizer_chat = load_chatbot()
+    
 spell = SpellChecker()
 
 class PreProcesssor(): # which features are taken totally depends on the meeting type
@@ -71,7 +75,7 @@ class PostProcesssor():
         formatted_summary = format_summary(cleaned_summary)
         return formatted_summary
     
-def processors_call_on_trancript(transcript_df,transcript_joined): # in the format of the json | whisper
+def processors_call_on_trancript(transcript_df, transcript_joined, summary): # in the format of the json | whisper
             
     # non-formatted transcript preprocessor [WORKS NON FORMATTED]
     trancript_object = PreProcesssor(transcript_joined)
@@ -88,6 +92,16 @@ def processors_call_on_trancript(transcript_df,transcript_joined): # in the form
     stats = trancript_prepocessor_object.get_stats(transcript_df) #speaker stats
     #df_cluster = trancript_prepocessor_object.get_cluster(df).to_json(orient='records') # what to do with this?
 
+    #chatbot godel
+    chat = ChatBot(question= prompts['topic'],transcript = summary)
+    meeting_category_assgined = chat.chatbot_response(tokenizer_chat,model_chat)
+
+    chat = ChatBot(question= prompts['description'],transcript = summary)
+    meeting_description = chat.chatbot_response(tokenizer_chat,model_chat)
+
+    chat = ChatBot(question= prompts['topic'],transcript = summary)
+    generated_title = chat.chatbot_response(tokenizer_chat,model_chat)
+    
     return {
             "meta_data":{"email":email,
                         "imp_dates":date,
@@ -96,13 +110,12 @@ def processors_call_on_trancript(transcript_df,transcript_joined): # in the form
                         "addresses":addresses,
                         "jargon_sentences":jargon_sentences,
                         "action_items":action_items_list,
-                        "analyse_transcript":analyse_transcript_var,
                         "get_interactions_silence":get_interactions_silence,
                         "backchannels":backchannels,
                         "stats":stats,
-                        "meeting_category_assgined",
-                        "roles_detected": 
-                        "meeting_description": 
-                        "generated_title": 
+                        "meeting_category_assgined": meeting_category_assgined,
+                        "roles_detected": {"speaker1": "test_role"},
+                        "meeting_description": meeting_description,
+                        "generated_title": generated_title,
                         #"df_cluster":df_cluster
                         }} 

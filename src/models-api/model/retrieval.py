@@ -1,5 +1,10 @@
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
+def load_chatbot():
+    model = AutoModelForSeq2SeqLM.from_pretrained("microsoft/GODEL-v1_1-large-seq2seq")
+    tokenizer = AutoTokenizer.from_pretrained("microsoft/GODEL-v1_1-large-seq2seq")
+    return model,tokenizer
+
 class ChatBot():
     def __init__(self,
                 question,
@@ -11,11 +16,6 @@ class ChatBot():
         self.instruction = instruction
         self.knowledge = transcript
         self.model_name = model_name
-        
-    def load_chatbot(self):
-        model = AutoModelForSeq2SeqLM.from_pretrained(self.model_name)
-        tokenizer = AutoTokenizer.from_pretrained(self.model_name)
-        return model,tokenizer
 
     def chatbot_response(self,tokenizer,model):
         if self.knowledge != '':
