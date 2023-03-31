@@ -20,3 +20,9 @@ class CalendarEventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Summary
         fields = ('meeting_id','calender_meeting_id','user_firebase_token','title','creator','organizer','creation_time','start_time','end_time','attendees_count','meet_link','meet_platform','start_time','end_time')
+        
+class MicrosoftEventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Summary
+        fields = ('calender_meeting_id','lastModifiedDateTime_microsoft','start_time','end_time','meeting_location','attendees_count','meet_link','calendar_platform','meet_platform')
+

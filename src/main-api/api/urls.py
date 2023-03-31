@@ -3,7 +3,7 @@ from django.urls import path
 from .views import LandingPageAPI,AddMeetingAPI,SummaryPageAPI,AddMeetingFileAPI,EditUserDataAPI,FeedBackAPI,OnboardingAPI,DownloadpdfAPI,AnalyticsAPI,StartSummarization
 
 from .calender import GoogleCalendarInitView,GoogleCalendarEventsView,GoogleCalendarRedirectView,GoogleCalendarMultipleEventsView
-# from ...scripts.microsoftauth import microsoft_login, microsoft_callback
+from .microsoftauth import MicrosoftCalendarInitView, MicrosoftCallback,MicrosoftEvent
 
 urlpatterns = [
     # Landing Page API
@@ -23,6 +23,7 @@ urlpatterns = [
     path('summary/<int:meeting_id>/pdf', DownloadpdfAPI.as_view(), name='summary_pdf'),
     path('summary/feedback/<int:meeting_id>/<str:param>/<int:val>', FeedBackAPI.as_view(), name='summary_feedback'), #is_good #factual_consistency
 
+
     # Google Calendar API
     path('rest/v1/calendar/init/', GoogleCalendarInitView.as_view(), name='calendar_init'),
     path('rest/v1/calendar/redirect/', GoogleCalendarRedirectView.as_view(), name='calendar_redirect'),
@@ -35,6 +36,9 @@ urlpatterns = [
     # Analytics API
     path('analytics/<user_id>', AnalyticsAPI.as_view(), name='analytics'),
 
-#     path('microsoft_login/', microsoft_login, name='microsoft_login'),
-#     path('microsoft_callback/', microsoft_callback, name='microsoft_callback')
+    path('microsoft_login/', MicrosoftCalendarInitView.as_view(), name='microsoft_login'),
+    path('microsoft_callback/', MicrosoftCallback.as_view(), name='microsoft_callback'),
+    path('get_microsoft_event/', MicrosoftEvent.as_view(), name='get_microsoft_event'),
+    # path('editsummary/<int:meeting_id>',EditSummaryAPI.as_view(),name = 'edit_summary')
+
 ] 
