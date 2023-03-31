@@ -6,6 +6,7 @@ import os.path
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
+from django.conf import settings
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from django.views import View
@@ -22,7 +23,7 @@ from django.shortcuts import redirect
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
-
+from .views import firebase_app,auth
 class GoogleCalendarInitView(View):
 
     def get(self, request, *args, **kwargs):
@@ -120,6 +121,14 @@ class GoogleCalendarMultipleEventsView(View):
     """
 
     def get(self, request,api_keyword, *args, **kwargs):
+        
+        # authorization_header = request.META.get('HTTP_AUTHORIZATION')
+        # token = authorization_header.replace("Bearer ", "")
+        
+        # decoded_token = auth.verify_id_token(token)
+        # firebase_user_id = decoded_token['user_id']
+        firebase_user_id = "DL7rKD68CEYEpNd9eTIjBF6QDbt2"
+        #User_info.objects.get(user_firebase_token=firebase_user_id)
 
         if (api_keyword == 'all' or api_keyword == 'sync' or api_keyword == 'past' or api_keyword=='upcoming'):
             credentials = Credentials(
@@ -139,11 +148,11 @@ class GoogleCalendarMultipleEventsView(View):
             events_result = service.events().list(calendarId='primary',timeMin=now,
                                                   maxResults=event_count, singleEvents=True, orderBy='startTime').execute()
             events = events_result.get('items', [])
-            eventslist =[]
+            eventslist = []
 
             for event in events :
                 eventdict = {}
-                eventdict['user_id'] = 1
+                eventdict['user_firebase_token'] = firebase_user_id
                 eventdict['calender_meeting_id'] = event.get('id')
                 eventdict['title'] = event.get('summary')
                 eventdict['creator'] = (event.get('creator')).get('email')
@@ -177,15 +186,15 @@ class GoogleCalendarMultipleEventsView(View):
             if (calender_event_serializer.is_valid()):
                 calender_event_serializer.save()
             if api_keyword == 'all':
-                event_data = Summary.objects.filter(user_id=1)
+                event_data = Summary.objects.filter(user_firebase_token=firebase_user_id)
                 calender_event_serializer_data = CalendarEventSerializer(event_data, many=True)
             elif api_keyword == 'sync' or api_keyword == 'upcoming':
                 event_data = Summary.objects.filter(
-                    start_time__gte=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"), user_id=1)
+                    start_time__gte=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"), user_firebase_token=firebase_user_id)
                 calender_event_serializer_data = CalendarEventSerializer(event_data, many=True)
             elif api_keyword == 'past':
                 event_data = Summary.objects.filter(
-                    start_time__lt=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"), user_id=1)
+                    start_time__lt=datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"), user_firebase_token=firebase_user_id)
                 calender_event_serializer_data = CalendarEventSerializer(event_data, many=True)
             return JsonResponse({
                                  'data': calender_event_serializer_data.data
