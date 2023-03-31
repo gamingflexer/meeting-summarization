@@ -49,7 +49,7 @@ class TranscriptPreProcessor():
         interruptions = transcript_analysis.get_interruption() #interruption periods in a call
         silence = transcript_analysis.get_silence() #periods of silence in a call
         
-        return interruptions, silence
+        return {"interruptions":interruptions,"silence":silence}
         
     def get_backchannels(self,transcript_analysis):
         """MARK THE Keywords as Backchannels True/False""" #  like 'hmm' or 'uh-huh' ['is_backchannel]
