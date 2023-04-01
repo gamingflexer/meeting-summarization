@@ -8,6 +8,7 @@ from .utils import (transcript_html_to_dataframe,
                    transcript_to_dataframe, 
                    transcript_webvtt_to_dataframe, 
                    json_zoom_transcript_file,
+                   json_google_meet_transcript_file,
                    segment_transcript,
                    duration_from_transcript)
 
@@ -16,17 +17,15 @@ def any_transcript_to_dataframe(file_path):
     
     if file_extension == '.html':
         df = transcript_html_to_dataframe(file_path)
-        return df
     
     elif file_extension == '.txt':
         df = transcript_to_dataframe(file_path)
-        return df
     
     elif file_extension == '.json':
         with open(file_path, "r") as f:
             data = json.load(f)
         if 'results' in data:
-            df = pd.json_normalize(data, record_path=["results", "alternatives"])
+            df = json_google_meet_transcript_file(file_path)
         elif "meeting_id" in data:
             df = json_zoom_transcript_file(file_path)
         else:
@@ -34,8 +33,7 @@ def any_transcript_to_dataframe(file_path):
                 df = pd.json_normalize(data)
             except Exception as e:
                 print(e,"\nException : Transcript Conversion Exception\n")
-                return pd.read_json(file_path)
-        return df
+                df = pd.read_json(file_path)
     
     elif file_extension == '.vtt':
         df = transcript_webvtt_to_dataframe(file_path)
@@ -47,15 +45,18 @@ def any_transcript_to_dataframe(file_path):
         raise Exception(' \n IMP ERROR :File extension not supported \n', file_extension)
     
     """PREPROCESSING FUNCTIONS"""
-    
+    # print(df)
     df_grouped = pd.DataFrame()
     df_grouped['speaker_dialogue'] = df['speaker'] + ': ' + df['text']
     speaker_dialogue = df_grouped['speaker_dialogue'].str.cat(sep='\n')
-    segmented_df = segment_transcript(df)
-    durations = duration_from_transcript(segmented_df)
+    segmented_df,status = segment_transcript(df)
+    if status  == False:
+        durations = duration_from_transcript(df,file_extension)
+    else:
+        durations = duration_from_transcript(segmented_df,file_extension)
     attendeces_count = len(df['speaker'].unique())
-    print(segmented_df,speaker_dialogue,durations,attendeces_count)
-    return segmented_df,speaker_dialogue,durations,attendeces_count
+    #print(segmented_df,speaker_dialogue,durations,attendeces_count)
+    return segmented_df,speaker_dialogue,(str(durations) + " min"),attendeces_count
 
 
 def identify_meeting_link(meeting_link):

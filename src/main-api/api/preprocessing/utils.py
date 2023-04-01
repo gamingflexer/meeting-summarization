@@ -2,6 +2,10 @@ import json
 import pandas as pd
 from bs4 import BeautifulSoup
 import re
+import os
+
+base_path_file_preprocessor = os.path.dirname(os.path.abspath(__file__))
+data_preprocessor = os.path.join(base_path_file_preprocessor, 'data')
 
 def json_zoom_transcript_file(file_path):
     with open(file_path, 'r') as f:
@@ -20,6 +24,44 @@ def json_zoom_transcript_file(file_path):
             rows.append(row)
     return pd.DataFrame(rows)
 
+import datetime
+
+def get_increasing_timestamps(start_time, interval):
+    current_time = datetime.datetime.strptime(start_time, "%H:%M:%S.%f")
+    while True:
+        yield current_time.strftime("%H:%M:%S.%f")[:-3]
+        current_time += interval
+
+def json_google_meet_transcript_file(file_path):
+
+    start_time = pd.Timestamp.utcnow().strftime("%H:%M:%S.%f")[:-3]
+    interval = datetime.timedelta(seconds=1)
+    timestamps = get_increasing_timestamps(start_time, interval)
+
+    with open(file_path, 'r') as f:
+        data = json.load(f)
+
+    rows = []
+    speaker_count = 0
+    for result in data['results']:
+
+        # make a increasing time stamp for each result
+        timestamp_each = next(timestamps)
+        text = ""
+        # Loop over each alternative in the 'alternatives' list
+        for speaker_dialogue in result['alternatives']:
+            for alternative in speaker_dialogue:
+                text = text + '.' + speaker_dialogue['transcript']
+
+            # Add a row to the list with the timestamp, speaker, and text
+            rows.append({'timestamp': timestamp_each, 'speaker': f'Speaker_{speaker_count}', 'text': text})
+
+        speaker_count += 1
+
+    # Convert the list of rows to a DataFrame
+    df = pd.DataFrame(rows)
+
+    return df
 
 def extract_timestamps_and_text_from_html(html_string):
     soup = BeautifulSoup(html_string, 'html.parser')
@@ -62,7 +104,7 @@ def transcript_html_to_dataframe(file_path):
             text = timed_text.find('div', {'class': 'text'}).text.strip()
             data.append([timestamp, speaker, text])
         
-        df = pd.DataFrame(data, columns=['Timestamp', 'Speaker', 'Text'])
+        df = pd.DataFrame(data, columns=['timestamp', 'speaker', 'text'])
         return df
     except:
         df = extract_timestamps_and_text_from_html(file_path)
@@ -111,11 +153,11 @@ def transcript_webvtt_to_dataframe(file_path):
 
 def segment_transcript(df):
     # Define the keywords for each section
-    with open('./data/start_meet_keywords.txt', 'r') as f:
+    with open(os.path.join(data_preprocessor,'start_meet_keywords.txt'), 'r') as f:
         start_keywords = [line.strip() for line in f.readlines()]
-    with open('./data/main_context_keywords.txt', 'r') as f:
+    with open(os.path.join(data_preprocessor,'main_context_keywords.txt'), 'r') as f:
         context_keywords = [line.strip() for line in f.readlines()]
-    with open('./data/end_meet_keywords.txt', 'r') as f:
+    with open(os.path.join(data_preprocessor,'end_meet_keywords.txt'), 'r') as f:
         end_keywords = [line.strip() for line in f.readlines()]
 
     # Initialize the section markers
@@ -148,27 +190,51 @@ def segment_transcript(df):
         main_context['main_timestamps'] = 'main_context'
     
     # Combine the segments into a single DataFrame
-    segments = pd.concat([df for df in [start_segment, main_context, end_segment] if df is not None])
-    
-    return segments
-
-def duration_from_transcript(df):
     try:
-        df['time'] = pd.to_timedelta(df['time_stamp'])
-        # Calculate the end time for each speaker
-        df['end_time'] = df['time_stamp']
-        # Shift the end time by one row to get the start time for each speaker
-        df['start_time'] = df['end_time'].shift()
-        # Calculate the duration for each speaker
-        df['duration'] = df['end_time'] - df['start_time']
-    except Exception as e:
-        print("ERROR !! : ",e)
-        if str(df['start_time'][0]) == "nan":
-            start_time = "00.000"
-            return {"start_time":start_time,"end_time":df['end_time'][df.index[-1]]}
-        return {"start_time":df['start_time'][0],"end_time":df['end_time'][df.index[-1]]}
-    
-    if str(df['start_time'][0]) == "nan":
-            start_time = "00.000"
-            return {"start_time":start_time,"end_time":df['end_time'][df.index[-1]]}
-    return {"start_time":df['start_time'][0],"end_time":df['end_time'][df.index[-1]]}
+        segments = pd.concat([df for df in [start_segment, main_context, end_segment] if df is not None])
+        return segments, True
+    except ValueError:
+        return df, False
+
+def duration_from_transcript(df,file_extension):
+    if file_extension == '.json':
+        try:
+            start_time = df.iloc[0]["start_time"]
+            end_time = df.iloc[-1]["start_time"] + df.iloc[-1]["duration"]
+            duration = end_time - start_time
+            return duration
+        except KeyError:
+            df['timestamp'] = pd.to_datetime(df['timestamp'], format='%H:%M:%S.%f')
+            df = df.sort_values('timestamp')
+            start_time = df.iloc[0]['timestamp']
+            end_time = df.iloc[-1]['timestamp']
+            duration = (end_time - start_time).seconds
+            return duration
+    if file_extension == '.html':
+        print(df)
+        df["timestamp"] = pd.to_datetime(df["timestamp"])
+        print(df["timestamp"])
+        start_time = df.iloc[0]["timestamp"]
+        end_time = df.iloc[-1]["timestamp"]
+        duration = (end_time - start_time).total_seconds()
+        return duration
+    # try:
+    #     df['time'] = pd.to_timedelta(df['time_stamp'])
+    #     # Calculate the end time for each speaker
+    #     df['end_time'] = df['time_stamp']
+    #     # Shift the end time by one row to get the start time for each speaker
+    #     df['start_time'] = df['end_time'].shift()
+    #     # Calculate the duration for each speaker
+    #     df['duration'] = df['end_time'] - df['start_time']
+    # except KeyError:
+    #     print("ERROR !! : ",e)
+    #     if 'start_time' in df.columns:
+    #         if str(df['start_time'][0]) == "nan":
+    #             start_time = "00.000"
+    #             return {"start_time":start_time,"end_time":df['end_time'][df.index[-1]]}
+    #         return {"start_time":df['start_time'][0],"end_time":df['end_time'][df.index[-1]]}
+        
+    # if str(df['start_time'][0]) == "nan":
+    #         start_time = "00.000"
+    #         return {"start_time":start_time,"end_time":df['end_time'][df.index[-1]]}
+    # return {"start_time":df['start_time'][0],"end_time":df['end_time'][df.index[-1]]}
