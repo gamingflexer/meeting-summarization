@@ -7,6 +7,8 @@ from django.utils.timezone import now
 class User_info(models.Model):
     #user_id = models.AutoField(primary_key=True)
     user_firebase_token = models.CharField(max_length=255, default='', primary_key=True)
+    name = models.CharField(max_length=255, default='')
+    username = models.CharField(max_length=255, default='')
     email = models.CharField(max_length=255, unique=True)
     user_prof_type = models.CharField(max_length=255, default='SDE')
     user_meeting_category = models.CharField(max_length=255, default='tech')
