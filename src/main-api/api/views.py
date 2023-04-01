@@ -57,7 +57,7 @@ class OnboardingAPI(APIView): # ???
         except User_info.DoesNotExist:
             data = (JSONParser().parse(request))['data']
             main_queryset = User_info.objects.create(user_firebase_token=firebase_user_id)
-            User.objects.create_user(email=firebase_user_email,username=firebase_user_name, password=firebase_user_id, is_verified = True)
+            User.objects.create_user(email=firebase_user_email,username=firebase_user_name, password=firebase_user_id)
             data_inserted = {"user_prof_type":data['user_prof_type'],
                             "user_meeting_category":data['user_meeting_category'],
                             "email" : firebase_user_email}
@@ -132,8 +132,8 @@ class AddMeetingAPI(APIView):
                                     meet_platform = data.get("meeting_platform"),
                                     meeting_description = data.get("meeting_description"),
                                     attendees_count = data.get("attendees_count"),
-                                    # start_time = datetime.datetime.strptime(data.get("start_time"), '%Y-%m-%d %H:%M:%S'),
-                                    # end_time = datetime.datetime.strptime(data.get("end_time"), '%Y-%m-%d %H:%M:%S'),
+                                    start_time = datetime.datetime.strptime(data.get("start_time"), '%Y-%m-%d %H:%M:%S'),
+                                    end_time = datetime.datetime.strptime(data.get("end_time"), '%Y-%m-%d %H:%M:%S'),
                                     meeting_location = data.get("meeting_location"),
                                     meeting_transcript = data.get("meeting_transcript"),
                                     is_multilingual = data.get("is_multilingual"),
@@ -199,6 +199,7 @@ class AddMeetingFileAPI(APIView):
                 #     transcript_readed = f.read()
             
                 # preprocess it and add new data using preprocessor function {Expecting the files in our format}
+                """
                 segmented_df,speaker_dialogue,durations,attendeces_count = any_transcript_to_dataframe(newPath)
                 print("segmented_df",segmented_df)
                 print("speaker_dialogue",speaker_dialogue)
@@ -248,16 +249,13 @@ class AddMeetingFileAPI(APIView):
                     print("Down")
                 except requests.exceptions.HTTPError:
                     print("4xx, 5xx")
-                    
+                """
                 #save data
                 query_set = Summary.objects.get(meeting_id=meeting_id)
                 main_queryset_serializer = Summary_Serializers(query_set)
                 query_set.meeting_summary =  "NEW SUMMARY"
                 query_set.save()
             
-            #make it celery task
-            #summary,transcript = summarization_function(newPath,file=True)
-            #Summary.objects.filter(meeting_id=meeting_id).update(meeting_summary=summary,meeting_transcript=transcript)
         return Response({"data":{"meeting_id":meeting_id,"status":"File uploaded successfully"}},status=status.HTTP_201_CREATED)  # ADD A REDIRECT URL HERE
 
 class SummaryPageAPI(APIView):
@@ -299,18 +297,160 @@ class SummaryPageAPI(APIView):
 
         for single_key in listofkeys:
             meta_data_dict[single_key] = content.get(single_key)
-        meta_data_dict['speaker']=  ""  #[""]  #om will do
+        meta_data_dict['speaker']=  [
+                            {
+                                "sepaker_name": "sepaker1",
+                                "sepaker_duration": 10,
+                                "sepaker_quality": [
+                                    "good",
+                                    "bad"
+                                ],
+                                "roles_detected": [
+                                    "role1",
+                                    "role2"
+                                ]
+                            },
+                            {
+                                "sepaker_name": "sepaker2",
+                                "sepaker_duration": 10,
+                                "sepaker_quality": [
+                                    "good",
+                                    "bad"
+                                ],
+                                "roles_detected": [
+                                    "role1"
+                                ]
+                            }
+                        ]  #[""]  #om will do
         meta_data_list.append(meta_data_dict)
         meeting_data_dict["metadata"] = meta_data_list
 
         for single_key in summary_dict_key:
             summary_dict[single_key] = content.get(single_key)
-        summary_dict['agenda'] = ['']  #agenda wala handle kar na hai
+        summary_dict['agenda'] = "Dummy Agenda"  #agenda wala handle kar na hai
 
-        summary_dict['highlights'] = "" #[" "]   #om will do
+        summary_dict['highlights'] = [
+                                {
+                                    "main_timestamps": [
+                                        {
+                                            "timestamp": "00:00:00",
+                                            "headline": "Meeting started",
+                                            "internal_timestamp": [
+                                                {
+                                                    "time": "00:10:00",
+                                                    "text": "Meeting started"
+                                                },
+                                                {
+                                                    "time": "00:20:00",
+                                                    "text": "Meeting started"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "timestamp": "1:00:00",
+                                            "headline": "Middle Part started",
+                                            "internal_timestamp": [
+                                                {
+                                                    "time": "1:10:00",
+                                                    "text": "Topic 1 Disussion"
+                                                },
+                                                {
+                                                    "time": "2:20:00",
+                                                    "text": "Topic 2 Disussion"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "timestamp": "3:00:00",
+                                            "headline": "Middle Part 2 Comeback started",
+                                            "internal_timestamp": [
+                                                {
+                                                    "time": "3:10:00",
+                                                    "text": " Oka whe need to complete it by sunday"
+                                                },
+                                                {
+                                                    "time": "4:10:00",
+                                                    "text": "But all are busy & me  ; ("
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "timestamp": "4:00:00",
+                                            "headline": "Meeting Ended",
+                                            "internal_timestamp": [
+                                                {
+                                                    "time": "4:10:00",
+                                                    "text": "Conclstion "
+                                                },
+                                                {
+                                                    "time": "6:10:00",
+                                                    "text": "Bye Bye"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ] #[" "]   #om will do
         summary_data_list.append(summary_dict)
         meeting_data_dict['summary'] = summary_data_list
-        meeting_data_dict['trascript'] = [""] #om will do
+        meeting_data_dict['trascript'] = [
+                        {
+                            "meeting_transcript": "hello",
+                            "meeting_transcript_with_actions": [
+                                {
+                                    "time_stamp": 0,
+                                    "speaker": " Speaker 1",
+                                    "text": "Good morning everyone and welcome to our weekly team meeting. Today wel be discussing the progress of our ongoing projects and planning for the next quarter.",
+                                    "end_time": 0,
+                                    "start_time": 0,
+                                    "attributes": [
+                                        {
+                                            "is_question": True,
+                                            "back_channel": [
+                                                "yes",
+                                                "no"
+                                            ],
+                                            "is_answer": False
+                                        }
+                                    ]
+                                },
+                                {
+                                    "time_stamp": 75200,
+                                    "speaker": " Speaker 2",
+                                    "text": "Thanks, Speaker 1. I'd like to start by sharing an update on the marketing campaign we launched last month. Our initial metrics are looking very promising and we're already seeing an uptick in website traffic and engagement.",
+                                    "end_time": 75200,
+                                    "start_time": 0,
+                                    "attributes": [
+                                        {
+                                            "is_question": True,
+                                            "back_channel": [
+                                                "yes",
+                                                "no"
+                                            ],
+                                            "is_answer": False
+                                        }
+                                    ]
+                                },
+                                {
+                                    "time_stamp": 150500,
+                                    "speaker": " Speaker 3",
+                                    "text": "Thats great to hear, Speaker 2. I think we should also consider expanding our reach to new markets, especially in Europe where we've seen a lot of interest lately.",
+                                    "end_time": 225700,
+                                    "start_time": 75200,
+                                    "attributes": [
+                                        {
+                                            "is_question": False,
+                                            "back_channel": [
+                                                "yes",
+                                                "no"
+                                            ],
+                                            "is_answer": True
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ] #om will do
         meeting_data_list.append(meeting_data_dict)
         data_dict['meeting_data'] = meeting_data_list
         data_dict["email_redirect"] = f"mailto:{decoded_token['email']}"
@@ -319,6 +459,14 @@ class SummaryPageAPI(APIView):
     
     def post(self,request,meeting_id):
         try :
+                    
+            authorization_header = request.META.get('HTTP_AUTHORIZATION')
+            token = authorization_header.replace("Bearer ", "")
+            
+            decoded_token = auth.verify_id_token(token)
+            firebase_user_id = decoded_token['user_id']
+            User_info.objects.get(user_firebase_token=firebase_user_id)
+            
             response_data = request.body.decode('utf-8')
             query_set = Summary.objects.get(meeting_id=meeting_id)
             main_queryset_serializer = Summary_Serializers(query_set)
@@ -346,11 +494,11 @@ class StartSummarization(APIView):
             main_queryset = Summary.objects.get(meeting_id=meeting_id)
         except ObjectDoesNotExist:
             return Response({"data":{"error":"Meeting Summary does not exist"}},status=status.HTTP_400_BAD_REQUEST)
-        
+        import time
+        time.sleep(10)
         # Start summarization ------------------------------------------------>
         
-        summary_serializer = Summary_Serializers(main_queryset)
-        main_queryset.is_summarized = True
+        Summary.objects.filter(meeting_id=meeting_id).update(is_summarized = True)
         return Response({"data":{"meeting_id":meeting_id,"status":"Summarization started"}},status=status.HTTP_200_OK)
     
 class DownloadpdfAPI(APIView):
@@ -378,7 +526,7 @@ class EditUserDataAPI(APIView) :
     
     permission_classes = user_auth_required()
     
-    def get(self,request,username):
+    def get(self,request):
         
         authorization_header = request.META.get('HTTP_AUTHORIZATION')
         token = authorization_header.replace("Bearer ", "")
@@ -387,9 +535,15 @@ class EditUserDataAPI(APIView) :
         firebase_user_id = decoded_token['user_id']
         User_info.objects.get(user_firebase_token=firebase_user_id)
         
-        User_data = User.objects.get(username=username)
+        User_data = User_info.objects.get(user_firebase_token=firebase_user_id)
         User_data_serializer = User_info_Serializers(User_data)
-        return Response({"data": {"user_data": User_data_serializer.data}}, status=status.HTTP_200_OK)
+        return Response({"data": {"user_data": 
+                            {"name": User_data_serializer.data['name'],
+                             "username": User_data_serializer.data['username'],
+                             "email": User_data_serializer.data['email'],
+                             "user_prof_type": User_data_serializer.data['user_prof_type'],
+                             "user_meeting_category": User_data_serializer.data['user_meeting_category'].split(",")},
+                        }}, status=status.HTTP_200_OK)
 
     @csrf_exempt
     def post(self,request):
@@ -403,12 +557,16 @@ class EditUserDataAPI(APIView) :
             User_info.objects.get(user_firebase_token=firebase_user_id)
 
             #getting the data from the request
-            data = JSONParser().parse(request)
-            user_name = data['username']
-            query_set = User.objects.get(username=user_name)
-            query_set.save()
+            data = JSONParser().parse(request)['data']['user_data']
+            User_info.objects.filter(user_firebase_token = firebase_user_id).update(
+                name = data['name'],
+                username = data['username'],
+                user_prof_type = data['user_prof_type'],
+                user_meeting_category = data['user_meeting_category'],
+            )
             return Response(status=status.HTTP_200_OK)
         except Exception as e :
+            print(e)
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
 # FEEEDBACK API
