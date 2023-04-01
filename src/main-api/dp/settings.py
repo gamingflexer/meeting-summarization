@@ -33,14 +33,27 @@ MONGO_DB_URL = config('MONGO_DB_URL')
 DEBUG = True
 
 # Cors settings
-CORS_ORIGIN_ALLOW_ALL = False
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDITENTIALS = True
-ALLOWED_HOSTS = ['*']
-CORS_ALLOWED_ORIGINS = ['http://*']
-CORS_ORIGIN_WHITELIST = (
+# CORS_ORIGIN_ALLOW_ALL = False
+# # CORS_ALLOW_ALL_ORIGINS = True
+# CSRF_COOKIE_SECURE = False
+# CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_HEADERS = [
+#     'accept',
+#     'accept-encoding',
+#     'authorization',
+#     'content-type',
+#     'dnt',
+#     'origin',
+#     'user-agent',
+#     'x-csrftoken',
+#     'x-requested-with']
+
+# ALLOWED_HOSTS = ['*']
+# CORS_ALLOWED_ORIGINS = ['http://*']
+CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-)
+    'http://127.0.0.1:3000',
+]
 
 AUTH_USER_MODEL = 'authentication.User'
 
@@ -82,11 +95,10 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
-    'dp.middleware.MyMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
