@@ -25,12 +25,12 @@ import torch
 from transformers import AutoTokenizer, AutoModel, LongT5ForConditionalGeneration, LEDForConditionalGeneration
 
 # load tokenizer
-# tokenizer = AutoTokenizer.from_pretrained("asach/lognt5-xsum-icsi-400-10")
-# model = LongT5ForConditionalGeneration.from_pretrained("asach/lognt5-xsum-icsi-400-10").to("cuda").half()
-# tokenizer = AutoTokenizer.from_pretrained("asach/lognt5-xsum-icsi-5")
-# model = LongT5ForConditionalGeneration.from_pretrained("asach/lognt5-xsum-icsi-5").to("cuda").half()
-# tokenizer = AutoTokenizer.from_pretrained("asach/led-dialogSum-1epoch")
-# model = LEDForConditionalGeneration.from_pretrained("asach/led-dialogSum-1epoch").to("cuda").half()
+tokenizer = AutoTokenizer.from_pretrained("asach/lognt5-xsum-icsi-400-10")
+model = LongT5ForConditionalGeneration.from_pretrained("asach/lognt5-xsum-icsi-400-10").to("cuda").half()
+tokenizer = AutoTokenizer.from_pretrained("asach/lognt5-xsum-icsi-5")
+model = LongT5ForConditionalGeneration.from_pretrained("asach/lognt5-xsum-icsi-5").to("cuda").half()
+tokenizer = AutoTokenizer.from_pretrained("asach/led-dialogSum-1epoch")
+model = LEDForConditionalGeneration.from_pretrained("asach/led-dialogSum-1epoch").to("cuda").half()
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
 def processors_call_on_trancript(transcript): # in the format of the json | whisper
