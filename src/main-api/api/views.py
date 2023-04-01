@@ -68,7 +68,7 @@ class OnboardingAPI(APIView): # ???
                 return Response({"data":main_queryset_serializer.data},status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
-            return Response({"error":"Invalid Token or Token expired"},status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error":"Invalid Token or Token expired"},status=status.HTTP_401_UNAUTHORIZED)
         
 class LandingPageAPI(APIView):
     
@@ -106,7 +106,7 @@ class LandingPageAPI(APIView):
                                 },status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
-            return Response({"error":"Invalid Token or Token expired"},status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error":"Invalid Token or Token expired"},status=status.HTTP_401_UNAUTHORIZED)
     
 class AddMeetingAPI(APIView):
     
@@ -147,7 +147,7 @@ class AddMeetingAPI(APIView):
                             status=status.HTTP_201_CREATED)
         except Exception as e:
                 print(e)
-                return Response({"error":"Invalid Token or Token expired"},status=status.HTTP_400_BAD_REQUEST)
+                return Response({"error":"Invalid Token or Token expired"},status=status.HTTP_401_UNAUTHORIZED)
         
 class AddMeetingFileAPI(APIView):
     
