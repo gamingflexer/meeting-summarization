@@ -14,15 +14,12 @@ urlpatterns = [
     path('addmeeting', AddMeetingAPI.as_view(), name='addmeeting'),
     path('addmeetingfile/<int:meeting_id>', AddMeetingFileAPI.as_view(), name='addmeetingfile'),
 
-    # Summary API
-    path('summary/<int:meeting_id>', SummaryPageAPI.as_view(), name='summary'),
-    
+    # Summary API    
     path('userinfo/<str:username>', EditUserDataAPI.as_view(), name='fetch_user_data'),
     path('summary/<int:meeting_id>', SummaryPageAPI.as_view(), name='summary'), # Edit summary also in this
     path('summary/<int:meeting_id>/start', StartSummarization.as_view(), name='summary_start'),
     path('summary/<int:meeting_id>/pdf', DownloadpdfAPI.as_view(), name='summary_pdf'),
     path('summary/feedback/<int:meeting_id>/<str:param>/<int:val>', FeedBackAPI.as_view(), name='summary_feedback'), #is_good #factual_consistency
-
 
     # Google Calendar API
     path('rest/v1/calendar/init/', GoogleCalendarInitView.as_view(), name='calendar_init'),
@@ -31,7 +28,7 @@ urlpatterns = [
     path('meetings-data/<api_keyword>', GoogleCalendarMultipleEventsView.as_view(), name='calendar_upcoming_event'),
 
     # User API
-    path('userinfo/<str:username>', EditUserDataAPI.as_view(), name='fetch_user_data'),
+    path('userinfo', EditUserDataAPI.as_view(), name='fetch_user_data'),
     
     # Analytics API
     path('analytics/<user_id>', AnalyticsAPI.as_view(), name='analytics'),
