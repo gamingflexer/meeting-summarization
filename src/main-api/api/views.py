@@ -41,6 +41,29 @@ class OnboardingAPI(APIView): # ???
     
     permission_classes = user_auth_required()
     
+    @csrf_exempt
+    def get(self, request):
+        authorization_header = request.META.get('HTTP_AUTHORIZATION')
+        token = authorization_header.replace("Bearer ", "")
+        
+        try:
+            decoded_token = auth.verify_id_token(token)
+            firebase_user_id = decoded_token['user_id']
+            main_queryset = User_info.objects.filter(user_firebase_token=firebase_user_id).get()
+            main_queryset_serializer = User_info_Serializers(main_queryset)
+            if main_queryset_serializer.data['onboarding_status'] == True:
+                return Response({"data":"Onboarding Done"},status=status.HTTP_200_OK)
+            else:
+                return Response({"data":"Onboarding Not Done"},status=status.HTTP_404_NOT_FOUND)
+        
+        except User_info.DoesNotExist:
+            return Response({"data":"User does not exist"},status=status.HTTP_404_NOT_FOUND)
+        
+        except Exception as e:
+            print(e)
+            return Response({"error":"Invalid Token or Token expired"},status=status.HTTP_401_UNAUTHORIZED)
+    
+    @csrf_exempt
     def post(self, request):
         
         authorization_header = request.META.get('HTTP_AUTHORIZATION')
@@ -60,7 +83,8 @@ class OnboardingAPI(APIView): # ???
             User.objects.create_user(email=firebase_user_email,username=firebase_user_name, password=firebase_user_id)
             data_inserted = {"user_prof_type":data['user_prof_type'],
                             "user_meeting_category":data['user_meeting_category'],
-                            "email" : firebase_user_email}
+                            "email" : firebase_user_email,
+                            "onboarding_status": True}
             main_queryset_serializer = User_info_Serializers(main_queryset,data=data_inserted)
             
             if main_queryset_serializer.is_valid():
@@ -74,6 +98,7 @@ class LandingPageAPI(APIView):
     
     permission_classes = user_auth_required()
     
+    @csrf_exempt
     def get(self, request):
         
         authorization_header = request.META.get('HTTP_AUTHORIZATION')

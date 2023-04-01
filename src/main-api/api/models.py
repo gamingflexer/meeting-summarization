@@ -12,6 +12,7 @@ class User_info(models.Model):
     email = models.CharField(max_length=255, unique=True)
     user_prof_type = models.CharField(max_length=255, default='SDE')
     user_meeting_category = models.CharField(max_length=255, default='tech')
+    onboarding_status = models.BooleanField(default=False)
     
 class Summary(models.Model):  # all meeting data
     meeting_id = models.AutoField(primary_key=True)
