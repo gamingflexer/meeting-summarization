@@ -13,7 +13,7 @@ from django.views import View
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from api.serializers import CalendarEventSerializer
-from api.models import Summary
+from api.models import Summary,User_info
 from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Q
@@ -27,6 +27,13 @@ from .views import firebase_app,auth
 class GoogleCalendarInitView(View):
 
     def get(self, request, *args, **kwargs):
+        
+        authorization_header = request.META.get('HTTP_AUTHORIZATION')
+        token = authorization_header.replace("Bearer ", "")
+        
+        decoded_token = auth.verify_id_token(token)
+        firebase_user_id = decoded_token['user_id']
+        User_info.objects.filter(user_firebase_token=firebase_user_id).update(calender_onboarding_status=True)
 
         flow = InstalledAppFlow.from_client_secrets_file(
             '../main-api/config/client_secret.json',
@@ -45,7 +52,6 @@ class GoogleCalendarInitView(View):
 
 
         request.session['state'] = state
-
         # Redirect the user to the authorization URL.
         return redirect(authorization_url)
 
@@ -85,8 +91,7 @@ class GoogleCalendarRedirectView(View):
             'scopes': credentials.scopes
         }
 
-
-        return redirect('http://localhost:8000/api/rest/v1/calendar/events')
+        return redirect('http://localhost:3000/calendar')
 
 
 class GoogleCalendarEventsView(View):

@@ -4,16 +4,22 @@ from rest_framework import status
 from django.shortcuts import render
 from rest_framework.views import APIView
 from django.http import HttpResponseRedirect
-from django.views import View
-from django.http import JsonResponse
+from django.shortcuts import redirect
 from .micro_auth_utility import *
 from api.serializers import MicrosoftEventSerializer
-from api.models import Summary
-
+from api.models import User_info
 from .views import firebase_app,auth
 
 class MicrosoftCalendarInitView(APIView):
+    
     def get(self, request, *args, **kwargs):
+        authorization_header = request.META.get('HTTP_AUTHORIZATION')
+        token = authorization_header.replace("Bearer ", "")
+        
+        decoded_token = auth.verify_id_token(token)
+        firebase_user_id = decoded_token['user_id']
+        User_info.objects.filter(user_firebase_token=firebase_user_id).update(calender_onboarding_status=True)
+        
         flow = get_sign_in_flow()
         try:
             request.session['auth_flow'] = flow
@@ -22,31 +28,33 @@ class MicrosoftCalendarInitView(APIView):
         return HttpResponseRedirect(flow['auth_uri'])
 
 class MicrosoftCallback(APIView):
+    
     def get(self, request, *args, **kwargs):
         try:
             result = get_token_from_code(request)
             request.session['micro_credentials'] = result
             access_token = result['access_token']
-            # just checking access token
+            #Just checking access token
             graph_url = 'https://graph.microsoft.com/v1.0/me/calendar/events'
             response = requests.get(
                 url="{0}/".format(graph_url),
                 headers={"Authorization": "Bearer {0}".format(access_token)},
             )
-            return Response(status=status.HTTP_200_OK)
+            return redirect('http://localhost:3000/calendar')
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class MicrosoftEvent(APIView):
+    
     def get(self, request, *args, **kwargs):
         try :
-            # authorization_header = request.META.get('HTTP_AUTHORIZATION')
-            # token = authorization_header.replace("Bearer ", "")
+            authorization_header = request.META.get('HTTP_AUTHORIZATION')
+            token = authorization_header.replace("Bearer ", "")
             
-            # decoded_token = auth.verify_id_token(token)
-            # firebase_user_id = decoded_token['user_id']
-            firebase_user_id = "DL7rKD68CEYEpNd9eTIjBF6QDbt2"
+            decoded_token = auth.verify_id_token(token)
+            firebase_user_id = decoded_token['user_id']
+            #firebase_user_id = "DL7rKD68CEYEpNd9eTIjBF6QDbt2"
         
             access_token = (request.session['micro_credentials']).get('access_token')
             graph_url = "https://graph.microsoft.com/v1.0/me/calendar/events"
@@ -82,12 +90,10 @@ class MicrosoftEvent(APIView):
                         event_dic['meet_platform'] = 'zoom'
                     elif (event_dic['meet_link']).find('team') != -1:
                         event_dic['meet_platform'] = 'team'
-                    #print(event_dic)
                     microsoft_calender_event_serializer = MicrosoftEventSerializer(data=event_dic)
                     microsoft_calender_event_serializer.is_valid(raise_exception=True)
                     if (microsoft_calender_event_serializer.is_valid()):
                         microsoft_calender_event_serializer.save()
-                        #print("here")
             return Response(status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
