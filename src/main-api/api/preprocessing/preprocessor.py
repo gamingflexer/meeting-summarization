@@ -45,7 +45,6 @@ def any_transcript_to_dataframe(file_path):
         raise Exception(' \n IMP ERROR :File extension not supported \n', file_extension)
     
     """PREPROCESSING FUNCTIONS"""
-    # print(df)
     df_grouped = pd.DataFrame()
     df_grouped['speaker_dialogue'] = df['speaker'] + ': ' + df['text']
     speaker_dialogue = df_grouped['speaker_dialogue'].str.cat(sep='\n')
@@ -56,7 +55,7 @@ def any_transcript_to_dataframe(file_path):
         durations = duration_from_transcript(segmented_df,file_extension)
     attendeces_count = len(df['speaker'].unique())
     #print(segmented_df,speaker_dialogue,durations,attendeces_count)
-    return segmented_df,speaker_dialogue,(str(durations) + " min"),attendeces_count
+    return segmented_df,speaker_dialogue,(str(durations)[:3] + " min"),attendeces_count
 
 
 def identify_meeting_link(meeting_link):

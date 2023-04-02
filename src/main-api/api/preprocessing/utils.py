@@ -1,6 +1,7 @@
 import json
 import pandas as pd
 from bs4 import BeautifulSoup
+from datetime import datetime
 import re
 import os
 
@@ -141,14 +142,26 @@ def transcript_to_dataframe(file_path):
 
 def transcript_webvtt_to_dataframe(file_path):
     with open(file_path, 'r') as f:
-        lines = f.readlines()
-    rows = []
-    for i in range(len(lines)):
-        if ' --> ' in lines[i]:
-            start_time, end_time = lines[i].strip().split(' --> ')
-            text = lines[i+1].strip().replace(':', ': ')
-            rows.append({'start_time': start_time, 'end_time': end_time, 'text': text})
-    df = pd.DataFrame(rows)
+        content = f.read()
+
+    pattern = r'(\d+)\n(\d{2}:\d{2}:\d{2}.\d{3}) --> (\d{2}:\d{2}:\d{2}.\d{3})\n(\[.*\]): (.*)\n\n'
+    matches = re.findall(pattern, content)
+    data = []
+
+    for match in matches:
+        start_time = match[1]
+        end_time = match[2]
+        speaker = match[3].replace('[', '').replace(']', '')
+        text = match[4]
+
+        data.append({
+            'start_time': start_time,
+            'end_time': end_time,
+            'speaker': speaker,
+            'text': text
+        })
+
+    df = pd.DataFrame(data)
     return df
 
 def segment_transcript(df):
@@ -211,30 +224,32 @@ def duration_from_transcript(df,file_extension):
             duration = (end_time - start_time).seconds
             return duration
     if file_extension == '.html':
-        print(df)
         df["timestamp"] = pd.to_datetime(df["timestamp"])
         print(df["timestamp"])
         start_time = df.iloc[0]["timestamp"]
         end_time = df.iloc[-1]["timestamp"]
         duration = (end_time - start_time).total_seconds()
         return duration
-    # try:
-    #     df['time'] = pd.to_timedelta(df['time_stamp'])
-    #     # Calculate the end time for each speaker
-    #     df['end_time'] = df['time_stamp']
-    #     # Shift the end time by one row to get the start time for each speaker
-    #     df['start_time'] = df['end_time'].shift()
-    #     # Calculate the duration for each speaker
-    #     df['duration'] = df['end_time'] - df['start_time']
-    # except KeyError:
-    #     print("ERROR !! : ",e)
-    #     if 'start_time' in df.columns:
-    #         if str(df['start_time'][0]) == "nan":
-    #             start_time = "00.000"
-    #             return {"start_time":start_time,"end_time":df['end_time'][df.index[-1]]}
-    #         return {"start_time":df['start_time'][0],"end_time":df['end_time'][df.index[-1]]}
-        
-    # if str(df['start_time'][0]) == "nan":
-    #         start_time = "00.000"
-    #         return {"start_time":start_time,"end_time":df['end_time'][df.index[-1]]}
-    # return {"start_time":df['start_time'][0],"end_time":df['end_time'][df.index[-1]]}
+    if file_extension == '.txt':
+        start_time = None
+        end_time = None
+        for index, row in df.iterrows():
+            if row["main_timestamps"] == "start":
+                start_time = datetime.datetime.strptime(row["time_stamp"], '%H:%M:%S.%f')
+            else:
+                end_time = datetime.datetime.strptime(row["time_stamp"], '%H:%M:%S.%f')
+        if start_time is None:
+            return 0
+        elif end_time is None:
+            return -1
+        else:
+            duration = end_time - start_time
+            return duration.total_seconds()
+    if file_extension == '.vtt':
+        start_times = df['start_time'].apply(lambda x: datetime.datetime.strptime(x, '%H:%M:%S.%f'))
+        end_times = df['end_time'].apply(lambda x: datetime.datetime.strptime(x, '%H:%M:%S.%f'))
+
+        # Calculate duration for each row and sum them up
+        durations = (end_times - start_times).apply(lambda x: x.total_seconds())
+        total_duration = durations.sum()
+        return total_duration/60
