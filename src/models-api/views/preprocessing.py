@@ -5,7 +5,7 @@ from nltk import ne_chunk, pos_tag, word_tokenize
 from nltk.tree import Tree
 from date_extractor import extract_dates
 from deep_translator import GoogleTranslator
-
+from config import JARGONS_TEXT_FILE
 import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans
@@ -93,7 +93,7 @@ def get_jargon_sentences(transcript):
 
     jargon_list = ["AI", "machine learning", "neural network", "big data", "algorithm"]
     
-    with open("src/models-api/data/jargons.txt", "r") as f:
+    with open(JARGONS_TEXT_FILE, "r") as f:
         jargon_list.append(f.read().splitlines())
     
     jargon_sentences = []

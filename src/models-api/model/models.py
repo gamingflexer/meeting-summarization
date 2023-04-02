@@ -84,13 +84,13 @@ def led_summarizer(model,model_id_or_path,text):
   return results
 
 # Define prediction function
-def action_items_distil_bert(text_list,path_to_model):  
+def action_items_distil_bert(text_list):  
     
     top_action_items = []
     
     for text in text_list:
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        model_state_dict = torch.load(path_to_model,map_location=torch.device('cpu'))
+        model_state_dict = torch.load("",map_location = device)
         tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
         # Create model instance
         model = DistilBertForSequenceClassification.from_pretrained('distilbert-base-uncased', num_labels=2)

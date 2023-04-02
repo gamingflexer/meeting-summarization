@@ -35,13 +35,12 @@ class PreProcesssor(): # which features are taken totally depends on the meeting
         human_names = get_human_name(self.text)
         return human_names
     
-    def get_corrected_text(self,cleaned_text):
-        corrected_text = correct_sentence(cleaned_text,spell)
+    def get_corrected_text(self):
+        corrected_text = correct_sentence(self.text,spell)
         return corrected_text
     
     def get_jargon_sentences(self):
-        text = self.text
-        jargon_sentences = get_jargon_sentences(text)
+        jargon_sentences = get_jargon_sentences(self.text)
         return jargon_sentences
     
     def get_meeting_structure(self):
@@ -80,9 +79,9 @@ def processors_call_on_trancript(transcript_df, transcript_joined, summary): # i
     # non-formatted transcript preprocessor [WORKS NON FORMATTED]
     trancript_object = PreProcesssor(transcript_joined)
     email,date,phone_numbers,addresses = trancript_object.get_entites()
-    speaker_names = trancript_object.get_speaker_names()
+    # speaker_names = trancript_object.get_speaker_names()
     corrected_text = trancript_object.get_corrected_text()
-    jargon_sentences = trancript_object.get_jargon_sentences(corrected_text)
+    jargon_sentences = trancript_object.get_jargon_sentences()
     action_items_list = trancript_object.get_action_items(corrected_text)
     
     trancript_prepocessor_object = TranscriptPreProcessor(backchannels = "nlp")
@@ -106,7 +105,7 @@ def processors_call_on_trancript(transcript_df, transcript_joined, summary): # i
             "meta_data":{"email":email,
                         "imp_dates":date,
                         "phone_numbers":phone_numbers,
-                        "human_names":speaker_names,
+                        # "human_names":speaker_names,
                         "addresses":addresses,
                         "jargon_sentences":jargon_sentences,
                         "action_items":action_items_list,
