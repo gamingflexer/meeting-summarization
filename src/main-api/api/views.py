@@ -568,6 +568,7 @@ class EditUserDataAPI(APIView) :
                              "email": User_data_serializer.data['email'],
                              "user_prof_type": User_data_serializer.data['user_prof_type'],
                              "user_meeting_category": User_data_serializer.data['user_meeting_category'].split(",")},
+                             "calender_onboarding_status": User_data_serializer.data['calender_onboarding_status'],
                         }}, status=status.HTTP_200_OK)
 
     @csrf_exempt
