@@ -52,10 +52,10 @@ class TranscriptPreProcessor():
         
         if self.backchannels == "keyword": # both are dataframe
             backchannels_via_keywords = transcript_analysis.tag_backchannel().query("is_backchannel == True") #identify backchannel utterances via keywords
-            return backchannels_via_keywords
+            return backchannels_via_keywords.to_json(orient="records")
         else:
             backchannels_via_transformers = transcript_analysis.tag_backchannel(type='nlp').query("is_backchannel == True") #identify backchannel utterances with sentence-transformers
-            return backchannels_via_transformers
+            return backchannels_via_transformers.to_json(orient="records")
         
             
     def get_emotions(self,transcript_analysis):
