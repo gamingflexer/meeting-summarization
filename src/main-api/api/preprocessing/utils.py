@@ -225,7 +225,6 @@ def duration_from_transcript(df,file_extension):
             return duration
     if file_extension == '.html':
         df["timestamp"] = pd.to_datetime(df["timestamp"])
-        print(df["timestamp"])
         start_time = df.iloc[0]["timestamp"]
         end_time = df.iloc[-1]["timestamp"]
         duration = (end_time - start_time).total_seconds()

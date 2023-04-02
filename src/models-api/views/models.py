@@ -2,7 +2,7 @@ import whisper
 import spacy
 import requests
 
-from transformers import pipeline
+from transformers import pipeline,GenerationConfig
 from transformers import TFAutoModelForSeq2SeqLM,PegasusForConditionalGeneration,AutoModel,AutoTokenizer,AutoModelForSeq2SeqLM
 
 from model.models import bart_summarize, longformer_summarize, pegasus_summarize, bart_title_summarizer, longt5_summarizer, led_summarizer
@@ -19,6 +19,10 @@ import os
 import uuid
 
 from config import AUDIO_FOLDER
+import torch
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+whisper2 = pipeline('automatic-speech-recognition', model = 'asach/whisper_ami_finetuned-added',chunk_length_s=30) #'/home/student/Documents/dp/v1.1/whisper_ami
 
 def audio_enhance(file): #NOT TO USED IF YOU USING FINETUNED MODEL
     audio_data, sample_rate = rosa.load(file, sr=16000)
@@ -28,7 +32,6 @@ def audio_enhance(file): #NOT TO USED IF YOU USING FINETUNED MODEL
     return path_to_save 
 
 def wav_to_transcript(wav_file_path,model_name="base", segments = False):
-    whisper2 = pipeline('automatic-speech-recognition', model = 'asach/whisper_ami_finetuned-added', device = 0,chunk_length_s=30) #'/home/student/Documents/dp/v1.1/whisper_ami
     whisper2.model.generation_config = GenerationConfig.from_pretrained("openai/whisper-medium")
     result = whisper2(wav_file_path, return_timestamps=True)['text']
     if segments:
@@ -64,7 +67,8 @@ class ModelSelect():
             model = pipeline("summarization", model=self.model_id_or_path)
             return model
         elif self.modelname == "longformer":
-            model = TFAutoModelForSeq2SeqLM.from_pretrained(self.model_id_or_path,from_pt=True).to("cuda")
+            with tf.device("cuda"):
+                model = TFAutoModelForSeq2SeqLM.from_pretrained(self.model_id_or_path,from_pt=True)
             return model
         elif self.modelname == "pegasus":
             model = PegasusForConditionalGeneration.from_pretrained(self.model_id_or_path).to("cuda")

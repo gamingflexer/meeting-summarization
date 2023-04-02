@@ -80,7 +80,7 @@ def ModelSelectFromLength(transcript):
         asach/lognt5-xsum-icsi-400-10 [Important points from second line]
         """
 
-        model_used_1 = "MingZhong/DialogLED-base-16384"
+        model_used_1 = "asach/DialogLED-yash-samsum"
         model_used_2 = "asach/lognt5-xsum-icsi-400-10"
 
         new_model_1 = ModelSelect(modelname = 'led',model_id_or_path= model_used_1,text = transcript,max_new_tokens=200)

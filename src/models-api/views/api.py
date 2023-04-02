@@ -54,7 +54,7 @@ class AudioApi(Resource):
             audio_mp3_path = extract_audio_from_any_file(os.path.join(UPLOAD_FOLDER, filename))
             print(" ---> Audio extracted")
             #new_audio_path = audio_enhance(audio_mp3_path)
-            result_base = wav_to_transcript(audio_mp3_path,segments=True)
+            result_base = wav_to_transcript(audio_mp3_path,segments=False)
             print(" ---> Transcript generated")
             #result_denoised  = wav_to_transcript(new_audio_path,segments=True)
             return {
