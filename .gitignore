@@ -153,3 +153,5 @@ test-teams.ipynb
 src/main-api/test.json
 src/models-api/data/audio/*
 src/scripts/*
+src/models-api/data/sd
+src/models-api/converse
