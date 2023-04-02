@@ -3,7 +3,7 @@ import spacy
 import requests
 
 from transformers import pipeline,GenerationConfig
-from transformers import TFAutoModelForSeq2SeqLM,PegasusForConditionalGeneration,AutoModel,AutoTokenizer,AutoModelForSeq2SeqLM
+from transformers import TFAutoModelForSeq2SeqLM,PegasusForConditionalGeneration,AutoModel,AutoTokenizer,AutoModelForSeq2SeqLM,LongT5ForConditionalGeneration,LEDForConditionalGeneration
 
 from model.models import bart_summarize, longformer_summarize, pegasus_summarize, bart_title_summarizer, longt5_summarizer, led_summarizer
 # from model.extractive import extract_sentences
@@ -76,11 +76,11 @@ class ModelSelect():
             return model
         elif self.modelname == "pegasus":
             model = PegasusForConditionalGeneration.from_pretrained(self.model_id_or_path).to("cuda")
-        elif self.modename == "title":
+        elif self.modelname == "title":
             model = AutoModelForSeq2SeqLM.from_pretrained(self.model_id_or_path).to("cuda")
-        elif self.modename == "longt5":
+        elif self.modelname == "longt5":
             model = LongT5ForConditionalGeneration.from_pretrained(self.model_id_or_path).to("cuda").half()
-        elif self.modename == "led":
+        elif self.modelname == "led":
             model = LEDForConditionalGeneration.from_pretrained("asach/led-dialogSum-1epoch").to("cuda").half()
         else:
             print("\nModel not found\n")
@@ -105,14 +105,14 @@ class ModelSelect():
             return summary
         elif self.modelname == "pegasus":
             summary = pegasus_summarize(model,self.model_id_or_path, self.text)
-        elif self.modename == "title":
-            summary = bart_title_summarizer(model,self.model_path_local,self.text)
+        elif self.modelname == "title":
+            summary = bart_title_summarizer(model,self.model_id_or_path,self.text)
             return summary
-        elif self.modename == "longt5":
-            summary = longt5_summarizer(model,self.model_path_local,self.text)
+        elif self.modelname == "longt5":
+            summary = longt5_summarizer(model,self.model_id_or_path,self.text)
             return summary
-        elif self.modename == "led":
-            summary = led_summarizer(model,self.model_path_local,self.text)
+        elif self.modelname == "led":
+            summary = led_summarizer(model,self.model_id_or_path,self.text)
             return summary
         else:
             print("\nModel not loaded\n")

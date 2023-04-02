@@ -1,7 +1,4 @@
 from views.models import ModelSelect
-import tensorflow as tf
-gpus = tf.config.experimental.list_physical_devices('GPU')
-tf.config.experimental.set_memory_growth(gpus[0], True)
 
 def ModelSelectFromLength(transcript):
     words = transcript.split(" ")
@@ -68,7 +65,7 @@ def ModelSelectFromLength(transcript):
         new_model_2 = ModelSelect(modelname = 'longt5',model_id_or_path= model_used_2,text = transcript,max_new_tokens=200)
         model_2 = new_model_2.load_model()
         results_2 = new_model_2.generate_summary(model_2)
-        results_2_edited = (results_2.split(".")[:1]).join(".")
+        results_2_edited = ".".join(results_2.split(".")[:1])
 
         results_concat = str(results_1) + str(results_2)
         models_conact = str(model_used_1 + ',' + model_used_2)
@@ -93,7 +90,7 @@ def ModelSelectFromLength(transcript):
         new_model_2 = ModelSelect(modelname = 'longt5',model_id_or_path= model_used_2,text = transcript,max_new_tokens=200)
         model_2 = new_model_2.load_model()
         results_2 = new_model_2.generate_summary(model_2)
-        results_2_edited = (results_2.split(".")[:1]).join(".")
+        results_2_edited = ".".join(results_2.split(".")[:1])
 
         results_concat = str(results_1) + str(results_2)
         models_conact = str(model_used_1 + ',' + model_used_2)

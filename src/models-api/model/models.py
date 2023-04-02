@@ -2,6 +2,10 @@ from transformers import AutoTokenizer, DistilBertForSequenceClassification, Dis
 import torch
 import requests
 
+import tensorflow as tf
+gpus = tf.config.experimental.list_physical_devices('GPU')
+tf.config.experimental.set_memory_growth(gpus[0], True)
+
 from decouple import config
 HUGGING_FACE_KEY = config('HUGGING_FACE_KEY')
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
