@@ -19,7 +19,8 @@ def longformer_summarize(model,model_id_or_path,text,max_new_tokens=200):
     #model = TFAutoModelForSeq2SeqLM.from_pretrained(hub_model_id,from_pt=True)
     try:
       text_final = "summarize: " + text
-      inputs = tokenizer(text_final, return_tensors="tf").input_ids.to("cuda")
+      with tf.device("/gpu:0"):
+        inputs = tokenizer(text_final, return_tensors="tf").input_ids
       outputs = model.generate(inputs, max_new_tokens=max_new_tokens, do_sample=False)
       return tokenizer.decode(outputs[0], skip_special_tokens=True)
     except IndexError:

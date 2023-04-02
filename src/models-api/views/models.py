@@ -18,6 +18,10 @@ from datetime import timedelta
 import os
 import uuid
 
+import tensorflow as tf
+gpus = tf.config.experimental.list_physical_devices('GPU')
+tf.config.experimental.set_memory_growth(gpus[0], True)
+
 from config import AUDIO_FOLDER
 import torch
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -67,7 +71,7 @@ class ModelSelect():
             model = pipeline("summarization", model=self.model_id_or_path)
             return model
         elif self.modelname == "longformer":
-            with tf.device("cuda"):
+            with tf.device("/gpu:0"):
                 model = TFAutoModelForSeq2SeqLM.from_pretrained(self.model_id_or_path,from_pt=True)
             return model
         elif self.modelname == "pegasus":
