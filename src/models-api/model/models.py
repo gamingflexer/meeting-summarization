@@ -1,7 +1,8 @@
 from transformers import AutoTokenizer, DistilBertForSequenceClassification, DistilBertTokenizer
 import torch
 import requests
-
+import os
+from config import MODEL_FOLDER
 import tensorflow as tf
 gpus = tf.config.experimental.list_physical_devices('GPU')
 tf.config.experimental.set_memory_growth(gpus[0], True)
@@ -86,11 +87,17 @@ def led_summarizer(model,model_id_or_path,text):
 # Define prediction function
 def action_items_distil_bert(text_list):  
     
+    # Load model
+    if not os.path.exists(MODEL_FOLDER):
+    # If the path does not exist, create the directory
+      os.makedirs(MODEL_FOLDER)   
+      os.system(f"git clone https://huggingface.co/asach/bert-action-items {MODEL_FOLDER}") 
+
     top_action_items = []
     
     for text in text_list:
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        model_state_dict = torch.load("",map_location = device)
+        model_state_dict = torch.load(os.path.join(MODEL_FOLDER,"bert-action-items","model.pth"),map_location = device)
         tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
         # Create model instance
         model = DistilBertForSequenceClassification.from_pretrained('distilbert-base-uncased', num_labels=2)

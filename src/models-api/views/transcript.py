@@ -12,7 +12,7 @@ spacy.load('en_core_web_sm')
 
 class TranscriptPreProcessor():
     
-    def __init__(self, transcript, # trancript is a df file here
+    def __init__(self,df, transcript, # trancript is a df file here
                  backchannels,
                  column_utter = 'utterance',
                  column_speaker = 'speaker',
@@ -21,7 +21,7 @@ class TranscriptPreProcessor():
         
         self.zst = ZeroShotTopicFinder()
         self.transcript = transcript #json
-        self.df = pd.DataFrame(self.transcript)
+        self.df = df
         
         """
         Columns: speaker | start_time | end_time | utterance/text
@@ -36,11 +36,7 @@ class TranscriptPreProcessor():
         self.backchannels = backchannels #Can be "nlp" or "keyword"
         
     def analyse_transcript(self):
-        transcript_analysis = Callyzer(data=self.df, 
-                                       utterance=self.column_utter, 
-                                       speaker=self.column_speaker, 
-                                       starttime=self.column_start_time, 
-                                       endtime=self.column_end_time)
+        transcript_analysis = Callyzer(data=self.df, utterance="utterance", speaker="speaker", starttime="start_time", endtime="end_time")
         return transcript_analysis
         
     def get_interactions_silence(self,transcript_analysis):

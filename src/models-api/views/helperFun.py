@@ -13,6 +13,7 @@ if DEBUG == False:
     from views.transcript import TranscriptPreProcessor
     print("\nChatbot Model getting loaded\n")
     model_chat,tokenizer_chat = load_chatbot()
+    print("\n Done \n")
     
 spell = SpellChecker()
 
@@ -82,13 +83,13 @@ def processors_call_on_trancript(transcript_df, transcript_joined, summary): # i
     # speaker_names = trancript_object.get_speaker_names()
     corrected_text = trancript_object.get_corrected_text()
     jargon_sentences = trancript_object.get_jargon_sentences()
-    action_items_list = trancript_object.get_action_items(corrected_text)
+    #action_items_list = trancript_object.get_action_items(corrected_text)
     
-    trancript_prepocessor_object = TranscriptPreProcessor(backchannels = "nlp")
-    analyse_transcript_var = trancript_prepocessor_object.analyse_transcript(transcript_df)
-    get_interactions_silence = trancript_prepocessor_object.get_interactions_silence(transcript_df)
-    backchannels = trancript_prepocessor_object.get_backchannels(transcript_df)
-    stats = trancript_prepocessor_object.get_stats(transcript_df) #speaker stats
+    trancript_prepocessor_object = TranscriptPreProcessor(df = transcript_df, transcript = transcript_joined,backchannels = "nlp")
+    analyse_transcript_var = trancript_prepocessor_object.analyse_transcript()
+    get_interactions_silence = trancript_prepocessor_object.get_interactions_silence(analyse_transcript_var)
+    backchannels = trancript_prepocessor_object.get_backchannels(analyse_transcript_var)
+    stats = trancript_prepocessor_object.get_speaker_stats() #speaker stats
     #df_cluster = trancript_prepocessor_object.get_cluster(df).to_json(orient='records') # what to do with this?
 
     #chatbot godel
@@ -108,7 +109,7 @@ def processors_call_on_trancript(transcript_df, transcript_joined, summary): # i
                         # "human_names":speaker_names,
                         "addresses":addresses,
                         "jargon_sentences":jargon_sentences,
-                        "action_items":action_items_list,
+                        # "action_items":action_items_list,
                         "get_interactions_silence":get_interactions_silence,
                         "backchannels":backchannels,
                         "stats":stats,
