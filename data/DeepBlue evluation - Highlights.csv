@@ -1,0 +1,285 @@
+Trasncipt,Your Model Name & ouput below,BART-5-EPOCH-AMI_HIGHLIGHTS (Yash),DISTILBART-XSUM-12-3 REDDIT_TIFU_LONG,DISTILBART-XSUM-12-3 REDDIT_TIFU_LONG (4 epochs)
+"#Person1#: Steven, I need badly your help. #Person2#: What's the matter? #Person1#: My wife has found that I have an affair with my secretary, and now she is going to divorce me. #Person2#: How could you cheat on your wife? You have been married for ten years. #Person1#: Yes, I know I'm wrong. But I swear that the affair lasts only for two months. And I still love my wife. I couldn't live without her. #Person2#: I will try my best to persuade her to reconsider the divorce. But are you sure that from now on you will be faithful to her forever? #Person1#: Yes, I swear.
+",,The members of the same group are meeting in a conference room.,"trying to help my wife not get divorced.
+","['thinking my wife was cheating on me, and now she is going to divorce me.']"
+"#Person1#: I've had it! I am done working for a company that is taking me nowhere! #Person2#: So what are you gonna do? Just quit? #Person1#: That's exactly what I am going to do! I have decided to create my own company! I am going to write up a business plan, get some investors and start working for myself! #Person2#: Have you ever written up a business plan before? #Person1#: Well, no, it can't be that hard! I mean, all you have to do is explain your business, how you are going to do things and that's it, right? #Person2#: You couldn't be more wrong! A well written business plan will include an executive summary which highlights the idea of the business in two pages or less. Then you need to describe your company with information such as what type of legal structure it has, history, etc. #Person1#: Well, that seems easy enough. #Person2#: Wait, there is more! Then you need to introduce and describe your goods or services. What they are and how they are different from competitors? Then comes the hard part, a market analysis. You need to investigate and analyze hundreds of variables! You need to take into consideration socioeconomic factors from GDP per capita to how many children on average the population has! All this information is useful so that you can move on to your strategy and implementation stage, where you will describe in detail how you will actually execute your idea. #Person1#: Geez. Is that all? #Person2#: Almost, the most important piece of information for your investors will be the financial analysis. Here you will calculate and estimate sales, cash flow and profits. After all, people will want to know when they will begin to see a return on their investment! #Person1#: Umm. I think I ' ll just stick to my old job and save myself all the hassle of trying to start up a business!
+",,The project manager opens the door to the first meeting of the group.,"trying to make a business plan for myself.
+","['trying to create my own own own company!']"
+"Original Transcript : 
+Chairman Wormsley: Each of you has received the agenda. I will entertain a motion that the agenda be approved.
+
+Commissioner Brown: So moved.
+
+Commissioner Hobbs: Seconded
+
+Chairman Wormsley: It has been moved and seconded that the agenda be approved as received by the members. All those in favor signify by saying ""Aye""?...Opposed by saying ""No""?...The agenda is approved. You have received a copy of the minutes of the last meeting. Are there any corrections or additions to the meeting?
+
+Commissioner McCroskey: Mister Chairman, my name has been omitted from the Special Committee on Indigent Care.
+
+Chairman Wormsley: Thank you. If there are no objections, the minutes will be corrected to include the name of Commissioner McCroskey. Will the clerk please make this correction. Any further corrections? Seeing none, without objection the minutes will stand approved as read. (This is sort of a short cut way that is commonly used for approval of minutes and/or the agenda rather than requiring a motion and second.)
+
+Chairman Wormsley: Commissioner Adkins, the first item on the agenda is yours.
+
+Commissioner Adkins: Mister Chairman, I would like to make a motion to approve the resolution taking money from the Data Processing Reserve Account in the County Clerk's office and moving it to the equipment line to purchase a laptop computer.
+
+Commissioner Carmical: I second the motion.
+
+Chairman Wormsley: This resolution has a motion and second. Will the clerk please take the vote.
+
+Chairman Wormsley: The resolution passes. We will now take up old business. At our last meeting, Commissioner McKee, your motion to sell property near the airport was deferred to this meeting. You are recognized.
+
+Commissioner McKee: I move to withdraw that motion.
+
+Chairman Wormsley: Commissioner McKee has moved to withdraw his motion to sell property near the airport. Seeing no objection, this motion is withdrawn. The next item on the agenda is Commissioner Rodgers'.
+
+Commissioner Rodgers: I move adopton of the resolution previously provided to each of you to increase the state match local litigation tax in circuit, chancery, and criminal courts to the maximum amounts permissible. This resolution calls for the increases to go to the general fund.
+
+Chairman Wormsley: Commissioner Duckett
+
+Commissioner Duckett: The sheriff is opposed to this increase.
+
+Chairman Wormsley: Commissioner, you are out of order because this motion has not been seconded as needed before the floor is open for discussion or debate. Discussion will begin after we have a second. Is there a second?
+
+Commissioner Reinhart: For purposes of discussion, I second the motion.
+
+Chairman Wormsley: Commissioner Rodgers is recognized.
+
+Commissioner Rodgers: (Speaks about the data on collections, handing out all sorts of numerical figures regarding the litigation tax, and the county's need for additional revenue.)
+
+Chairman Wormsley: Commissioner Duckett
+
+Commissioner Duckett: I move an amendment to the motion to require 25 percent of the proceeds from the increase in the tax on criminal cases go to fund the sheriff's department.
+
+Chairman Wormsley: Commissioner Malone
+
+Commissioner Malone: I second the amendment.
+
+Chairman Wormsley: A motion has been made and seconded to amend the motion to increase the state match local litigation taxes to the maximum amounts to require 25 percent of the proceeds from the increase in the tax on criminal cases in courts of record going to fund the sheriff's department. Any discussion? Will all those in favor please raise your hand? All those opposed please raise your hand. The amendment carries 17-2. We are now on the motion as amended. Any further discussion?
+
+Commissioner Headrick: Does this require a two-thirds vote?
+
+Chairman Wormsley: Will the county attorney answer that question?
+
+County Attorney Fults: Since these are only courts of record, a majority vote will pass it. The two-thirds requirement is for the general sessions taxes.
+
+Chairman Wormsley: Other questions or discussion? Commissioner Adams.
+
+Commissioner Adams: Move for a roll call vote.
+
+Commissioner Crenshaw: Second
+
+Chairman Wormsley: The motion has been made and seconded that the state match local litigation taxes be increased to the maximum amounts allowed by law with 25 percent of the proceeds from the increase in the tax on criminal cases in courts of record going to fund the sheriff's department. Will all those in favor please vote as the clerk calls your name, those in favor vote ""aye,"" those against vote ""no."" Nine votes for, nine votes against, one not voting. The increase fails. We are now on new business. Commissioner Adkins, the first item on the agenda is yours.
+
+Commissioner Adkins: Each of you has previously received a copy of a resolution to increase the wheel tax by $10 to make up the state cut in education funding. I move adoption of this resolution.
+
+Chairman Wormsley: Commissioner Thompson
+
+Commissioner Thompson: I second.
+
+Chairman Wormsley: It has been properly moved and seconded that a resolution increasing the wheel tax by $10 to make up the state cut in education funding be passed. Any discussion? (At this point numerous county commissioners speak for and against increasing the wheel tax and making up the education cuts. This is the first time this resolution is under consideration.) Commissioner Hayes is recognized.
+
+Commissioner Hayes: I move previous question.
+
+Commisioner Crenshaw: Second.
+
+Chairman Wormsley: Previous question has been moved and seconded. As you know, a motion for previous question, if passed by a two-thirds vote, will cut off further debate and require us to vote yes or no on the resolution before us. You should vote for this motion if you wish to cut off further debate of the wheel tax increase at this point. Will all those in favor of previous question please raise your hand? Will all those against please raise your hand? The vote is 17-2. Previous question passes. We are now on the motion to increase the wheel tax by $10 to make up the state cut in education funding. Will all those in favor please raise your hand? Will all those against please raise your hand? The vote is 17-2. This increase passes on first passage. Is there any other new business? Since no member is seeking recognition, are there announcements? Commissioner Hailey.
+
+Commissioner Hailey: There will be a meeting of the Budget Committee to look at solid waste funding recommendations on Tuesday, July 16 at noon here in this room.
+
+Chairman Wormsley: Any other announcements? The next meeting of this body will be Monday, August 19 at 7 p.m., here in this room. Commissioner Carmical.
+
+Commissioner Carmical: There will be a chili supper at County Elementary School on August 16 at 6:30 p.m. Everyone is invited.
+
+Chairman Wormsley: Commissioner Austin.
+
+Commissioner Austin: Move adjournment.
+
+Commissioner Garland: Second.
+
+Chairman Wormsley: Without objection, the meeting will stand adjourned.
+
+
+",,The agenda is approved and the minutes of the last meeting will stand approved as read,"trying to approve the agenda at a meeting.
+","['trying to approve the agenda at the same time.']
+"
+"[""PhD A asked if they were using a wireless microphone, and PhD F said yes. Professor C said that they abandoned the lapel because they couldn't find a point where they would get a good quality sound without interference, although it seemed that the lapel was a good option, because there were some sounds that were worse heard with this microphone than with the lapel."", ""PhD A asked if they were using a wireless microphone and PhD F said yes. Professor C said they abandoned the lapel because they couldn't find a good spot where they would get good quality sound without interference or background noise. Either way, you could argue that the lapel was a good choice, because it was in the middle, because there were some sounds like little mouth clicks and breaths that were worse with this mic than with the lapel. PhD F said that the microphone number was written on the back of the unit and that the channel number should be one less than what was written on the back, so it should be zero."", 'PhD F reported that they placed an order for 12 new machines to use as a compute farm, although they did not know when they would arrive. The farm would have a number of utilities that would make it very easy to run things using P-make and Customs. PhD F explained that there was a command called ""run-command"" with which the system would find the fastest way to run the job on an available machine, exporting the job there and duplicating the environment. Each machine that would be part of the network would have associated attributes about the amount of memory on the machine, its speed, and the operating system, so that when they used the run command, those attributes could be specified. If there was a job running on the machine you were trying to select, your job would be queued and then when the resource or machine became available, your job would be exported there. Grad G asked what if they had thousands of little jobs to do. PhD F said that they could write a script called run-command for each sub-job, but that they shouldn\'t run more than 10 jobs at a time because they could saturate the network and delay other people\'s work. PhD F said it was possible to use the run command in this case, but the program wouldn\'t know that other tasks were running, instead, if you wrote a P-make file, you could define how many tasks there would be and how many machines could be used simultaneously. Professor C asked why to use the make command instead of P-make. PhD F said that if you didn\'t want to write a P-make script and someone was using the machine you normally use, you could use ""run-command"" and the program would find the best available machine and run your work there. Professor C asked if anyone could stop the work of that machine by pressing a button. PhD F said that some machines in the institute had an attribute called ""no evict"", and if specified, the job would go to a machine that would not be evicted from its work, because although work would restart on another machine automatically if someone evicted it, it may be a waste of time. Professor C asked what if someone worked from home and needed to evict work from their computer to use it, but needed someone to press a key to be able to do it. PhD F said Andreas did something about it. Professor C said you could ask Andreas.', 'PhD F reported that they ordered 12 new machines to use as a compute farm with P-make and Customs. Each machine would have associated attributes on its characteristics in order to be specified. PhD F explained that there was a command called ""run-command"" with which the system would find the fastest way to run the job on an available machine, though it wouldn\'t know if there were concurrent jobs, but with a P-make file, you could define the number of tasks and machines that could be used simultaneously. PhD F added that they should not run more than 10 jobs at a time to avoid saturating the network and creating delays, because if there was one job running, the next one would be queued. Professor C asked if someone could stop the work by pressing a button. PhD F said that some machines have an attribute where they cannot be evicted. Professor C asked if a button needed to be pressed to evict work from the computer, in case someone worked from home. PhD F said that Andreas did something about it.', 'Grad G asked what would happen if they had thousands of small jobs to do, and PhD F said that they should not run more than 10 jobs at a time, so as not to saturate the network and delay the work of others. Professor C gave the example of the Rutgers or Hopkins shop, where they became much less efficient because 25 people were sending things to all the machines at the same time, and that was slower than even each having their own computer.', ""Professor C; the Rutgers or Hopkins workshop; everybody was real excited cuz they got twenty-five machines and there was some kind of P-make; sit sent things out; things were a lot less efficient than if you'd just use your own machine."", 'PhD F said that each machine that would be part of the P-make and Customs network would have associated attributes about its amount of memory, its speed, the operating system, and even the name of each machine, so using ""run command"" would specify those attributes. This could balance the load of the machines. Professor C asked if someone could come and press a key to stop work on a given machine. PhD F said that some of the machines in the institute had an attribute called ""don\'t evict"", and if you specified that in one of your attribute lines, you would go to a machine that won\'t have your work evicted.', 'PhD F said that each machine that would be part of the P-make and Customs network would have associated attributes like how much memory, speed, operating system, or name the machine had, even if the machine could be evicted, so when you used something like ""run-command"" you could specify those attributes for your program.', 'PhD F said that there was a command called ""execute command"", with which the system would find the fastest way to execute the job on the best available machine based on the given attributes. Grad G asked what they would do with the run command if they had a lot of work to do. PhD F said that they could write a script called execute command in each child job, but be careful not to run more than 10 jobs at a time so as not to saturate the network. PhD D asked if jobs that were released would be queued. PhD F said that if you use ""run command"" the system doesn\'t know if something else was running, because it\'s meant to run one job at a time, but with P-make the system would know of all the jobs to run and how many runs simultaneously. Professor C asked why use ""execute command"" instead of P-make. PhD F said that if you didn\'t want to write a P-make script and someone was using the machine you normally use, you could say ""run command"" and the system would find the largest available machine to run the job on.', 'PhD F said there was a command they could use called ""run-command"" where the system would find the fastest available machine to export your job to that machine, and run it there duplicating your environment. Each machine on the network has attributes associated with its own characteristics, and when you use something like ""run command"", you could specify those attributes for your program. Grad G asked what they would do with ""run command"" if they had a thousand little jobs to do. PhD F said that they could write a script which called run command on each sub-job. Grad G asked if that would be necessary a thousand times. PhD F said yes, but you should probably not run more than ten jobs yourself at any one time, because it would just bring everything to a halt and people\'s jobs would get delayed. To do this, you would need to put some logic to use ""run command"" to only have ten of those going at a time. PhD D asked if released jobs would be systematically queued for execution. PhD F said it depends, if you use ""run command"" the system doesn\'t know about other things that you might be running, because it\'s meant to run one job at a time, but if you use P-make, the system would know about all the jobs which it has to run and how many to run simultaneously. Professor C asked why use ""execute command"" rather than P-make. PhD F said that if you didn\'t want to write a P-make script and somebody\'s using the machine you typically use, you could say ""run command"" and the system would find the fastest currently available machine and run your job there.', ""PhD F wanted to update the group on some computing things that were going on. PhD F said that they ordered 12 new machines to use as a compute farm, plus some SUN-blade 100s, although they didn't know how long it would take to arrive, but these would have a number of little utilities that would make it very easy to run things using P-make and Customs, so you wouldn't have to write P-make scripts and stuff. With all the new machines installed, they would have a lot more compute to use."", 'PhD F; just put in an order for about twelve new machines, to use as sort of a compute farm; ordered SUN-Blade-one-hundreds; Andreas; got a number of little utilities that make it very easy to run things using P-make and Customs.', 'PhD F said there was a command called ""run-command"" that you could use in conjunction with some job you wanted to run, and the program would find the fastest machine available and export your job to that machine to run by duplicating its environment. Each machine that would be part of the P-make and Customs network would have attributes about its characteristics and even its name, so that when you ran the command, you could specify those attributes and thereby control where your jobs go, to a certain extent, all the way down to an individual machine. If there was already a job running, on some machine you were trying to select, your job would be queued and then when that machine became available, your job would be exported there. This would help balance the workload of all the machines.', 'PhD F; there\'s a command that you can use called ""run command""; if you say that and then some job that you want to execute, it will find the fastest currently available machine, and export your job to that machine and run it there and it\'ll duplicate your environment. If there\'s already a job running, on some machine that you\'re trying to select, your job will get queued up, and then when that resource, that machine becomes available, your job will get exported there.']",,The project manager opened the meeting and described the decision to abandon the lapel.,"not using a wireless microphone as a lapel.
+","['not replacing the lapel with a microphone.']"
+"S1 said Another problem with the study is that most ( or at least more ) people in the country very well might identify as Christian... S2 said Jyoshu, you don't know how they conducted the study. You don't know what questions they asked, or what they screening process was, or anything. You're just making up objections, and deciding without any factual evidence that they apply. S1 said Yes, that's the point. I'd prefer to know the specifics. Questioning a study is a VERY appropriate thing to do in any study, particularly if it's used to vilify a group of people. S2 said So then question, don't just state that the study has a problem. And "" vilify ""? Good grief! Where did you get that from? You seem to be taking this a bit too much to heart. A study was done, and done well from all evidence that I've seen, and the results reported. No one is vilifying anyone. If you can show an actuall problem with the study, and not something hypothetical that you came up with, than please do so. It seems quite professionally done to me, but you go ahead and dig all you want. But if you're simply uncomfortable with the results, well, that ' s no reason to go around saying that people aren't doing their jobs or are out to vilify others. S1 said Er... that's why I pointed out the specific things I saw as a problem. Are you in a bit of a reactionary mood today? Yeah, because in my experience in these forums, here and elsewhere, an enormous amount of attention is given to trying to make Christianity look bad, through generalizations, citing irrelevant studies, and misrepresentations. See, the divorce rate of Christians has NO bearing whatsoever on the gay marriage amendment. Or did you forget that? S2 said No more than usual. :) You, however, are stating that some is a problem, as opposed to possibly a problem. As if you wanted to simply dismiss the results, rather than actually check their validity. That's pretty reactionary. As long as people say that they're trying to protect the "" sanctity "" of marriage by keeping gays out it's extremely relevant, or at least a very good refutation.",,The project manager opened the meeting by discussing the findings of a study that found that the most people in the country were not Christian.,"['questioning a study for the first time.']
+","['questioning a study that might have a problem.']
+"
+"Um I'm Craig and I'm User Interface. Yeah. Well, my favourite animal would be a monkey. Then they're small cute and furry, and uh when planet of the apes becomes real, I'm gonna be up there with them. Yeah. I know um My parents went out and bought um remote controls because um they got fed up of having four or five different remote controls for each things the house. So um for them it was just how many devices control. Uh.
+Mm-hmm. Great. And I'm Andrew and I'm uh our marketing expert. Mm-hmm. Mm-hmm. Yeah, that's that's it. Yeah. I will go. That's fine. Alright. So This one here, right? Okay. Very nice. Alright. My favourite animal is like A beagle. Um charac favourite characteristics of it? Is that right? Uh, right, well basically um high priority for any animal for me is that they be willing to take a lot of physical affection from their family. And, yeah that they have lots of personality and uh be fit and in robust good health. So this is blue. Blue beagle. My family's beagle. I coulda told you a whole lot more about beagles. Boy, let me tell you. Impressionist. Alright. Mm. Superb sketch, by the way. Yep. I see a dog in there. Yep. Now I see a rooster. What kind is it? Is he aware that th it's his own cha tail he's chasing? Hmm. Probably when he was little he got lots of attention for doing it and has forever been conditioned. 'Kay. Um, can we just go over that again? Uh, so bas at twel Alright, yeah. Okay. So cost like production cost is twelve fifty, but selling price is is that wholesale or retail? Like on the shelf. Our sale our sale anyway. Yeah, okay okay. Okay. Mm-hmm. Alright. Yes. Mm-hmm. Mm-hmm. Well right away I'm wondering if there's um th th uh, like with D_V_D_ players, if there are zones. Um f frequencies or something um as well as uh characters, um different uh keypad styles and s symbols. Um. I don't know. Yeah. Yeah. Yeah. And then a and then al the other thing international is on top of the price. I'm thinking the price might might appeal to a certain market in one region, whereas in another it'll be different, so Just a chara just a characteristic of the Just Or just like, basic product podi positioning, the twenty five Euro remote control might be a big hit in London, might not be such a big hit in Greece, who knows, something like that, yeah. Yep. Right away I'm making some kind of assumptions about what what information we're given here, thinking, 'kay trendy probably means something other than just basic, something other than just standard. Um so I'm wondering right away, is selling twenty five Euros, is that sort of the thi is this gonna to be like the premium product kinda thing or Uh-huh. Mm-hmm. Yep. Yeah, I'd say so, yeah. No. Yeah, yeah. Mm-hmm. Do we have any other background information on like how that compares to other other Yeah. Mm-hmm. Yeah, interesting thing about discussing um production of a remote control for me is that l as you point out, I just don't think of remote controls as somethin something people consciously assess in their purchasing habits. It's just like getting shoelaces with shoes or something. It just comes along. Do you know what I mean? Like so sort of like how do you I I mean one one way of looking at it would be, well the people producing television sets, maybe they have to buy remote controls. Or another way is maybe people who have T_V_ sets are really fed up with their remote control and they really want a better one or something. But Right. Right. Okay so Right, so in function one of the priorities might be to combine as many uses I think so. Yeah, yeah. Yeah. Well like um, maybe what we could use is a sort of like a example of a successful other piece technology is palm palm pilots. They're gone from being just like little sort of scribble boards to cameras, M_P_ three players, telephones, everything, agenda. So, like, I wonder if we might add something new to the to the remote control market, such as the lighting in your house, or um Yeah, yeah. An Yeah. Like, p personally for me, at home I've I've combined the um the audio video of my television set and my D_V_D_ player and my C_D_ player. So they w all work actually function together but I have different remote controls for each of them. So it's sort of ironic that that then they're in there um you know, the sound and everything it's just one system. But each one's got its own little part. Mm. Mm. Mm. Mm-hmm. Mm-hmm. Yeah. Yeah. That's just really good id Yep. Uh, sure. I remember when the first remote control my my family had was on a cable. Actually had a cable between it and the T_V_ and big like buttons that sort of like, like on a blender or something. And um, you know, when I think about what they are now, it's better, but actually it's still kind of, I dunno, like a massive junky thing on the table. Maybe we could think about how, could be more, you know, streamlined. S Something like that, yeah. Or whatever would be technologically reasonable. 'Cause it could b it could it could be that f it could be that functionally that doesn't make it any better, but that just the appeal of of not having You know, these days there's a r pe things in people's homes are becoming more and more like chic, you know. Um, nicer materials and might be be worth exploring anyway. Okay. Um. Before we wrap up, just to make sure we're all on the same page here, um, do we We were given sort of an example of a coffee machine or something, right? Well, um are we at ma right now on the assumption that our television remote control may have features which go beyond the television? Or are we keeping sort of like a a design commitment to television features? I I don't know. Yep. Yeah, sure. Okay. Okay, yeah. Okay. Okay. Okay. Alright.
+Okay. Right. Um well this is the kick-off meeting for our our project. Um and um this is just what we're gonna be doing over the next twenty five minutes. Um so first of all, just to kind of make sure that we all know each other, I'm Laura and I'm the project manager. Do you want to introduce yourself again? Okay. Great. Okay. Um so we're designing a new remote control and um Oh I have to record who's here actually. So that's David, Andrew and Craig, isn't it? And you all arrived on time. Um yeah so des uh design a new remote control. Um, as you can see it's supposed to be original, trendy and user friendly. Um so that's kind of our our brief, as it were. Um and so there are three different stages to the design. Um I'm not really sure what what you guys have already received um in your emails. What did you get? Mm-hmm. Is that what everybody got? Okay. Um. So we're gonna have like individual work and then a meeting about it. And repeat that process three times. Um and at this point we get try out the whiteboard over there. Um. So uh you get to draw your favourite animal and sum up your favourite characteristics of it. So who would like to go first? Very good. Mm-hmm. Yeah. Yeah. Right. Lovely. Right. You can take as long over this as you like, because we haven't got an awful lot to discuss. Ok oh we do we do. Don't feel like you're in a rush, anyway. Ach why not We might have to get you up again then. I don't know what mine is. I'm gonna have to think on the spot now. Is that a whale? Ah. Okay. God, I still don't know what I'm gonna write about. Um. I was gonna choose a dog as well. But I'll just draw a different kind of dog. M my favourite animal is my own dog at home. Um That doesn't really look like him, actually. He looks more like a pig, actually. Ah well. Do you? Oh that's very good of you. Uh. Um he's a mixture of uh various things. Um and what do I like about him, um That's just to suggest that his tail wags. Um he's very friendly and cheery and always pleased to see you, and very kind of affectionate and um uh and he's quite quite wee as well so you know he can doesn't take up too much space. Um and uh And he does a funny thing where he chases his tail as well, which is quite amusing, so It is. I think it is. He only does it after he's had his dinner and um he'll just all of a sudden just get up and start chasing his tail 'round the living room. Yeah, so uh Yeah, maybe. Maybe. Right, um where did you find this? Just down here? Yeah. Okay. Um what are we doing next? Uh um. Okay, uh we now need to discuss the project finance. Um so according to the brief um we're gonna be selling this remote control for twenty five Euro, um and we're aiming to make fifty million Euro. Um so we're gonna be selling this on an international scale. And uh we don't want it to cost any more than uh twelve fifty Euros, so fifty percent of the selling price. Sure. All together. Um I dunno. I imagine That's a good question. I imagine it probably is our sale actually because it's probably up to the the um the retailer to uh sell it for whatever price they want. Um. But I I don't know, I mean do you think the fact that it's going to be sold internationally will have a bearing on how we design it at all? Think it will? Um. Hmm. Oh yeah, regions and stuff, yeah. Yeah. Okay. Yeah. Well for a remote control, do you think that will be I suppose it's depends on how complicated our remote control is. Yeah, yeah. Okay. What, just like in terms of like the wealth of the country? Like how much money people have to spend on things like? Aye, I see what you mean, yeah. Marketing. Good marketing thoughts. Oh gosh, I should be writing all this down. Um. Mm. Yeah. Yeah, yeah. Like how much does, you know, a remote control cost. Well twenty five Euro, I mean that's um that's about like eighteen pounds or something, isn't it? Or no, is it as much as that? Sixteen seventeen eighteen pounds. Um, I dunno, I've never bought a remote control, so I don't know how how good a remote control that would get you. Um. But yeah, I suppose it has to look kind of cool and gimmicky. Um right, okay. Let me just scoot on ahead here. Okay. Um well d Does anybody have anything to add to uh to the finance issue at all? Thin No, actually. That would be useful, though, wouldn't it, if you knew like what your money would get you now. Mm-hmm. Yeah, yeah. Oh. Five minutes to end of meeting. Oh, okay. We're a bit behind. Yeah. Right, so do you think that should be like a main design aim of our remote control d you know, do your your satellite and your regular telly and your V_C_R_ and everything? Mm-hmm. Yeah. Or even like, you know, notes about um what you wanna watch. Like you might put in there oh I want to watch such and such and look a Oh that's a good idea. So extra functionalities. Mm-hmm. Hmm. Um okay, uh I'd wel we're gonna have to wrap up pretty quickly in the next couple of minutes. Um I'll just check we've nothing else. Okay. Um so anything else anybody wants to add about what they don't like about remote controls they've used, what they would really like to be part of this new one at all? You keep losing them. Okay. Yeah. W You get those ones where you can, if you like, whistle or make a really high pitched noise they beep. There I mean is that something we'd want to include, do you think? Dunno. Okay maybe. My goodness. Still feels quite primitive. Maybe like a touch screen or something? Okay. Uh-huh, okay. Well I guess that's up to our industrial designer. It looks better. Yeah. Okay. Okay. Right, well um so just to wrap up, the next meeting's gonna be in thirty minutes. So that's about um about ten to twelve by my watch. Um so inbetween now and then, um as the industrial designer, you're gonna be working on you know the actual working design of it so y you know what you're doing there. Um for user interface, technical functions, I guess that's you know like what we've been talking about, what it'll actually do. Um and uh marketing executive, you'll be just thinking about what it actually what, you know, what requirements it has to has to fulfil and you'll all get instructions emailed to you, I guess. Um. Yeah, so it's th the functional design stage is next, I guess. And uh and that's the end of the meeting. So I got that little message a lot sooner than I thought I would, so Mm-hmm. Uh-huh, yeah. Th Okay, well just very quickly 'cause this we're supposed to finish now. Um I guess that's up to us, I mean you probably want some kind of unique selling point of it, so um, you know Yeah. Mm-hmm. Yeah. Okay. Right, okay, we'll that's that's the end of the meeting, then. Um. So, uh thank you all for coming.
+Hi, I'm David and I'm supposed to be an industrial designer. Um, I just got the project announcement about what the project is. Designing a remote control. That's about it, didn't get anything else. Did you get the same thing? Cool. There's too much gear. Okay. Can't draw. Um. Yeah. Um, well anyway, I don't know, it's just the first animal I can think off the top of my head. Um. Yes. Big reason is 'cause I'm allergic to most animals. Allergic to animal fur, so um fish was a natural choice. Um, yeah, and I kind of like whales. They come in and go eat everything in sight. And they're quite harmless and mild and interesting. Tail's a bit big, I think. It's an after dinner dog then. Hmm. It does make sense from maybe the design point of view 'cause you have more complicated characters like European languages, then you need more buttons. So, possibly. Hmm. Yeah. And you keep losing them. Finding them is really a pain, you know. I mean it's usually quite small, or when you want it right, it slipped behind the couch or it's kicked under the table. You know. Yep. Mm-hmm. I think one factor would be production cost. Because there's a cap there, so um depends on how much you can cram into that price. Um. I think that that's the main factor. Cool.",,The project manager opens the meeting by introducing the team to the team. The Project Manager and the team members. The project manager opened the meeting and discussed the role of the group's favourite animal. The team members and the marketing expert. The marketing expert introduced themselves to the group. The group The,"['letting my parents buy remote remote controls.']","
+['letting my beagle get the best of me.']
+"
+"Interviewer: Hi, thanks for coming in today. Can you tell me a bit about yourself and your experience?
+
+Candidate: Sure, my name is John and I have been working in marketing for the past five years. I have experience in both online and offline marketing, and have worked with a variety of clients in different industries.
+
+Interviewer: That's great. What would you say are your strengths and weaknesses as a marketer?
+
+Candidate: I think my strengths are my ability to come up with creative ideas and strategies, as well as my attention to detail. My weakness is that I tend to be a perfectionist at times, which can sometimes slow down the process.
+
+Interviewer: Interesting. Can you give me an example of a marketing campaign that you worked on and what your role was in it?
+
+Candidate: Sure, I worked on a campaign for a new product launch for one of our clients. My role was to develop the messaging and creative assets, as well as manage the social media and email marketing channels. We ended up exceeding our target sales by 20%, so it was a great success.
+
+Interviewer: That's impressive. How do you stay up to date with the latest trends and technologies in marketing?
+
+Candidate: I read a lot of industry blogs and attend conferences and webinars when I can. I also like to experiment with new tools and platforms to see how they can be applied to our clients' campaigns.
+
+Interviewer: Great. Well, thank you for coming in today and sharing your experience with us. We'll be in touch soon.
+
+Candidate: Thank you for the opportunity. I look forward to hearing back from you",,The project manager opens the meeting and begins the process.,"['working on a marketing campaign for the past five years.']","['trying to be a good sales associate.']"
+"Therapist: Hi, how are you feeling today?
+
+Patient: I'm feeling pretty anxious, to be honest. I've been having trouble sleeping and just feeling on edge all the time.
+
+Therapist: I see. Can you tell me a bit about what's been going on in your life lately?
+
+Patient: Well, I started a new job a few months ago and it's been pretty stressful. I also have some family issues going on that have been weighing on me.
+
+Therapist: That sounds like a lot to handle. What are some strategies that you've tried to manage your anxiety?
+
+Patient: I've been trying to exercise more and practice mindfulness, but it's been hard to stick to a routine.
+
+Therapist: I understand. It can be tough to make changes when you're feeling overwhelmed. Have you considered talking to your doctor about medication to help with the anxiety?
+
+Patient: Yes, I've been on medication before and it did help, but I'm hesitant to go back on it because of the side effects.
+
+Therapist: I see. Well, it's important to weigh the benefits and risks of any treatment option. It might be helpful to discuss this further with your doctor or a psychiatrist.
+
+Patient: That's a good point. I'll make an appointment to talk to them about it.
+
+Therapist: Great. In the meantime, let's work on developing some coping strategies that you can use when you're feeling anxious. Would you be willing to try some relaxation exercises?
+
+Patient: Yes, that sounds good",, The project manager opens the meeting to the first meeting of the industrial user.,"['trying to manage my anxiety and not going on medication.']","['misjudging the side effects of medication.']"
+"Professor: Good morning, everyone. Today we're going to be discussing the concept of social capital and its importance in the modern economy.
+
+Student 1: Excuse me, professor. What exactly is social capital?
+
+Professor: That's a great question. Social capital refers to the networks of relationships between individuals or groups that can be leveraged for economic or social benefit. It
+can include things like trust, reciprocity, and shared norms and values.
+
+Student 2: So how does social capital affect the economy?
+
+Professor: Good question. Social capital can facilitate economic growth by creating a more efficient and productive business environment. For example, when people have strong networks and trust each other, they are more likely to collaborate and share information, which can lead to innovation and new business opportunities.
+
+Student 3: But isn't social capital something that's difficult to measure?
+
+Professor: Yes, you're right. Social capital is not something that can be easily quantified, but there are some ways to assess its impact. One way is to look at social networks and their influence on things like job opportunities and income. Another way is to study the role of social capital in community development and civic engagement.
+
+Student 4: Can you give us an example of how social capital has been used in a real-world context?
+
+Professor: Sure. One example is the microfinance industry, which provides small loans to entrepreneurs in developing countries. Microfinance institutions often rely on social capital to evaluate the creditworthiness of their borrowers, as traditional measures like credit scores may not be available. By leveraging social networks and peer pressure, microfinance institutions have been able to achieve high repayment rates and help lift people out of poverty.
+",,"A group of students opened a meeting in the lobby of the University of California, and discussed the importance of social capital.","['thinking social capital was an important part of the economy.']","['thinking social capital was a good concept to measure.']"
+"Mother: How was school today, dear?
+
+Child: It was good. We learned about space and the planets.
+
+Father: That's interesting. Do you have a favorite planet?
+
+Child: Yes, I like Saturn because it has the rings around it.
+
+Grandparent: Did you know that Saturn's rings are made up of dust, ice, and rocks?
+
+Child: Wow, I didn't know that!
+
+Mother: So, has anyone made any exciting plans for the weekend?
+
+Father: I was thinking we could go on a hike on Saturday.
+
+Grandparent: That sounds like a great idea. There's a trail not too far from here that has a beautiful view of the mountains.
+
+Child: Can we bring our dog, too?
+
+Mother: Of course! He'll love it.
+
+Father: Speaking of dogs, did you hear about the new dog park that just opened up downtown?
+
+Grandparent: No, I hadn't heard about that. That sounds like a fun place to take the grandkids.
+
+Child: Can we go there after the hike?
+
+Father: Sure, we can make a day of it!
+
+Mother: Sounds like a plan. It'll be nice to spend some time outdoors together
+",,The members of the same family meet for the first time this weekend,"['going on a hike with my grandkids.']","['going on a hike with my grandkids.']"
+"Transcript: Company Meeting on Software Requirements
+
+Manager: Good afternoon, everyone. I've called this meeting to discuss the software requirements for our upcoming project. As you know, this project is critical to the success of our company, so it's important that we get the software requirements right.
+
+Developer 1: Can you give us an overview of the project goals and objectives?
+
+Manager: Of course. The project is focused on developing a new software tool for our customer service team. The tool will help them more efficiently track customer inquiries, resolve issues, and improve overall customer satisfaction.
+
+Developer 2: What are some of the specific requirements we need to meet?
+
+Manager: Great question. First and foremost, the software needs to be user-friendly and intuitive. Our customer service team is made up of people with varying levels of technical expertise, so the software needs to be easy to use for everyone. Second, the software needs to integrate with our existing systems and databases. And finally, we need to ensure that the software is secure and meets all industry standards for data privacy.
+
+Developer 3: How are we going to prioritize these requirements?
+
+Manager: Another great question. We'll be using a process called MoSCoW prioritization, which stands for Must have, Should have, Could have, and Won't have. Must-have requirements are critical to the success of the project and cannot be compromised. Should-have requirements are important but can be deprioritized if necessary. Could-have requirements are nice to have but not essential, and won't-have requirements are not considered as part of this project.
+
+Developer 4: Can you give us an example of how this would work in practice?
+
+Manager: Sure. Let's say that one of our must-have requirements is that the software must be able to handle a large volume of customer inquiries without crashing. If we cannot meet this requirement, the project will not be successful. A should-have requirement might be that the software should be able to generate detailed reports on customer service metrics. If we cannot meet this requirement, it would be a setback but not necessarily a showstopper.
+
+Developer 5: That makes sense. How will we track our progress towards meeting these requirements?
+
+Manager: We'll be using a project management tool called JIRA, which will allow us to track each requirement and its status. We'll also be holding regular stand-up meetings to discuss progress and identify any roadblocks.
+
+Designer: I have a question about the user interface. What design principles should we be following?
+
+Manager: That's a great question. The user interface should be clean, simple, and easy to navigate. We want our customer service team to be able to use the software without a lot of training or support. We also want to make sure that the design is consistent with our brand and other software products.
+
+Developer 1: Are there any third-party tools or libraries that we can use to speed up development?
+
+Manager: Yes, we'll be using some open-source libraries for certain functionality, but we need to make sure that they are well-documented and well-maintained. We also need to be aware of any licensing issues and ensure that we are complying with all applicable laws and regulations.
+
+Developer 2: What is our timeline for completing the project?
+
+Manager: We're aiming to have the software completed and deployed within six months. We'll be working in agile sprints, with each sprint lasting two weeks. At the end of each sprint, we'll have a demo to show progress to stakeholders and get feedback.
+
+Marketing: How are we going to market the new software tool?
+
+Manager: Good question. We'll be developing a marketing plan that includes social media campaigns, targeted email campaigns, and a dedicated landing page on our website. We'll also be doing some outreach to industry publications and influencers to get the word out.
+
+Developer 3: Is there anything else we need to be aware of?
+
+Manager: Yes, I want to stress the importance of testing and quality assurance. We need to make sure that the software is thoroughly tested before it's deployed to production. We'll be doing both automated and manual testing, and we'll also be working with our customer service team to do some user acceptance testing.
+
+Designer: One more question - what file format should we be using for our design files?
+
+Manager: We'll be using Sketch for our design files, but we'll also make sure that we export all assets in a format that's easily usable by the development team.
+
+Manager: Alright, that's all the time we have for today. Thanks, everyone, for your questions and input. Let's get started on this project and make it a success!
+
+Transcript: Company Meeting on Software Requirements (Continued)
+
+QA Tester: I have a question about the test environment. What hardware and software configurations should we be testing on?
+
+Manager: That's a great question. We'll need to test on a range of hardware and software configurations to ensure that our software is compatible with different systems. We'll be using virtual machines to create and test on different configurations.
+
+Developer 1: Can we implement any machine learning or AI features in the software?
+
+Manager: Yes, we're exploring the possibility of using machine learning and AI to improve the software's functionality and user experience. However, we need to be careful not to add unnecessary complexity or features that our users don't need or want.
+
+Marketing: How are we going to handle customer support for the new software?
+
+Manager: Good question. We'll be setting up a dedicated support team that will be trained on the software and able to handle any customer issues or questions. We'll also be creating a knowledge base and FAQ section on our website to help customers find answers to common questions.
+
+Developer 2: How are we going to handle data security and privacy concerns?
+
+Manager: Another good question. We need to make sure that the software is secure and compliant with all relevant data privacy regulations. We'll be implementing strong encryption and access controls, as well as regular security audits and assessments.
+
+Designer: Can we add any customization options for users?
+
+Manager: Yes, we're planning on adding some customization options that will allow users to personalize their experience with the software. However, we need to make sure that these options don't add unnecessary complexity or negatively impact the overall user experience.
+
+Manager: Alright, that's all the time we have for today. Thanks, everyone, for your questions and input. Let's continue working on this project and make sure that we deliver a high-quality software product that meets our customers' needs and expectations.
+
+",,The project manager discussed the software requirements for an upcoming project to improve customer satisfaction.,"[""meeting my company's software requirements at a meeting.""]
+","['screwing up a company meeting on software requirements']
+"
