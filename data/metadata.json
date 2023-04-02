@@ -1,0 +1,614 @@
+{
+    "data": {
+        "summary": "• this weekend, the group discussed plans for the weekend, including a hike on saturday and visiting the new dog park that has just opened up downtown\n• the group also talked about a possible trip to the dog park to take the grandkids for a walk\n• the meeting started with a short introduction to the group members favourite planets.",
+        "extras": {
+            "sentiments": "Neutral",
+            "action_items": [],
+            "decisions": [],
+            "risks": [],
+            "assumptions": [],
+            "dependencies": [],
+            "constraints": [],
+            "tradeoffs": [],
+            "open_questions": [
+                "How was school today, dear?",
+                "Do you have a favorite planet?",
+                "Did you know that Saturns rings are made up of dust, ice, and rocks?",
+                "So, has anyone made any exciting plans for the weekend?",
+                "Speaking of dogs, did you hear about the new dog park that just opened up downtown?",
+                "Can we go there after the hike?"
+            ]
+        },
+        "metadata": {
+            "email": [],
+            "imp_dates": [],
+            "phone_numbers": [],
+            "speaker_names": [
+                "CHI",
+                "INV"
+            ],
+            "addresses": [],
+            "jargon_sentences": [],
+            "action_items": [],
+            "get_interactions_silence": {
+                "interruptions": {
+                    "CHI": {
+                        "metadata": [
+                            {
+                                "start_time": 1222.365,
+                                "end_time": 1223.032,
+                                "index": 200
+                            }
+                        ],
+                        "count": 1
+                    },
+                    "INV": {
+                        "metadata": [
+                            {
+                                "start_time": 574.198,
+                                "end_time": 574.931,
+                                "index": 102
+                            }
+                        ],
+                        "count": 1
+                    },
+                    "total_interruption": 2
+                },
+                "silence": {
+                    "CHI": {
+                        "metadata": [
+                            {
+                                "start_time": 188.765,
+                                "end_time": 189.865,
+                                "index": 34
+                            },
+                            {
+                                "start_time": 275.082,
+                                "end_time": 279.215,
+                                "index": 48
+                            },
+                            {
+                                "start_time": 3182.483,
+                                "end_time": 3190.575,
+                                "index": 617
+                            }
+                        ],
+                        "count": 3
+                    },
+                    "INV": {
+                        "metadata": [
+                            {
+                                "start_time": 16.161,
+                                "end_time": 20.777,
+                                "index": 3
+                            },
+                            {
+                                "start_time": 963.0,
+                                "end_time": 964.2,
+                                "index": 166
+                            },
+                            {
+                                "start_time": 1509.049,
+                                "end_time": 1512.706,
+                                "index": 253
+                            },
+                            {
+                                "start_time": 1820.52,
+                                "end_time": 1822.656,
+                                "index": 315
+                            },
+                            {
+                                "start_time": 3485.7,
+                                "end_time": 3486.594,
+                                "index": 685
+                            },
+                            {
+                                "start_time": 3539.524,
+                                "end_time": 3540.255,
+                                "index": 700
+                            }
+                        ],
+                        "count": 6
+                    },
+                    "total_interruption": 9
+                }
+            },
+            "backchannels": [
+                {
+                    "speaker": "INV",
+                    "utterance": "okay great",
+                    "start_time": 79.315,
+                    "end_time": 81.382,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "CHI",
+                    "utterance": "well he",
+                    "start_time": 103.298,
+                    "end_time": 114.7,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 156.133,
+                    "end_time": 156.866,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay good",
+                    "start_time": 196.855,
+                    "end_time": 198.232,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 284.348,
+                    "end_time": 284.914,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 342.564,
+                    "end_time": 343.03,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 450.4,
+                    "end_time": 451.066,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "mhm",
+                    "start_time": 552.698,
+                    "end_time": 554.081,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay.",
+                    "start_time": 574.198,
+                    "end_time": 574.931,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay thats it",
+                    "start_time": 585.064,
+                    "end_time": 585.98,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 585.98,
+                    "end_time": 586.63,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "mhm.",
+                    "start_time": 677.647,
+                    "end_time": 678.33,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "that\"s it",
+                    "start_time": 700.68,
+                    "end_time": 701.13,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 701.13,
+                    "end_time": 701.53,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay.",
+                    "start_time": 714.079,
+                    "end_time": 716.562,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 741.783,
+                    "end_time": 742.149,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "CHI",
+                    "utterance": "yeah",
+                    "start_time": 771.411,
+                    "end_time": 771.895,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "that\"s it",
+                    "start_time": 916.174,
+                    "end_time": 916.974,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 916.974,
+                    "end_time": 917.574,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "that\"s it",
+                    "start_time": 972.75,
+                    "end_time": 973.35,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 973.35,
+                    "end_time": 974.1,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "that\"s it",
+                    "start_time": 1085.45,
+                    "end_time": 1086.016,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "that\"s it",
+                    "start_time": 1174.532,
+                    "end_time": 1175.099,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 1175.099,
+                    "end_time": 1175.432,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 1223.631,
+                    "end_time": 1224.547,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 1379.564,
+                    "end_time": 1380.214,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 1452.549,
+                    "end_time": 1453.399,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 1502.216,
+                    "end_time": 1502.899,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "that\"s it",
+                    "start_time": 1575.922,
+                    "end_time": 1576.526,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 1576.526,
+                    "end_time": 1577.664,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 1669.388,
+                    "end_time": 1672.105,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "CHI",
+                    "utterance": "yeah",
+                    "start_time": 1719.619,
+                    "end_time": 1719.991,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "CHI",
+                    "utterance": "that\"s it",
+                    "start_time": 1719.991,
+                    "end_time": 1722.719,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 1723.521,
+                    "end_time": 1724.206,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay good",
+                    "start_time": 2034.004,
+                    "end_time": 2035.629,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 2153.041,
+                    "end_time": 2153.459,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 2198.258,
+                    "end_time": 2198.723,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 2284.706,
+                    "end_time": 2285.159,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 2382.087,
+                    "end_time": 2382.482,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 2420.042,
+                    "end_time": 2420.947,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "CHI",
+                    "utterance": "yep",
+                    "start_time": 2474.888,
+                    "end_time": 2475.956,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 2488.773,
+                    "end_time": 2489.389,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "mhm.",
+                    "start_time": 2493.452,
+                    "end_time": 2494.218,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 2539.035,
+                    "end_time": 2539.778,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay.",
+                    "start_time": 2574.386,
+                    "end_time": 2576.523,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 2593.276,
+                    "end_time": 2593.973,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 2665.049,
+                    "end_time": 2665.989,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "that\"s it",
+                    "start_time": 2736.963,
+                    "end_time": 2737.567,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "that\"s it",
+                    "start_time": 2793.708,
+                    "end_time": 2794.242,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 2804.691,
+                    "end_time": 2805.19,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 2855.566,
+                    "end_time": 2856.901,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "mhm.",
+                    "start_time": 2865.996,
+                    "end_time": 2866.716,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "that\"s it",
+                    "start_time": 2939.164,
+                    "end_time": 2939.791,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 2989.355,
+                    "end_time": 2990.69,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "that\"s it",
+                    "start_time": 3017.7,
+                    "end_time": 3018.327,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 3038.25,
+                    "end_time": 3038.958,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "that\"s it",
+                    "start_time": 3067.716,
+                    "end_time": 3068.459,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 3236.295,
+                    "end_time": 3237.572,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "that\"s it",
+                    "start_time": 3307.244,
+                    "end_time": 3307.859,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 3307.859,
+                    "end_time": 3308.37,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "that\"s it",
+                    "start_time": 3360.301,
+                    "end_time": 3361.161,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 3361.161,
+                    "end_time": 3361.59,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "that\"s it",
+                    "start_time": 3385.432,
+                    "end_time": 3385.938,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "that\"s it",
+                    "start_time": 3423.566,
+                    "end_time": 3424.17,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "mhm.",
+                    "start_time": 3460.9,
+                    "end_time": 3461.353,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 3485.7,
+                    "end_time": 3486.594,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "okay",
+                    "start_time": 3532.419,
+                    "end_time": 3533.789,
+                    "is_backchannel": true
+                },
+                {
+                    "speaker": "INV",
+                    "utterance": "yeah.",
+                    "start_time": 3539.524,
+                    "end_time": 3540.255,
+                    "is_backchannel": true
+                }
+            ],
+            "stats": {
+                "CHI": [
+                    "Use of concrete nouns, interest in objects/things",
+                    "Focused on the past"
+                ],
+                "INV": [
+                    "Education, concern with precision",
+                    "Use of concrete nouns, interest in objects/things"
+                ]
+            },
+            "meeting_category_assgined": "On Saturday, the group discussed plans for the weekend, including a hike on Saturday and visiting the new dog park that has just opened downtown.",
+            "roles_detected": {
+                "CHI": "They are helping plan a weekend and introducing the group members.",
+                "INV": "They are helping plan a weekend and introducing the group members."
+            },
+            "meeting_description": "The group discussed plans for the weekend, including a hike on Saturday and visiting the new dog park that has just opened downtown.",
+            "generated_title": "They are helping plan a weekend and introducing the group members."
+        },
+        "models_used": "vmarklynn/bart-large-cnn-icsi-ami-v3"
+    }
+}
