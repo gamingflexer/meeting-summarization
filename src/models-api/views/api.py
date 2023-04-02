@@ -1,14 +1,17 @@
 from werkzeug.utils import secure_filename
 from flask_restful import Resource
 from flask import request, json, render_template, make_response
+import time
 import os
 from .models import wav_to_transcript, transcript_to_entities, audio_enhance
 from model.retrieval import ChatBot
 from utils import allowed_file,extract_audio_from_any_file, format_server_time
-from .helperFun import processors_call_on_trancript
+from .helperFun import processors_call_on_trancript,PostProcesssor
+from views.extras import summarize_conversation_extras
 
 from decouple import config
 from config import MODEL_FOLDER
+import pandas as pd
 from views.summary import ModelSelectFromLength
 from views.extras import summarize_conversation_extras
 
@@ -64,48 +67,10 @@ class AudioApi(Resource):
 class SummaryApi(Resource):
     
     def post(self):
-        data = request.get_json()
-
-        #debug script
-        if DEBUG:
-            return {"data":
-                        {
-                            "summary":"Person 1 confides in Person 2 that their wife has discovered their affair with their secretary and is planning to divorce them. Person 2 expresses disappointment in Person 1's behavior, as they have been married for ten years, but Person 1 insists that the affair only lasted for two months and that they still love their wife. Person 2 promises to try to persuade the wife to reconsider the divorce, but questions whether Person 1 will be faithful in the future. Person 1 promises to be faithful forever.",
-                            "extras" : {'sentiments': 'Neutral',
-                                        'action_items': [],
-                                        'decisions': [],
-                                        'risks': [],
-                                        'assumptions': [],
-                                        'dependencies': ['PhD F said it depends, if you use "run command"'],
-                                        'constraints': [],
-                                        'tradeoffs': ['This could balance the load of the machines.',
-                                        "This would help balance the workload of all the machines.'"],
-                                        'open_questions': []},
-                            "metadata" :{
-                                            "email": ["test@gmail.com","test2@gmail.com"],
-                                            "imp_dates": ["2020-12-12"],
-                                            "phone_numbers": ["+91 23222322","23222322"],
-                                            "human_names": ["name1","name2"],
-                                            "addresses": "address1",
-                                            "jargon_sentences":["jargon1","jargon2"],
-                                            "action_items":["action1","action2"],
-                                            "get_interactions_silence":{
-                                                                        "interruptions":["interruption1","interruption2"],
-                                                                        "silence":["duration1","duration2"]
-                                                                        },
-                                            "backchannels":['backchannel1','backchannel2'],
-                                            "stats":[""],
-                                            "meeting_category_assgined": "General",
-                                            "roles_detected": {"speaker1": "test_role"},
-                                            "meeting_description": "good meeting",
-                                            "generated_title": "test title",
-                                        },
-                            "transcript_analysis" : "",
-                            "models_used" : "allenai/led-base-16384",
-                        },
-                    }
+        data = request.get_json()        
                     
-        # Configs
+        """ Configs """
+        
         # if data['translate'] == 1:  #hold on for now
         #     trancript_object = PreProcesssor(transcript_joined)
         #     transcript = pre_processor.tranlate_text()
@@ -119,46 +84,57 @@ class SummaryApi(Resource):
         if data is None:
             return {"message": "No data provided"}, 400
         
-        meeting_type = data['data'].get('meeting_type')
+        # meeting_type = data['data'].get('meeting_type')
 
-        if meeting_type == 'from_video_audio': # no speaker info
-            transcript = data['data'].get('transcript') # this is a json
-            transcript_joined = ""
+        # if meeting_type == 'from_video_audio': # no speaker info
+        #     transcript = data['data'].get('transcript') # this is a json
+        #     transcript_joined = ""
             
-        if meeting_type == 'from_transcript':
-            transcript = data['data'].get('transcript') # this is a json but in text in request also
-            transcript_joined = ""
+        # if meeting_type == 'from_transcript':
+        #     transcript = data['data'].get('transcript') # this is a json but in text in request also
+        #     transcript_joined = ""
 
-        if meeting_type == 'from_extension':
-            transcript = data['data'].get('transcript') # this is a string
-            transcript_joined = ""
+        # if meeting_type == 'from_extension':
+        #     transcript = data['data'].get('transcript') # this is a string
+        #     transcript_joined = ""
 
 
         """START HERE TO GET SUMMARY"""
         # formatted transcript preprocessor [NEED TO FORMAT !!]
 
         #Convert to DataFrame
-        transcript_df = pd.DataFrame(transcript) ########## this is the transcript
+        transcript_joined = data['data'].get('transcript') # this is a string
+        transcript_df = pd.DataFrame(data['data'].get('transcript_df')) ########## this is the transcript
 
         # -------------------------------------------------------------------------------- #
 
         #summary generation
+        start_time = time.time()
         main_summary,models_used = ModelSelectFromLength(transcript_joined)
-            
+        print("\n--- Time to get the summary %s seconds ---\n" % (time.time() - start_time))
+
         #MAIN functions  ---> make a functions to convert into proper dataframe
         meta_data = processors_call_on_trancript(transcript_joined = transcript_joined, transcript_df = transcript_df, summary = main_summary)
-        
+
         # #postprocessing
         post_processor = PostProcesssor(main_summary)
         clean_summary = post_processor.get_clean_summary()
         formatted_summary = post_processor.get_formatted_summary(clean_summary)
+        print("\n--- TOTAL TIME %s seconds ---\n" % (time.time() - start_time))
+        
+        try:
+            final_summary = formatted_summary
+        except NameError:
+            try:
+                final_summary = clean_summary
+            except:
+                final_summary = main_summary
 
         return {"data":
                         {
-                            "summary":formatted_summary,
-                            "extras" : summarize_conversation_extras(transcript),
+                            "summary":final_summary,
+                            "extras" : summarize_conversation_extras(transcript_joined),
                             "metadata" :meta_data['meta_data'],
-                            "transcript_analysis" : "",
                             "models_used" : models_used,
                         },
                     }

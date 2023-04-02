@@ -56,11 +56,11 @@ class PreProcesssor(): # which features are taken totally depends on the meeting
         text = g_translation_en(text)
         return text
     
-    def get_action_items(self,corrected_text):
-        #getting top list
-        
-        top_list = action_items_distil_bert(corrected_text)
-        return top_list.keys()
+    def get_action_items(self):
+        #getting top list #MAKE IT SMALLER
+        splitted_text_list = self.text.split("\n")
+        top_list = action_items_distil_bert(splitted_text_list)
+        return top_list
     
 class PostProcesssor():
     
@@ -83,13 +83,14 @@ def processors_call_on_trancript(transcript_df, transcript_joined, summary): # i
     # speaker_names = trancript_object.get_speaker_names()
     corrected_text = trancript_object.get_corrected_text()
     jargon_sentences = trancript_object.get_jargon_sentences()
-    #action_items_list = trancript_object.get_action_items(corrected_text)
     
     trancript_prepocessor_object = TranscriptPreProcessor(df = transcript_df, transcript = transcript_joined,backchannels = "nlp")
     analyse_transcript_var = trancript_prepocessor_object.analyse_transcript()
     get_interactions_silence = trancript_prepocessor_object.get_interactions_silence(analyse_transcript_var)
     backchannels = trancript_prepocessor_object.get_backchannels(analyse_transcript_var)
     stats = trancript_prepocessor_object.get_speaker_stats() #speaker stats
+    speaker_names = list(stats.keys())
+    #action_items_list = trancript_object.get_action_items(corrected_text)
     #df_cluster = trancript_prepocessor_object.get_cluster(df).to_json(orient='records') # what to do with this?
 
     #chatbot godel
@@ -101,12 +102,19 @@ def processors_call_on_trancript(transcript_df, transcript_joined, summary): # i
 
     chat = ChatBot(question= prompts['topic'],transcript = summary)
     generated_title = chat.chatbot_response(tokenizer_chat,model_chat)
+
+    speaker_roles = {}
+    #speaker roles
+    for speaker in speaker_names:
+        chat = ChatBot(question= f"What are the roles of {speaker} in the conversation ?",transcript = summary)
+        generated_title = chat.chatbot_response(tokenizer_chat,model_chat)
+        speaker_roles[speaker] = generated_title
     
     return {
             "meta_data":{"email":email,
                         "imp_dates":date,
                         "phone_numbers":phone_numbers,
-                        # "human_names":speaker_names,
+                        "speaker_names":speaker_names,
                         "addresses":addresses,
                         "jargon_sentences":jargon_sentences,
                         # "action_items":action_items_list,
@@ -114,7 +122,7 @@ def processors_call_on_trancript(transcript_df, transcript_joined, summary): # i
                         "backchannels":backchannels,
                         "stats":stats,
                         "meeting_category_assgined": meeting_category_assgined,
-                        "roles_detected": {"speaker1": "test_role"},
+                        "roles_detected": speaker_roles,
                         "meeting_description": meeting_description,
                         "generated_title": generated_title,
                         #"df_cluster":df_cluster

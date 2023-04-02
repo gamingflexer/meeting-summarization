@@ -5,13 +5,16 @@ key_words = ["summary", "transcript", "details", "main points", "highlights",
 
 # Test out !
 def remove_words_repeat(summary):
-    i = 0
-    splitted = summary.split(" ")
-    for word in splitted:
-        if word[i] == word[i+1]:
-            splitted.pop(i)
-        i += 1
-    return " ".join(splitted)
+    try:
+        i = 0
+        splitted = summary.split(" ")
+        for word in splitted:
+            if word[i] == word[i+1]:
+                splitted.pop(i)
+            i += 1
+        return " ".join(splitted)
+    except:
+        return summary
         
 def clean_summary(summary):
     summary = remove_words_repeat(summary)

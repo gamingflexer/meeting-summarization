@@ -23,7 +23,6 @@ class ChatBot():
 
         dialog = ' EOS '.join(self.dialog)
         query = f"{self.instruction} [CONTEXT] {self.dialog} {self.knowledge}"
-        print(query)
         input_ids = tokenizer(f"{query}", return_tensors="pt").input_ids
         outputs = model.generate(input_ids,max_length=128, min_length=8, top_p=0.9, do_sample=True)
         output = tokenizer.decode(outputs[0], skip_special_tokens=True)

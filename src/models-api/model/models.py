@@ -3,9 +3,13 @@ import torch
 import requests
 import os
 from config import MODEL_FOLDER
+
 import tensorflow as tf
 gpus = tf.config.experimental.list_physical_devices('GPU')
 tf.config.experimental.set_memory_growth(gpus[0], True)
+
+import logging
+logging.getLogger("transformers.modeling_utils").setLevel(logging.ERROR)
 
 from decouple import config
 HUGGING_FACE_KEY = config('HUGGING_FACE_KEY')
@@ -94,19 +98,17 @@ def action_items_distil_bert(text_list):
       os.system(f"git clone https://huggingface.co/asach/bert-action-items {MODEL_FOLDER}") 
 
     top_action_items = []
-    
+
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    model_state_dict = torch.load(os.path.join(MODEL_FOLDER,"bert-action-items","model.pth"),map_location = device)
+    tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
+    # Create model instance
+    model = DistilBertForSequenceClassification.from_pretrained('distilbert-base-uncased', num_labels=2)
+    # Load state dictionary into model
+    model.load_state_dict(model_state_dict)
+    model.eval()
+
     for text in text_list:
-        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        model_state_dict = torch.load(os.path.join(MODEL_FOLDER,"bert-action-items","model.pth"),map_location = device)
-        tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
-        # Create model instance
-        model = DistilBertForSequenceClassification.from_pretrained('distilbert-base-uncased', num_labels=2)
-
-        # Load state dictionary into model
-        model.load_state_dict(model_state_dict)
-
-        model.eval()
-        
         encoding = tokenizer.encode_plus(
             text,
             add_special_tokens=True,
@@ -116,7 +118,6 @@ def action_items_distil_bert(text_list):
             return_attention_mask=True,
             return_tensors='pt'
         )
-        
         input_ids = encoding['input_ids'].to(device)
         attention_mask = encoding['attention_mask'].to(device)
         
@@ -126,6 +127,6 @@ def action_items_distil_bert(text_list):
         pred_label = torch.argmax(outputs.logits).item()
         
         if pred_label == 1:
-            top_action_items.append({"text":text,"label":pred_label})
+            top_action_items.append(text)
     
     return top_action_items
