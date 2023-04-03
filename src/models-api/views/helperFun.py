@@ -110,6 +110,16 @@ def processors_call_on_trancript(transcript_df, transcript_joined, summary): # i
         generated_title = chat.chatbot_response(tokenizer_chat,model_chat)
         speaker_roles[speaker] = generated_title
     
+    final_list_speaker = []
+
+    for speaker in stats['stats'].keys():
+        final_list_speaker.append({
+            "sepaker_name" : speaker,
+            "sepaker_duration" : "10 min",
+            "sepaker_quality" : stats['stats'][speaker],
+            "roles_detected" : speaker_roles[speaker],
+        })
+    
     return {
             "meta_data":{"email":email,
                         "imp_dates":date,
@@ -125,5 +135,6 @@ def processors_call_on_trancript(transcript_df, transcript_joined, summary): # i
                         "roles_detected": speaker_roles,
                         "meeting_description": meeting_description,
                         "generated_title": generated_title,
+                        "speaker_final": final_list_speaker,
                         #"df_cluster":df_cluster
                         }} 
