@@ -51,10 +51,13 @@ class Summary(models.Model):  # all meeting data
     topic = models.CharField(max_length=255,default="")
     top_keywords = models.CharField(max_length=255,default="")
     top_speaker = models.CharField(max_length=255,default="")
-    roles_detected = models.CharField(max_length=255,default="")
+    roles_detected = models.CharField(max_length=255,default="") # JSON DUMP
     top_spent_time_person = models.CharField(max_length=255,default="")
     decisions = models.CharField(max_length=1000,default="")  # Action Items
-    highlights = models.CharField(max_length=5000,default="")
+    
+    highlights_json = models.CharField(max_length=5000,default="")
+    speaker_json = models.CharField(max_length=5000,default="")
+    
     #microsoft
     lastModifiedDateTime_microsoft = models.DateTimeField(null=True,blank=True)
     calendar_platform = models.CharField(null=True,default='Google',max_length=10,blank=True)
@@ -63,7 +66,21 @@ class Summary(models.Model):  # all meeting data
     factual_consistency = models.IntegerField(default=0)
     meeting_summary_old = models.CharField(default="", max_length=10000)  # **
 
-
+    #new
+    meeting_duration = models.CharField(max_length=255, null=True)
+    meeting_type = models.CharField(max_length=255, null=True)
+    sentiments = models.CharField(max_length=100, null=True)
+    
+    #new + extra
+    action_items = models.CharField(max_length=1000, null=True)
+    risks = models.CharField(max_length=1000, null=True)
+    assumptions = models.CharField(max_length=1000, null=True)
+    dependencies = models.CharField(max_length=1000, null=True)
+    constraints = models.CharField(max_length=1000, null=True)
+    tradeoffs = models.CharField(max_length=1000, null=True)
+    questions = models.CharField(max_length=1000, null=True)
+    
+    
 class highlight_template(models.Model):
     user_id = models.ForeignKey(User_info, on_delete=models.CASCADE)
     hightlight_name = models.CharField(max_length=255)

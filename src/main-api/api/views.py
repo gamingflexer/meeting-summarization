@@ -219,32 +219,44 @@ class AddMeetingFileAPI(APIView):
             if file_extention in TRANCRIPT_EXT:
                 print("\n TRANCRIPT DETECTED")
                 meeting_type = 'from_transcript'
-                
-                # with open(newPath, 'rb') as f:
-                #     transcript_readed = f.read()
             
                 # preprocess it and add new data using preprocessor function {Expecting the files in our format}
-                """
-                segmented_df,speaker_dialogue,durations,attendeces_count = any_transcript_to_dataframe(newPath)
-                print("segmented_df",segmented_df)
-                print("speaker_dialogue",speaker_dialogue)
-                print("durations",durations)
                 
+                segmented_df,speaker_dialogue,durations,attendeces_count = any_transcript_to_dataframe(newPath)
                 #--> send to summarization
                 try:
                     response = requests.post(URL_MICRO + "summarization" , data=json.dumps({"transcript":speaker_dialogue}))
                     response.raise_for_status()
-                    transcript_from_res = json.loads(response.json())
+                    models_data = (json.loads(response.json()))['data']
                 except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
                     print("Down")
                 except requests.exceptions.HTTPError:
                     print("4xx, 5xx")
-                    
+                
+                try:
+                    top_time_spent_person = models_data['metadata']['top_speaker'][0]
+                except KeyError:
+                    top_time_spent_person = ""
                 #save data
-                query_set = Summary.objects.get(meeting_id=meeting_id)
-                main_queryset_serializer = Summary_Serializers(query_set)
-                query_set.meeting_summary =  "NEW SUMMARY"
-                query_set.save()
+                Summary.objects.filter(meeting_id=meeting_id).update(meeting_duration = durations,
+                                                                     is_summarized = True,
+                                                                     meeting_type = meeting_type,
+                                                                     attendees_count = attendeces_count,
+                                                                     summary_gen_date = datetime.datetime.now(),
+                                                                     meeting_summary = models_data['summary'],
+                                                                     sentiments = ','.join(models_data['extras']['sentiments']),
+                                                                     decisions = ','.join(models_data['extras']['decisions']),
+                                                                     action_items = ','.join(set(models_data['extras']['action_items'] + models_data['metadata']['action_items'])),
+                                                                     top_speaker = ','.join(models_data['metadata']['top_speaker']),
+                                                                     meeting_description = models_data['metadata']['meeting_description'],
+                                                                     generated_title = models_data['metadata']['generated_title'],
+                                                                     topic = models_data['metadata']['meeting_category_assgined'],
+                                                                     roles_detected = json.dumps(models_data['metadata']['roles_detected']),
+                                                                     top_spent_time_person = top_time_spent_person,
+                                                                     reading_time = len(models_data['summary'].split(" "))/200,
+                                                                     speaker_json = json.dumps({"sepakers":models_data['metadata']['speaker_final']}),
+                                                                     model_used = models_data['model_used'],
+                                                                     )
                                 
                 
             if file_extention in VIDEO_EXT:
@@ -256,30 +268,44 @@ class AddMeetingFileAPI(APIView):
                     try:
                         response = requests.post(URL_MICRO + "transcript" , files={'file': f})
                         response.raise_for_status()
-                        transcript_from_res = json.loads(response.json())
+                        transcript_data = json.loads(response.json())
                     except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
                         print("Down")
                     except requests.exceptions.HTTPError:
                         print("4xx, 5xx")
                         
-                
+                        
                 # preprocess it and add new data using preprocessor function
-            
                 #--> send to summarization
                 try:
-                    response = requests.post(URL_MICRO + "summarization" ,data=json.dumps({"transcript":"data"}))
+                    response = requests.post(URL_MICRO + "summarization" ,data=json.dumps(transcript_data['transcript']))
                     response.raise_for_status()
                     transcript_from_res = json.loads(response.json())
                 except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
                     print("Down")
                 except requests.exceptions.HTTPError:
                     print("4xx, 5xx")
-                """
+                
                 #save data
-                query_set = Summary.objects.get(meeting_id=meeting_id)
-                main_queryset_serializer = Summary_Serializers(query_set)
-                query_set.meeting_summary =  "NEW SUMMARY"
-                query_set.save()
+                Summary.objects.filter(meeting_id=meeting_id).update(meeting_duration = durations,
+                                                                     is_summarized = True,
+                                                                     meeting_type = meeting_type,
+                                                                     attendees_count = attendeces_count,
+                                                                     summary_gen_date = datetime.datetime.now(),
+                                                                     meeting_summary = models_data['summary'],
+                                                                     sentiments = ','.join(models_data['extras']['sentiments']),
+                                                                     decisions = ','.join(models_data['extras']['decisions']),
+                                                                     action_items = ','.join(set(models_data['extras']['action_items'] + models_data['metadata']['action_items'])),
+                                                                     top_speaker = ','.join(models_data['metadata']['top_speaker']),
+                                                                     meeting_description = models_data['metadata']['meeting_description'],
+                                                                     generated_title = models_data['metadata']['generated_title'],
+                                                                     topic = models_data['metadata']['meeting_category_assgined'],
+                                                                     roles_detected = json.dumps(models_data['metadata']['roles_detected']),
+                                                                     top_spent_time_person = top_time_spent_person,
+                                                                     reading_time = len(models_data['summary'].split(" "))/200,
+                                                                     speaker_json = json.dumps({"sepakers":models_data['metadata']['speaker_final']}),
+                                                                     model_used = models_data['model_used'],
+                                                                     )
             
         return Response({"data":{"meeting_id":meeting_id,"status":"File uploaded successfully"}},status=status.HTTP_201_CREATED)  # ADD A REDIRECT URL HERE
 
