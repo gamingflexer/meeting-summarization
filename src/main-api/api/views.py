@@ -322,11 +322,12 @@ class SummaryPageAPI(APIView):
         firebase_user_id = decoded_token['user_id']
         User_info.objects.get(user_firebase_token=firebase_user_id)
         
-        with open(os.path.join(base_path_file,"api","data","summary.json"), 'rb') as f:
-                data = f.read()
+        # with open(os.path.join(base_path_file,"api","data","summary.json"), 'rb') as f:
+        #         data = f.read()
             
-        meeting_data = json.loads(data)
-        debug_data = meeting_data['data'][0]['meeting_data']
+        # meeting_data = json.loads(data)
+        # debug_data = meeting_data['data'][0]['meeting_data']
+        
         data_dict = {}
         meta_data_dict={}
         meta_data_list=[]
@@ -348,41 +349,15 @@ class SummaryPageAPI(APIView):
 
         for single_key in listofkeys:
             meta_data_dict[single_key] = content.get(single_key)
-        meta_data_dict['speaker']=  [
-                            {
-                                "sepaker_name": "sepaker1",
-                                "sepaker_duration": 10,
-                                "sepaker_quality": [
-                                    "good",
-                                    "bad"
-                                ],
-                                "roles_detected": [
-                                    "role1",
-                                    "role2"
-                                ]
-                            },
-                            {
-                                "sepaker_name": "sepaker2",
-                                "sepaker_duration": 10,
-                                "sepaker_quality": [
-                                    "good",
-                                    "bad"
-                                ],
-                                "roles_detected": [
-                                    "role1"
-                                ]
-                            }
-                        ]  #[""]  #om will do
+        meta_data_dict['speaker'] =  json.loads(content.get('speaker_json')) 
         meta_data_list.append(meta_data_dict)
         meeting_data_dict["metadata"] = meta_data_list
 
         for single_key in summary_dict_key:
             summary_dict[single_key] = content.get(single_key)
-        summary_dict['agenda'] = "Dummy Agenda"  #agenda wala handle kar na hai
+        summary_dict['agenda'] = ['General Meeting','Disccusion']
 
-        summary_dict['highlights'] = [
-                                {
-                                    "main_timestamps": [
+        summary_dict['highlights'] = [{ "main_timestamps": [
                                         {
                                             "timestamp": "00:00:00",
                                             "headline": "Meeting started",
@@ -446,7 +421,7 @@ class SummaryPageAPI(APIView):
         meeting_data_dict['summary'] = summary_data_list
         meeting_data_dict['trascript'] = [
                         {
-                            "meeting_transcript": "hello",
+                            "meeting_transcript": content.get("meeting_transcript"),
                             "meeting_transcript_with_actions": [
                                 {
                                     "time_stamp": 0,
@@ -543,6 +518,8 @@ class StartSummarization(APIView):
     def get(self, request, meeting_id):
         try:
             main_queryset = Summary.objects.get(meeting_id=meeting_id)
+            main_queryset_serializer = Summary_Serializers(main_queryset)
+            
         except ObjectDoesNotExist:
             return Response({"data":{"error":"Meeting Summary does not exist"}},status=status.HTTP_400_BAD_REQUEST)
         import time
