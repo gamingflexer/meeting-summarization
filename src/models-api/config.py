@@ -1,6 +1,6 @@
 import os
 
-MODEL_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'model')
+MODEL_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'models')
 
 AUDIO_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data','audio')
 

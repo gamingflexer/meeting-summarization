@@ -103,12 +103,12 @@ def action_items_distil_bert(text_list):
     model_state_dict = torch.load(os.path.join(MODEL_FOLDER,"bert-action-items","model.pth"),map_location = device)
     tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
     # Create model instance
-    model = DistilBertForSequenceClassification.from_pretrained('distilbert-base-uncased', num_labels=2)
+    model = DistilBertForSequenceClassification.from_pretrained('distilbert-base-uncased', num_labels=2).to("cuda")
     # Load state dictionary into model
     model.load_state_dict(model_state_dict)
-    model.eval()
 
     for text in text_list:
+        model.eval()
         encoding = tokenizer.encode_plus(
             text,
             add_special_tokens=True,

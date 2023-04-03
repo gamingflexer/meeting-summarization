@@ -90,7 +90,7 @@ def processors_call_on_trancript(transcript_df, transcript_joined, summary): # i
     backchannels = trancript_prepocessor_object.get_backchannels(analyse_transcript_var)
     stats = trancript_prepocessor_object.get_speaker_stats() #speaker stats
     speaker_names = list(stats.keys())
-    #action_items_list = trancript_object.get_action_items(corrected_text)
+    action_items_list = trancript_object.get_action_items()
     #df_cluster = trancript_prepocessor_object.get_cluster(df).to_json(orient='records') # what to do with this?
 
     #chatbot godel
@@ -117,7 +117,7 @@ def processors_call_on_trancript(transcript_df, transcript_joined, summary): # i
                         "speaker_names":speaker_names,
                         "addresses":addresses,
                         "jargon_sentences":jargon_sentences,
-                        # "action_items":action_items_list,
+                        "action_items":action_items_list,
                         "get_interactions_silence":get_interactions_silence,
                         "backchannels":backchannels,
                         "stats":stats,
