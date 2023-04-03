@@ -607,7 +607,27 @@
                 "INV": "They are helping plan a weekend and introducing the group members."
             },
             "meeting_description": "The group discussed plans for the weekend, including a hike on Saturday and visiting the new dog park that has just opened downtown.",
-            "generated_title": "They are helping plan a weekend and introducing the group members."
+            "generated_title": "They are helping plan a weekend and introducing the group members.",
+            "speaker_final": [
+                {
+                    "sepaker_name": "CHI",
+                    "sepaker_duration": "2 min",
+                    "sepaker_quality": [
+                        "Use of concrete nouns, interest in objects/things",
+                        "Focused on the past"
+                    ],
+                    "roles_detected": "They are helping plan a weekend and introducing the group members."
+                },
+                {
+                    "sepaker_name": "INV",
+                    "sepaker_duration": "2 min",
+                    "sepaker_quality": [
+                        "Education, concern with precision",
+                        "Use of concrete nouns, interest in objects/things"
+                    ],
+                    "roles_detected": "They are helping plan a weekend and introducing the group members."
+                }
+            ]
         },
         "models_used": "vmarklynn/bart-large-cnn-icsi-ami-v3"
     }
