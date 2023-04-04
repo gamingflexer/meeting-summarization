@@ -61,68 +61,66 @@
                                 "agenda1",
                                 "agenda2"
                             ],
-                            "highlights": [
-                                {
-                                    "main_timestamps": [
-                                        {
-                                            "timestamp": "00:00:00",
-                                            "headline": "Meeting started",
-                                            "internal_timestamp": [
-                                                {
-                                                    "time": "00:10:00",
-                                                    "text": "Meeting started"
-                                                },
-                                                {
-                                                    "time": "00:20:00",
-                                                    "text": "Meeting started"
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "timestamp": "1:00:00",
-                                            "headline": "Middle Part started",
-                                            "internal_timestamp": [
-                                                {
-                                                    "time": "1:10:00",
-                                                    "text": "Topic 1 Disussion"
-                                                },
-                                                {
-                                                    "time": "2:20:00",
-                                                    "text": "Topic 2 Disussion"
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "timestamp": "3:00:00",
-                                            "headline": "Middle Part 2 Comeback started",
-                                            "internal_timestamp": [
-                                                {
-                                                    "time": "3:10:00",
-                                                    "text": " Oka whe need to complete it by sunday"
-                                                },
-                                                {
-                                                    "time": "4:10:00",
-                                                    "text": "But all are busy & me  ; ("
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "timestamp": "4:00:00",
-                                            "headline": "Meeting Ended",
-                                            "internal_timestamp": [
-                                                {
-                                                    "time": "4:10:00",
-                                                    "text": "Conclstion "
-                                                },
-                                                {
-                                                    "time": "6:10:00",
-                                                    "text": "Bye Bye"
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
+                            "highlights": {
+                                "main_timestamps": [
+                                    {
+                                        "timestamp": "00:00:00",
+                                        "headline": "Meeting started",
+                                        "internal_timestamp": [
+                                            {
+                                                "time": "00:10:00",
+                                                "text": "Meeting started"
+                                            },
+                                            {
+                                                "time": "00:20:00",
+                                                "text": "Meeting started"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "timestamp": "1:00:00",
+                                        "headline": "Middle Part started",
+                                        "internal_timestamp": [
+                                            {
+                                                "time": "1:10:00",
+                                                "text": "Topic 1 Disussion"
+                                            },
+                                            {
+                                                "time": "2:20:00",
+                                                "text": "Topic 2 Disussion"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "timestamp": "3:00:00",
+                                        "headline": "Middle Part 2 Comeback started",
+                                        "internal_timestamp": [
+                                            {
+                                                "time": "3:10:00",
+                                                "text": " Oka whe need to complete it by sunday"
+                                            },
+                                            {
+                                                "time": "4:10:00",
+                                                "text": "But all are busy & me  ; ("
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "timestamp": "4:00:00",
+                                        "headline": "Meeting Ended",
+                                        "internal_timestamp": [
+                                            {
+                                                "time": "4:10:00",
+                                                "text": "Conclstion "
+                                            },
+                                            {
+                                                "time": "6:10:00",
+                                                "text": "Bye Bye"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
                         }
                     ],
                     "trascript": [

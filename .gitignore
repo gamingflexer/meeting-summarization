@@ -155,3 +155,7 @@ src/models-api/data/audio/*
 src/scripts/*
 src/models-api/data/sd
 src/models-api/converse
+data/test_highlight.json
+data/test.json
+src/main-api/api/data/summary.json
+chatbot/hackoverflow/static_src/package-lock.json
