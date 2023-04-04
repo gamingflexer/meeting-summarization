@@ -26,7 +26,7 @@ def create_app():
     
     # register views
     from views import app_mbp
-    from views.api import IndexPage,AudioApi,SummaryApi,EntitiesApi,ChatApi
+    from views.api import IndexPage,AudioApi,SummaryApi,EntitiesApi,ChatApi,LiveChatApi
 
     app.register_blueprint(app_mbp)
 
@@ -36,6 +36,7 @@ def create_app():
     api.add_resource(SummaryApi, "/summarization")
     api.add_resource(EntitiesApi, "/entites")
     api.add_resource(ChatApi, "/chat")
+    api.add_resource(LiveChatApi, "/live-chat")
     
     return app, socketio
 

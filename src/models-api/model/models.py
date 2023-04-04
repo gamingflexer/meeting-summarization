@@ -5,8 +5,12 @@ import os
 from config import MODEL_FOLDER
 
 import tensorflow as tf
-gpus = tf.config.experimental.list_physical_devices('GPU')
-tf.config.experimental.set_memory_growth(gpus[0], True)
+from decouple import config
+
+DEBUG = config('DEBUG', cast=bool)
+if DEBUG == False:
+  gpus = tf.config.experimental.list_physical_devices('GPU')
+  tf.config.experimental.set_memory_growth(gpus[0], True)
 
 import logging
 logging.getLogger("transformers.modeling_utils").setLevel(logging.ERROR)

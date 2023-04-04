@@ -1,6 +1,4 @@
-import whisper
 import spacy
-import requests
 
 from transformers import pipeline,GenerationConfig
 from transformers import TFAutoModelForSeq2SeqLM,PegasusForConditionalGeneration,AutoModel,AutoTokenizer,AutoModelForSeq2SeqLM,LongT5ForConditionalGeneration,LEDForConditionalGeneration
@@ -13,20 +11,23 @@ import noisereduce as nr
 import librosa as rosa
 import soundfile as sf
 import random as rd
-import whisper
 from datetime import timedelta
 import os
 import uuid
 
 import tensorflow as tf
-gpus = tf.config.experimental.list_physical_devices('GPU')
-tf.config.experimental.set_memory_growth(gpus[0], True)
+from decouple import config
+DEBUG = config('DEBUG', cast=bool)
+if DEBUG == False:
+    gpus = tf.config.experimental.list_physical_devices('GPU')
+    tf.config.experimental.set_memory_growth(gpus[0], True)
+    
+    import torch
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    whisper2 = pipeline('automatic-speech-recognition', model = 'asach/ -added',chunk_length_s=30) #'/home/student/Documents/dp/v1.1/whisper_ami
+
 
 from config import AUDIO_FOLDER
-import torch
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
-whisper2 = pipeline('automatic-speech-recognition', model = 'asach/whisper_ami_finetuned-added',chunk_length_s=30) #'/home/student/Documents/dp/v1.1/whisper_ami
 
 def audio_enhance(file): #NOT TO USED IF YOU USING FINETUNED MODEL
     audio_data, sample_rate = rosa.load(file, sr=16000)
