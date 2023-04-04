@@ -72,7 +72,7 @@ def ModelSelectFromLength(transcript):
 
         return results_concat,models_conact
 
-    else: 
+    elif len(words) > 1200 and len(words) < 5000:
         print("\n Extreme Long Meeting\n")
 
         """
@@ -94,6 +94,34 @@ def ModelSelectFromLength(transcript):
 
         results_concat = str(results_1) + str(results_2)
         models_conact = str(model_used_1 + ',' + model_used_2)
+
+        return results_concat,models_conact
+    
+    else:
+        print("\n SEGMENTED | Extreme Long Meeting\n")
+
+        """
+        MingZhong/DialogLED-base-16384 [Overview with imp points]
+        asach/lognt5-xsum-icsi-400-10 [Important points from second line]
+        """
+        split_point = len(transcript) // 2
+
+        transcript_part_1 = transcript[:split_point]
+        transcript_part_2 = transcript[split_point:]
+
+        model_used_1 = "asach/DialogLED-yash-samsum"
+        
+
+        new_model_1 = ModelSelect(modelname = 'led',model_id_or_path= model_used_1,text = transcript_part_1,max_new_tokens=200)
+        model_1 = new_model_1.load_model()
+        results_1 = new_model_1.generate_summary(model_1)
+        
+        new_model_1 = ModelSelect(modelname = 'led',model_id_or_path= model_used_1,text = transcript_part_2,max_new_tokens=200)
+        model_1 = new_model_1.load_model()
+        results_2 = new_model_1.generate_summary(model_1)
+
+        results_concat = str(results_1 + '.' + results_2)
+        models_conact = str(model_used_1)
 
         return results_concat,models_conact
     
