@@ -142,10 +142,10 @@ class AddMeetingAPI(APIView):
         
         authorization_header = request.META.get('HTTP_AUTHORIZATION')
         token = authorization_header.replace("Bearer ", "")
-        
         try:
             decoded_token = auth.verify_id_token(token)
             firebase_user_id = decoded_token['user_id']
+            print(firebase_user_id)
             User_info.objects.get(user_firebase_token=firebase_user_id)
             
             response_data = JSONParser().parse(request)
@@ -199,7 +199,8 @@ class AddMeetingFileAPI(APIView):
             
             main_queryset_summary = Summary.objects.filter(meeting_id=meeting_id, user_firebase_token=firebase_user_id).first()
             main_queryset_summary_serializer = Summary_Serializers(main_queryset_summary)
-
+            import time
+            time.sleep(10)
             # Integfiy platform & detect lang
             meet_platform = identify_meeting_link(main_queryset_summary_serializer.data["meet_link"])
             detected_lang = detect_language(main_queryset_summary_serializer.data["meeting_transcript"])
@@ -219,44 +220,32 @@ class AddMeetingFileAPI(APIView):
             if file_extention in TRANCRIPT_EXT:
                 print("\n TRANCRIPT DETECTED")
                 meeting_type = 'from_transcript'
+                
+                # with open(newPath, 'rb') as f:
+                #     transcript_readed = f.read()
             
                 # preprocess it and add new data using preprocessor function {Expecting the files in our format}
-                
+                """
                 segmented_df,speaker_dialogue,durations,attendeces_count = any_transcript_to_dataframe(newPath)
+                print("segmented_df",segmented_df)
+                print("speaker_dialogue",speaker_dialogue)
+                print("durations",durations)
+                
                 #--> send to summarization
                 try:
                     response = requests.post(URL_MICRO + "summarization" , data=json.dumps({"transcript":speaker_dialogue}))
                     response.raise_for_status()
-                    models_data = (json.loads(response.json()))['data']
+                    transcript_from_res = json.loads(response.json())
                 except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
                     print("Down")
                 except requests.exceptions.HTTPError:
                     print("4xx, 5xx")
-                
-                try:
-                    top_time_spent_person = models_data['metadata']['top_speaker'][0]
-                except KeyError:
-                    top_time_spent_person = ""
+                    
                 #save data
-                Summary.objects.filter(meeting_id=meeting_id).update(meeting_duration = durations,
-                                                                     is_summarized = True,
-                                                                     meeting_type = meeting_type,
-                                                                     attendees_count = attendeces_count,
-                                                                     summary_gen_date = datetime.datetime.now(),
-                                                                     meeting_summary = models_data['summary'],
-                                                                     sentiments = ','.join(models_data['extras']['sentiments']),
-                                                                     decisions = ','.join(models_data['extras']['decisions']),
-                                                                     action_items = ','.join(set(models_data['extras']['action_items'] + models_data['metadata']['action_items'])),
-                                                                     top_speaker = ','.join(models_data['metadata']['top_speaker']),
-                                                                     meeting_description = models_data['metadata']['meeting_description'],
-                                                                     generated_title = models_data['metadata']['generated_title'],
-                                                                     topic = models_data['metadata']['meeting_category_assgined'],
-                                                                     roles_detected = json.dumps(models_data['metadata']['roles_detected']),
-                                                                     top_spent_time_person = top_time_spent_person,
-                                                                     reading_time = len(models_data['summary'].split(" "))/200,
-                                                                     speaker_json = json.dumps({"sepakers":models_data['metadata']['speaker_final']}),
-                                                                     model_used = models_data['model_used'],
-                                                                     )
+                query_set = Summary.objects.get(meeting_id=meeting_id)
+                main_queryset_serializer = Summary_Serializers(query_set)
+                query_set.meeting_summary =  "NEW SUMMARY"
+                query_set.save()
                                 
                 
             if file_extention in VIDEO_EXT:
@@ -268,44 +257,30 @@ class AddMeetingFileAPI(APIView):
                     try:
                         response = requests.post(URL_MICRO + "transcript" , files={'file': f})
                         response.raise_for_status()
-                        transcript_data = json.loads(response.json())
+                        transcript_from_res = json.loads(response.json())
                     except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
                         print("Down")
                     except requests.exceptions.HTTPError:
                         print("4xx, 5xx")
                         
-                        
+                
                 # preprocess it and add new data using preprocessor function
+            
                 #--> send to summarization
                 try:
-                    response = requests.post(URL_MICRO + "summarization" ,data=json.dumps(transcript_data['transcript']))
+                    response = requests.post(URL_MICRO + "summarization" ,data=json.dumps({"transcript":"data"}))
                     response.raise_for_status()
                     transcript_from_res = json.loads(response.json())
                 except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
                     print("Down")
                 except requests.exceptions.HTTPError:
                     print("4xx, 5xx")
-                
+                """
                 #save data
-                Summary.objects.filter(meeting_id=meeting_id).update(meeting_duration = durations,
-                                                                     is_summarized = True,
-                                                                     meeting_type = meeting_type,
-                                                                     attendees_count = attendeces_count,
-                                                                     summary_gen_date = datetime.datetime.now(),
-                                                                     meeting_summary = models_data['summary'],
-                                                                     sentiments = ','.join(models_data['extras']['sentiments']),
-                                                                     decisions = ','.join(models_data['extras']['decisions']),
-                                                                     action_items = ','.join(set(models_data['extras']['action_items'] + models_data['metadata']['action_items'])),
-                                                                     top_speaker = ','.join(models_data['metadata']['top_speaker']),
-                                                                     meeting_description = models_data['metadata']['meeting_description'],
-                                                                     generated_title = models_data['metadata']['generated_title'],
-                                                                     topic = models_data['metadata']['meeting_category_assgined'],
-                                                                     roles_detected = json.dumps(models_data['metadata']['roles_detected']),
-                                                                     top_spent_time_person = top_time_spent_person,
-                                                                     reading_time = len(models_data['summary'].split(" "))/200,
-                                                                     speaker_json = json.dumps({"sepakers":models_data['metadata']['speaker_final']}),
-                                                                     model_used = models_data['model_used'],
-                                                                     )
+                query_set = Summary.objects.get(meeting_id=meeting_id)
+                main_queryset_serializer = Summary_Serializers(query_set)
+                query_set.meeting_summary =  "NEW SUMMARY"
+                query_set.save()
             
         return Response({"data":{"meeting_id":meeting_id,"status":"File uploaded successfully"}},status=status.HTTP_201_CREATED)  # ADD A REDIRECT URL HERE
 
@@ -322,6 +297,11 @@ class SummaryPageAPI(APIView):
         firebase_user_id = decoded_token['user_id']
         User_info.objects.get(user_firebase_token=firebase_user_id)
         
+        with open(os.path.join(base_path_file,"api","data","summary.json"), 'rb') as f:
+                data = f.read()
+            
+        meeting_data = json.loads(data)
+        debug_data = meeting_data['data'][0]['meeting_data']
         data_dict = {}
         meta_data_dict={}
         meta_data_list=[]
@@ -343,15 +323,41 @@ class SummaryPageAPI(APIView):
 
         for single_key in listofkeys:
             meta_data_dict[single_key] = content.get(single_key)
-        meta_data_dict['speaker'] =  json.loads(content.get('speaker_json')) 
+        meta_data_dict['speaker']=  [
+                            {
+                                "sepaker_name": "sepaker1",
+                                "sepaker_duration": 10,
+                                "sepaker_quality": [
+                                    "good",
+                                    "bad"
+                                ],
+                                "roles_detected": [
+                                    "role1",
+                                    "role2"
+                                ]
+                            },
+                            {
+                                "sepaker_name": "sepaker2",
+                                "sepaker_duration": 10,
+                                "sepaker_quality": [
+                                    "good",
+                                    "bad"
+                                ],
+                                "roles_detected": [
+                                    "role1"
+                                ]
+                            }
+                        ]  #[""]  #om will do
         meta_data_list.append(meta_data_dict)
         meeting_data_dict["metadata"] = meta_data_list
 
         for single_key in summary_dict_key:
             summary_dict[single_key] = content.get(single_key)
-        summary_dict['agenda'] = ['General Meeting','Disccusion']
+        summary_dict['agenda'] = "Dummy Agenda"  #agenda wala handle kar na hai
 
-        summary_dict['highlights'] = [{ "main_timestamps": [
+        summary_dict['highlights'] = [
+                                {
+                                    "main_timestamps": [
                                         {
                                             "timestamp": "00:00:00",
                                             "headline": "Meeting started",
@@ -415,7 +421,7 @@ class SummaryPageAPI(APIView):
         meeting_data_dict['summary'] = summary_data_list
         meeting_data_dict['trascript'] = [
                         {
-                            "meeting_transcript": content.get("meeting_transcript"),
+                            "meeting_transcript": "hello",
                             "meeting_transcript_with_actions": [
                                 {
                                     "time_stamp": 0,
@@ -512,8 +518,6 @@ class StartSummarization(APIView):
     def get(self, request, meeting_id):
         try:
             main_queryset = Summary.objects.get(meeting_id=meeting_id)
-            main_queryset_serializer = Summary_Serializers(main_queryset)
-            
         except ObjectDoesNotExist:
             return Response({"data":{"error":"Meeting Summary does not exist"}},status=status.HTTP_400_BAD_REQUEST)
         import time
@@ -565,7 +569,6 @@ class EditUserDataAPI(APIView) :
                              "email": User_data_serializer.data['email'],
                              "user_prof_type": User_data_serializer.data['user_prof_type'],
                              "user_meeting_category": User_data_serializer.data['user_meeting_category'].split(",")},
-                             "calender_onboarding_status": User_data_serializer.data['calender_onboarding_status'],
                         }}, status=status.HTTP_200_OK)
 
     @csrf_exempt
@@ -638,14 +641,5 @@ class AnalyticsAPI(APIView) : # ??
         content = main_queryset_serializer.data
         return Response({"data": {"analytics_data": content}}, status=status.HTTP_200_OK)
 
-class ChatbotAPI(APIView) :
-    
-    permission_classes = user_auth_required()
-    
-    def get(self,request,summary,meeting_id):
-        
-        if summary == "summary":
-            main_queryset = Summary.objects.filter(meeting_id=meeting_id)
-            main_queryset_serializer = Summary_Serializers(main_queryset,many=True)
-            content = main_queryset_serializer.data
-            return Response({"data": {"chatbot_data": content}}, status=status.HTTP_200_OK)
+
+
