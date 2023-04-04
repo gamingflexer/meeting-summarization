@@ -1,7 +1,6 @@
 # Meeting Summarization with Deep Learning
 
 In the work from home scenario prevailing over the last 18 months and with hybrid working picking steam, most Official meetings have been or will be conducted virtually.
-
 While MICROSOFT TEAMS / Google Meet / Zoom do provide a feature to download TRANSCRIPT, it does not summarise the meeting.
 
 Problem Dimensions
@@ -16,37 +15,38 @@ Problem Dimensions
 
 Project features Implementated are 
 
-- [x] To do's
+- [x] Speech to text
+- [x] Text summarization
+- [x] Action items
+- [x] Meeting duration
+- [x] Meeting attendees ...
 
 ## Requirements
+
+- Python 3.6+
+- Good GPU (Nvidia GTX 1080 or better) to run all models in parallel
 
 ## Usage in Development
 
 #### Start the main application
 
-
 ```
 git clone https://github.com/gamingflexer/meeting-summarization-api.git
 cd src/main-api
 pip3 install -r requirements.txt
-python manage.py runserver
-```
-
-##### Migration
-
-```
 python manage.py makemigrations
 python manage.py migrate
 ```
 
-#### Celery
+API SERVER
 
-```
-celery -A dp.celery worker -l info -P solo 
+`python manage.py runserver`
 
-```
+Chatbot
 
-#### Start the meeting summarization api
+`python manage.py runserver 0.0.0.0:8001`
+
+#### Start the meeting summarization api [GCP]
 
 ```
 cd src/models-api
@@ -55,17 +55,21 @@ python __init__.py
 
 ## Usage in Production
 
-Some extra steps are required to run the application in production.
+Some extra steps are required to run the application in production and development. run this inside `models-api` folder
 
 ```
-python -m spacy download en_core_web_lg
+pip install git+https://github.com/openai/whisper.git --no-deps
+python -m spacy download en_core_web_sm
+pip install -U scikit-learn scipy matplotlib
+git clone https://github.com/maxent-ai/converse.git && cd converse && pip install -e . && cd ..
+sudo apt install ffmpeg
 ```
 
 ## Project Structure
 
 ### Collaborators
 
-- [Om Surve]()
+- [Om Surve](asach.co)
 - [Kunal Wagh]()
 - [Yash Wakekar]()
 - [HItesh Meta]()
