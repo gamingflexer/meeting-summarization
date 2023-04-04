@@ -79,13 +79,13 @@
 <script>
   var wss_protocol = window.location.protocol == "https:" ? "wss://" : "ws://";
   var chatSocket = new WebSocket(
-    wss_protocol + window.location.host + "/ws/chat/"
+    wss_protocol + window.location.host + "/ws/chat/" + "{{ meeting_id }}" + "/"
   );
   var messages = [];
 
   chatSocket.onopen = function (e) {
     document.querySelector("#chat-header").innerHTML =
-      "DocTrin";
+      "RAPID RECAP";
   };
 
   chatSocket.onmessage = function (e) {
