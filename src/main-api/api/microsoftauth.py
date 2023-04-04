@@ -94,7 +94,7 @@ class MicrosoftEvent(APIView):
                     microsoft_calender_event_serializer.is_valid(raise_exception=True)
                     if (microsoft_calender_event_serializer.is_valid()):
                         microsoft_calender_event_serializer.save()
-            return Response(status=status.HTTP_200_OK)
+            return redirect('http://localhost:3000/calendar')
         except Exception as e:
             print(e)
             return Response(status=status.HTTP_400_BAD_REQUEST)
