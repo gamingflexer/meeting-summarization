@@ -205,7 +205,20 @@ def segment_transcript(df):
     # Combine the segments into a single DataFrame
     try:
         segments = pd.concat([df for df in [start_segment, main_context, end_segment] if df is not None])
-        return segments, True
+        if len(segments) == len(df):
+            return segments, True
+        else:
+            n_rows = len(df)
+            start_rows = int(n_rows * 0.2)
+            main_rows = int(n_rows * 0.6)
+            end_rows = n_rows - start_rows - main_rows
+
+            # create a list with the values for the main_timestamps column
+            main_timestamps = ['start'] * start_rows + ['main_context'] * main_rows + ['end'] * end_rows
+
+            # add the column to the dataframe
+            df['main_timestamps'] = main_timestamps
+            return df, False
     except ValueError:
         n_rows = len(df)
         start_rows = int(n_rows * 0.2)
