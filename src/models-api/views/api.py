@@ -10,7 +10,7 @@ from .helperFun import processors_call_on_trancript,PostProcesssor
 from views.extras import summarize_conversation_extras
 
 from decouple import config
-from config import MODEL_FOLDER
+from config import LIVE_TRANSCRIPT_FILE
 import pandas as pd
 from views.summary import ModelSelectFromLength
 from views.extras import summarize_conversation_extras
@@ -154,3 +154,19 @@ class ChatApi(Resource):
         chat = ChatBot(question= data['data']['question'],transcript = data['data']['document'])
         response = chat.chatbot_response(tokenizer_chat,model_chat)
         return {"data": response}, 200
+    
+class LiveChatApi(Resource):
+    
+    def get(self):
+        with open(LIVE_TRANSCRIPT_FILE, 'r') as file:
+            data = max(file.read().split("|"), key=len)
+            
+        return {"data": data.replace('\n', " ")}, 200
+
+    def post(self):
+        transcript = (request.get_json())['transcript']
+        print(LIVE_TRANSCRIPT_FILE)
+        with open(LIVE_TRANSCRIPT_FILE, 'a') as file:
+            file.write(transcript + "|")
+            
+        return {"data": "Added"}, 200
