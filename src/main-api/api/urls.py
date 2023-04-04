@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import LandingPageAPI,AddMeetingAPI,SummaryPageAPI,AddMeetingFileAPI,EditUserDataAPI,FeedBackAPI,OnboardingAPI,DownloadpdfAPI,AnalyticsAPI,StartSummarization
+from .views import LandingPageAPI,AddMeetingAPI,SummaryPageAPI,AddMeetingFileAPI,EditUserDataAPI,FeedBackAPI,OnboardingAPI,DownloadpdfAPI,AnalyticsAPI,StartSummarization,ChatbotAPI
 
 from .calender import GoogleCalendarInitView,GoogleCalendarEventsView,GoogleCalendarRedirectView,GoogleCalendarMultipleEventsView
 from .microsoftauth import MicrosoftCalendarInitView, MicrosoftCallback,MicrosoftEvent
@@ -37,5 +37,8 @@ urlpatterns = [
     path('microsoft_callback/', MicrosoftCallback.as_view(), name='microsoft_callback'),
     path('get_microsoft_event/', MicrosoftEvent.as_view(), name='get_microsoft_event'),
     # path('editsummary/<int:meeting_id>',EditSummaryAPI.as_view(),name = 'edit_summary')
+    
+    #Chatbot API
+    path('chatbot/<summary>/<int:meeting_id>', ChatbotAPI.as_view(), name='chatbot'),
 
 ] 

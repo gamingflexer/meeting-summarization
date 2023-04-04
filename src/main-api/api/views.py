@@ -322,12 +322,6 @@ class SummaryPageAPI(APIView):
         firebase_user_id = decoded_token['user_id']
         User_info.objects.get(user_firebase_token=firebase_user_id)
         
-        # with open(os.path.join(base_path_file,"api","data","summary.json"), 'rb') as f:
-        #         data = f.read()
-            
-        # meeting_data = json.loads(data)
-        # debug_data = meeting_data['data'][0]['meeting_data']
-        
         data_dict = {}
         meta_data_dict={}
         meta_data_list=[]
@@ -644,5 +638,14 @@ class AnalyticsAPI(APIView) : # ??
         content = main_queryset_serializer.data
         return Response({"data": {"analytics_data": content}}, status=status.HTTP_200_OK)
 
-
-
+class ChatbotAPI(APIView) :
+    
+    permission_classes = user_auth_required()
+    
+    def get(self,request,summary,meeting_id):
+        
+        if summary == "summary":
+            main_queryset = Summary.objects.filter(meeting_id=meeting_id)
+            main_queryset_serializer = Summary_Serializers(main_queryset,many=True)
+            content = main_queryset_serializer.data
+            return Response({"data": {"chatbot_data": content}}, status=status.HTTP_200_OK)
