@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% comment %} hackoverflow/templates/chat/chat.html {% endcomment %}
+{% block body %}
+
+<!-- <div className='flex bg-[#d5d8da]'>
+  
+  <div className='flex flex-col justify-between items-center text-[#252525]  h-screen  border  w-full'>
+      <div className='h-full border w-full'>
+          <div>
+            <button type="button" onClick={resetTranscript}>Reset</button>
+            <button type="button" onClick={listenContinuously}>Listen</button>
+            <button type="button" onClick={SpeechRecognition.stopListening}>Stop</button>
+          </div>
+
+      <div>
+        {message}
+      </div>
+      <div>
+        <span>{transcript}</span>
+    </div>
+
+
+      </div>
+      <div className='flex h-[70px] border_top w-full'>
+        <div className='flex w-full'>
+            <div className='flex items-center my-auto w-10 h-10 ml-2 justify-center border-gray-300 bg-[#3FCA5D] hover:bg-[#3FCA5D]/70 rounded-full'>
+              <img src={microphone} alt="" className='w-7 h-7 object-contain'/>
+            </div>
+
+          {/* <h1 className='font_paragraph_regular relative z-10'>Upload your files here.</h1> */}
+          <div className='flex items-center my-auto w-10 h-10 ml-2 justify-center hover:bg-[#cecbcb] rounded-full' onClick={()=>document.querySelector('.input-field').click()}>
+            <form action='' >
+                <img src={documentPic} alt="" className='w-7 h-7 object-contain'/>
+                <input type='file' name='file' className='input-field' hidden
+                onChange={handleFileChange}></input>
+            </form>
+          </div>
+
+        </div>
+        <div className='flex items-center my-auto w-10 h-10 ml-2 justify-center hover:bg-[#cecbcb] rounded-full'>
+          <form action="">
+              <img src={send} alt="" className='w-7 h-7 object-contain' onClick={handleChatSubmit}/>
+              {/* <input type='file' name='file' className='input-field' hidden 
+                onChange={handleChatSubmit} /> */}
+          </form>
+        </div>
+      </div>
+      {/* <h1 className='mb-20 font-bold'>Chat Messager</h1> */}
+  </div>
+
+    </div> -->
+
+<div class="flex flex-col bg-[#f7f3f3] h-screen p-4">
+  <h1 class="text-3xl m-5 pt-2 px-5 tracking-tight h-30 font-light py-2 border rounded-md" id="chat-header"></h1>
+  <div id="chat-log" class="border w-full p-4 bg-gray-300 h-full rounded-lg"></div>
+  <div class="m-4 flex">
+    <button id="chat-message-submit"
+      class="py-2 px-4 ml-2 border  border-transparent text-sm font-medium rounded-md text-white hover:bg-green-400 "
+      type="submit"><img
+        src="/Users/cosmos/Desktop/ Projects/HackerOverflow/chatbot/hackoverflow/templates/chat/microphone.png"
+        alt=""></button>
+    <input id="chat-message-input"
+      class="py-2 mx-5 outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm  focus:border-grey-500 w-full"
+      type="text" placeholder="Write your message here." />
+    <button id="chat-message-submit"
+      class="py-2 px-4 ml-2 border  border-transparent text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-400"
+      type="submit">
+      +
+    </button>
+    <button id="chat-message-submit"
+      class="py-2 px-4 ml-2 border  border-transparent text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-400"
+      type="submit">
+      Send
+    </button>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+  var wss_protocol = window.location.protocol == "https:" ? "wss://" : "ws://";
+  var chatSocket = new WebSocket(
+    wss_protocol + window.location.host + "/ws/chat/"
+  );
+  var messages = [];
+
+  chatSocket.onopen = function (e) {
+    document.querySelector("#chat-header").innerHTML =
+      "DocTrin";
+  };
+
+  chatSocket.onmessage = function (e) {
+    var data = JSON.parse(e.data);
+    var message = data["text"];
+    messages.push(message);
+
+    var str = '<ul class="space-y-2">';
+    messages.forEach(function (msg) {
+      str += `<li class="flex ${msg.source == "bot" ? "justify-start" : "justify-end"
+        }">
+      
+      <div class="relative mx-5 px-4 py-2 rounded-lg shadow-md
+        ${msg.source == "bot"
+          ? "text-gray-900 bg-white border border-gray-200"
+          : " bg-gray-100 text-gray-900 border border-gray-100"
+        }">
+        <span className="block font-normal">${msg.msg}</span></div></li>`;
+    });
+    str += "</ul>";
+    document.querySelector("#chat-log").innerHTML = str;
+  };
+
+  chatSocket.onclose = function (e) {
+    alert("Socket closed unexpectedly, please reload the page.");
+  };
+
+  document.querySelector("#chat-message-input").focus();
+  document.querySelector("#chat-message-input").onkeyup = function (e) {
+    if (e.keyCode === 13) {
+      // enter, return
+      document.querySelector("#chat-message-submit").click();
+    }
+  };
+
+  document.querySelector("#chat-message-submit").onclick = function (e) {
+    var messageInputDom = document.querySelector("#chat-message-input");
+    var message = messageInputDom.value;
+    chatSocket.send(
+      JSON.stringify({
+        text: message,
+      })
+    );
+
+    messageInputDom.value = "";
+  };
+</script>
+{% endblock %}
