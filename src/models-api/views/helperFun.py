@@ -89,8 +89,10 @@ def processors_call_on_trancript(transcript_df, transcript_joined, summary): # i
     get_interactions_silence = trancript_prepocessor_object.get_interactions_silence(analyse_transcript_var)
     backchannels = trancript_prepocessor_object.get_backchannels(analyse_transcript_var)
     stats = trancript_prepocessor_object.get_speaker_stats() #speaker stats
-    speaker_names = list(stats.keys())
+    speaker_names = list(stats['stats'].keys())
     action_items_list = trancript_object.get_action_items()
+
+    formatted_df_transcript_prepocessor = trancript_prepocessor_object.get_df()
     #df_cluster = trancript_prepocessor_object.get_cluster(df).to_json(orient='records') # what to do with this?
 
     #chatbot godel
@@ -111,7 +113,6 @@ def processors_call_on_trancript(transcript_df, transcript_joined, summary): # i
         speaker_roles[speaker] = generated_title
     
     final_list_speaker = []
-
     for speaker in stats['stats'].keys():
         final_list_speaker.append({
             "sepaker_name" : speaker,
@@ -137,4 +138,4 @@ def processors_call_on_trancript(transcript_df, transcript_joined, summary): # i
                         "generated_title": generated_title,
                         "speaker_final": final_list_speaker,
                         #"df_cluster":df_cluster
-                        }} 
+                        }},formatted_df_transcript_prepocessor

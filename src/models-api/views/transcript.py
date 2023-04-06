@@ -75,7 +75,7 @@ class TranscriptPreProcessor():
         
         stats = SpeakerStats(self.df, speaker='speaker').get_stats()
         
-        return stats
+        return {'stats':stats}
     
     def get_segments(self):
         """GET SEGMENTS"""   
@@ -103,3 +103,6 @@ class TranscriptPreProcessor():
         #get Title for the segments 
         
         return df_cluster
+
+    def get_df(self):
+        return self.df
