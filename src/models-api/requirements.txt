@@ -21,7 +21,6 @@ matplotlib
 noisereduce
 librosa
 soundfile
-pyconverse
 sentence-transformers
 flask-ngrok
 simple-websocket
@@ -47,3 +46,7 @@ date_extractor
 numba
 tiktoken
 future
+catalogue
+attr
+attrs
+keybert
