@@ -9,7 +9,7 @@ from model.highlights import get_highlights
 from utils import allowed_file,extract_audio_from_any_file, format_server_time
 from .helperFun import processors_call_on_trancript,PostProcesssor
 from views.extras import summarize_conversation_extras
-
+from views.transcript import convert_totranscript_json
 from decouple import config
 from config import LIVE_TRANSCRIPT_FILE
 import pandas as pd
@@ -117,6 +117,7 @@ class SummaryApi(Resource):
 
         #MAIN functions  ---> make a functions to convert into proper dataframe
         meta_data,df_updated = processors_call_on_trancript(transcript_joined = transcript_joined, transcript_df = transcript_df, summary = main_summary)
+        transcript_json = convert_totranscript_json(df_updated)
 
         # #postprocessing
         post_processor = PostProcesssor(main_summary)
@@ -139,7 +140,7 @@ class SummaryApi(Resource):
                             "metadata" :meta_data['meta_data'],
                             "models_used" : models_used,
                             "highlights" : segmented_title_df,
-                            "transcript" : "",
+                            "transcript" : transcript_json,
                         },
                     }
         

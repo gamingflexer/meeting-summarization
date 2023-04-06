@@ -1,3 +1,5 @@
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+
 print("\n Loading Sub Modules ... \n")
 from converse.pyconverse import Callyzer, SpeakerStats
 from converse.pyconverse.segmentation import SemanticTextSegmentation
@@ -9,6 +11,15 @@ import pandas as pd
 import spacy
 import nltk
 spacy.load('en_core_web_sm')
+
+from decouple import config
+
+DEBUG = config('DEBUG', cast=bool)
+if DEBUG == False:
+    # Load the tokenizer and model
+    tokenizer_question_detector = AutoTokenizer.from_pretrained("shahrukhx01/bert-mini-finetune-question-detection")
+    model_question_detector = AutoModelForSequenceClassification.from_pretrained("shahrukhx01/bert-mini-finetune-question-detection")
+
 
 class TranscriptPreProcessor():
     
@@ -106,3 +117,43 @@ class TranscriptPreProcessor():
 
     def get_df(self):
         return self.df
+
+
+def bert_question_predictor(text):
+    inputs = tokenizer_question_detector(text, return_tensors="pt")
+    outputs = model_question_detector(**inputs)
+    logits = outputs.logits
+    probabilities = logits.softmax(dim=-1).detach().numpy()[0]
+
+    # The predicted label is the one with the highest probability
+    predicted_label = probabilities.argmax()
+    is_question = bool(predicted_label)
+    if is_question:
+        return 1
+    else:
+        return 0
+
+def convert_totranscript_json(transcript_df):
+    df_updated["is_question"] = df_updated["utterance"].apply(bert_question_predictor)
+
+    output_list = []
+
+    for i, row in df_updated.iterrows():
+        output_dict = {}
+        
+        output_dict["time_stamp"] = (row["end_time"])
+        output_dict["speaker"] = row["speaker"]
+        output_dict["text"] = row["utterance"]
+        output_dict["end_time"] = (row["end_time"])
+        output_dict["start_time"] = (row["start_time"] )
+        
+        attributes_dict = {}
+        attributes_dict["is_question"] = bool(row["is_question"])
+        # if back channel is true then return yes else no
+        attributes_dict["is_backchannel"] = bool(row["is_backchannel"])
+        attributes_dict["is_answer"] = bool(row["is_answer"])
+        
+        output_dict["attributes"] = [attributes_dict]
+        
+        output_list.append(output_dict)
+        return output_list
