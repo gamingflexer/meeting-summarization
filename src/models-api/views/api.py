@@ -142,7 +142,7 @@ class SummaryApi(Resource):
                             "extras" : summarize_conversation_extras(transcript_joined),
                             "metadata" :meta_data['meta_data'],
                             "models_used" : models_used,
-                            "highlights" : segmented_title_df,
+                            "highlights" : highlight_json,
                             "transcript" : transcript_json,
                         },
                     }

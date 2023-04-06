@@ -1,6 +1,6 @@
 from views.preprocessing import transcript_preprocesssing, email_grabber, date_grabber, get_phone_numbers, get_human_name, address_grabber, correct_sentence, get_jargon_sentences, detect_meeting_structure,detect_questions_answers, g_translation_en
 from views.postprocessing import clean_summary, format_summary
-from model.models import action_items_distil_bert
+from model.models import action_items_distil_bert,model_action,tokenizer_action
 from model.retrieval import ChatBot,load_chatbot
 from spellchecker import SpellChecker
 from .models import ModelSelect
@@ -59,7 +59,7 @@ class PreProcesssor(): # which features are taken totally depends on the meeting
     def get_action_items(self):
         #getting top list #MAKE IT SMALLER
         splitted_text_list = self.text.split("\n")
-        top_list = action_items_distil_bert(splitted_text_list)
+        top_list = action_items_distil_bert(splitted_text_list,model_action,tokenizer_action)
         return top_list
     
 class PostProcesssor():

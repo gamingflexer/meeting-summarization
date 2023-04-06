@@ -134,11 +134,12 @@ def bert_question_predictor(text):
         return 0
 
 def convert_totranscript_json(transcript_df):
-    df_updated["is_question"] = df_updated["utterance"].apply(bert_question_predictor)
+    transcript_df['is_answer'] = False #= transcript_df['is_question'].shift(-1)
+    transcript_df["is_question"] = transcript_df["utterance"].apply(bert_question_predictor)
 
     output_list = []
 
-    for i, row in df_updated.iterrows():
+    for i, row in transcript_df.iterrows():
         output_dict = {}
         
         output_dict["time_stamp"] = (row["end_time"])
@@ -156,4 +157,4 @@ def convert_totranscript_json(transcript_df):
         output_dict["attributes"] = [attributes_dict]
         
         output_list.append(output_dict)
-        return output_list
+    return output_list
