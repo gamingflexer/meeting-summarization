@@ -86,7 +86,10 @@ def processors_call_on_trancript(transcript_df, transcript_joined, summary): # i
     
     trancript_prepocessor_object = TranscriptPreProcessor(df = transcript_df, transcript = transcript_joined,backchannels = "nlp")
     analyse_transcript_var = trancript_prepocessor_object.analyse_transcript()
-    get_interactions_silence = trancript_prepocessor_object.get_interactions_silence(analyse_transcript_var)
+    try:
+        get_interactions_silence = trancript_prepocessor_object.get_interactions_silence(analyse_transcript_var)
+    except:
+        get_interactions_silence = ""
     backchannels = trancript_prepocessor_object.get_backchannels(analyse_transcript_var)
     stats = trancript_prepocessor_object.get_speaker_stats() #speaker stats
     speaker_names = list(stats['stats'].keys())

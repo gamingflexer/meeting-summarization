@@ -105,8 +105,11 @@ class SummaryApi(Resource):
 
         #Convert to DataFrame
         transcript_joined = data['data'].get('transcript') # this is a string
-        transcript_df = pd.DataFrame(data['data'].get('transcript_df')) ########## this is the transcript
-        segmented_df = pd.DataFrame(data['data'].get('segmented_df')) ########## this is the segmented_df transcript
+        segmented_df = pd.from_json(data['data'].get('segmented_df')) ########## this is the segmented_df transcript
+
+        transcript_df = segmented_df
+        transcript_df.rename(columns={'text':'utterance'}, inplace=True)
+
         highlight_json,segmented_title_df = get_highlights(segmented_df)
         # -------------------------------------------------------------------------------- #
 

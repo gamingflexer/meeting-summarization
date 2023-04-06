@@ -275,3 +275,38 @@ def duration_from_transcript(df,file_extension):
         durations = (end_times - start_times).apply(lambda x: x.total_seconds())
         total_duration = durations.sum()
         return total_duration/60
+
+def start_end_from_transcript(df,file_extension):
+
+    if file_extension == '.json':
+        df["timestamp"] = pd.to_datetime(df["timestamp"])
+        df["start_time"] = pd.to_timedelta(0)
+        df.loc[df["main_timestamps"] == "main_context", "start_time"] = df["timestamp"].shift(1)
+        df["end_time"] = df["timestamp"].shift(-1)
+        df.loc[df["main_timestamps"] == "start", "end_time"] = pd.NaT
+        df.dropna(subset=["end_time"], inplace=True)
+        return df
+
+    if file_extension == '.html':
+        df['timestamp'] = pd.to_datetime(df['timestamp'])
+        # Calculate the start and end time for each row
+        df['start_time'] = df['timestamp']
+        df['end_time'] = df['timestamp'].shift(-1)
+        df.loc[df['main_timestamps'] == 'start', 'end_time'] = df['timestamp'] + pd.Timedelta(seconds=15)
+        df.dropna(subset=['end_time'], inplace=True)
+        # Format the timestamp, start_time, and end_time columns
+        df['timestamp'] = df['timestamp'].dt.time
+        df['start_time'] = df['start_time'].dt.time
+        df['end_time'] = df['end_time'].dt.time
+        return df
+
+    if file_extension == '.txt':
+        df["start_time"] = pd.to_datetime((df["time_stamp"]))
+        df["end_time"] = df["start_time"].shift(-1)
+        # Fill the last row's end_time with the last value of the main_timestamps column
+        df["end_time"].fillna(method="ffill", inplace=True)
+        return df
+
+    if file_extension == '.vtt':
+        df['end_time'] = df['start_time'] + pd.to_timedelta(df['duration'], unit='s')
+        return df
