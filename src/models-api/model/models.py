@@ -11,7 +11,7 @@ DEBUG = config('DEBUG', cast=bool)
 if DEBUG == False:
   gpus = tf.config.experimental.list_physical_devices('GPU')
   tf.config.experimental.set_memory_growth(gpus[0], True)
-
+  print("\n Action Items Model loading")
   device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
   model_state_dict = torch.load(os.path.join(MODEL_FOLDER,"bert-action-items","model.pth"),map_location = device)
   tokenizer_action = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
@@ -101,7 +101,7 @@ def led_summarizer(model,model_id_or_path,text):
   return results
 
 # Define prediction function
-def action_items_distil_bert(text_list):  
+def action_items_distil_bert(text_list,model_action,tokenizer_action):  
     
     # Load model
     if not os.path.exists(MODEL_FOLDER):
@@ -120,6 +120,7 @@ def action_items_distil_bert(text_list):
       # Load state dictionary into model
       model_action.load_state_dict(model_state_dict) 
 
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     for text in text_list:
         model_action.eval()
         encoding = tokenizer_action.encode_plus(

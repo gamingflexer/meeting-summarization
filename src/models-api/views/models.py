@@ -25,7 +25,7 @@ if DEBUG == False:
     import torch
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     whisper2 = pipeline('automatic-speech-recognition', model = 'asach/whisper_ami_finetuned-added',chunk_length_s=30) #'/home/student/Documents/dp/v1.1/whisper_ami
-
+    print("\nModel Loaded WHISPER \n")
 
 from config import AUDIO_FOLDER
 

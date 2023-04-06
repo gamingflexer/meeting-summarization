@@ -53,8 +53,10 @@ def get_highlights(df):
         df.drop(columns=['page_number'],inplace=True)
     except:
         pass
+    
+    segmented_df = df
 
-        #get the rows where "main_timestamps" is start
+    #get the rows where "main_timestamps" is start
     start_sentences = segmented_df[segmented_df['main_timestamps'] == 'start']
     main_context_sentences = segmented_df[segmented_df['main_timestamps'] == 'main_context']
     end_sentences = segmented_df[segmented_df['main_timestamps'] == 'end']
