@@ -5,6 +5,7 @@ import time
 import os
 from .models import wav_to_transcript, transcript_to_entities, audio_enhance
 from model.retrieval import ChatBot
+from model.highlights import get_highlights
 from utils import allowed_file,extract_audio_from_any_file, format_server_time
 from .helperFun import processors_call_on_trancript,PostProcesssor
 from views.extras import summarize_conversation_extras
@@ -105,7 +106,8 @@ class SummaryApi(Resource):
         #Convert to DataFrame
         transcript_joined = data['data'].get('transcript') # this is a string
         transcript_df = pd.DataFrame(data['data'].get('transcript_df')) ########## this is the transcript
-
+        segmented_df = pd.DataFrame(data['data'].get('segmented_df')) ########## this is the segmented_df transcript
+        highlight_json,segmented_title_df = get_highlights(segmented_df)
         # -------------------------------------------------------------------------------- #
 
         #summary generation
@@ -114,7 +116,7 @@ class SummaryApi(Resource):
         print("\n--- Time to get the summary %s seconds ---\n" % (time.time() - start_time))
 
         #MAIN functions  ---> make a functions to convert into proper dataframe
-        meta_data = processors_call_on_trancript(transcript_joined = transcript_joined, transcript_df = transcript_df, summary = main_summary)
+        meta_data,df_updated = processors_call_on_trancript(transcript_joined = transcript_joined, transcript_df = transcript_df, summary = main_summary)
 
         # #postprocessing
         post_processor = PostProcesssor(main_summary)
@@ -136,6 +138,8 @@ class SummaryApi(Resource):
                             "extras" : summarize_conversation_extras(transcript_joined),
                             "metadata" :meta_data['meta_data'],
                             "models_used" : models_used,
+                            "highlights" : segmented_title_df,
+                            "transcript" : "",
                         },
                     }
         

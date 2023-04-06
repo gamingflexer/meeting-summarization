@@ -1,4 +1,6 @@
-from models import bart_title_summarizer
+from views.models import ModelSelect
+from transformers import AutoTokenizer
+import nltk
 import math
 
 def get_highlights(df):
@@ -47,7 +49,64 @@ def get_highlights(df):
 
     df['main_headlines'] = df['main_timestamps'].apply(lambda x: (x.split('_')[0]) + '_headline')
     df['internal_headlines'] = df['internal_timestamp'].apply(lambda x: x + '_headline')
-    df.drop(columns=['page_number'],inplace=True)
+    try:
+        df.drop(columns=['page_number'],inplace=True)
+    except:
+        pass
+
+        #get the rows where "main_timestamps" is start
+    start_sentences = segmented_df[segmented_df['main_timestamps'] == 'start']
+    main_context_sentences = segmented_df[segmented_df['main_timestamps'] == 'main_context']
+    end_sentences = segmented_df[segmented_df['main_timestamps'] == 'end']
+
+    start_joined = " ".join(start_sentences['text'].to_list())
+    main_context_joined = " ".join(main_context_sentences['text'].to_list())
+    end_joined = " ".join(end_sentences['text'].to_list())
+
+    # get the rows where " .. " is start
+
+    # 1
+    start_sentences_internal_1 = start_sentences[start_sentences['internal_timestamp'] == 'start_1']
+    main_context_sentences_internal_1 = main_context_sentences[main_context_sentences['internal_timestamp'] == 'main_1']
+    end_sentences_internal_1 = end_sentences[end_sentences['internal_timestamp'] == 'end_1']
+
+    start_joined_internal_1 = " ".join(start_sentences_internal_1['text'].to_list())
+    main_context_joined_internal_1 = " ".join(main_context_sentences_internal_1['text'].to_list())
+    end_joined_internal_1 = " ".join(end_sentences_internal_1['text'].to_list())
+
+    # 2
+    start_sentences_internal_2 = start_sentences[start_sentences['internal_timestamp'] == 'start_2']
+    main_context_sentences_internal_2 = main_context_sentences[main_context_sentences['internal_timestamp'] == 'main_2']
+    end_sentences_internal_2 = end_sentences[end_sentences['internal_timestamp'] == 'end_2']
+
+    start_joined_internal_2 = " ".join(start_sentences_internal_2['text'].to_list())
+    main_context_joined_internal_2 = " ".join(main_context_sentences_internal_2['text'].to_list())
+    end_joined_internal_2 = " ".join(end_sentences_internal_2['text'].to_list())
+
+    title_model = ModelSelect(modelname = "title",model_id_or_path = "fabiochiu/t5-small-medium-title-generation", max_new_tokens=100, text=" ")
+    title_model_model = title_model.load_model()
+
+    def title_inside_df(segmented_df,timestamp,headline,text):
+        inputs = ["summarize: " + text]
+        tokenizer = AutoTokenizer.from_pretrained("fabiochiu/t5-small-medium-title-generation")
+        inputs = tokenizer(inputs, truncation=True, return_tensors="pt").to("cuda")
+        output = title_model_model.generate(**inputs, num_beams=4, do_sample=True, min_length=5, max_length=10)
+        decoded_output = tokenizer.batch_decode(output, skip_special_tokens=True)[0]
+        predicted_title = nltk.sent_tokenize(decoded_output.strip())[0]
+        segmented_df[headline] = segmented_df[headline].replace(timestamp,predicted_title)
+
+    title_inside_df(segmented_df,'start_headline','main_headlines',start_joined)
+    title_inside_df(segmented_df,'main_headline','main_headlines',main_context_joined)
+    title_inside_df(segmented_df,'end_1_headline','main_headlines',end_joined)
+
+    title_inside_df(segmented_df,'start_1_headline','internal_headlines',start_joined_internal_1)
+    title_inside_df(segmented_df,'main_1_headline','internal_headlines',main_context_joined_internal_1)
+    title_inside_df(segmented_df,'end_headline','internal_headlines',end_joined_internal_1)
+
+    title_inside_df(segmented_df,'start_2_headline','internal_headlines',start_joined_internal_2)
+    title_inside_df(segmented_df,'main_2_headline','internal_headlines',main_context_joined_internal_2)
+    title_inside_df(segmented_df,'end_2_headline','internal_headlines',end_joined_internal_2)
+
 
     """ CONVERT TO OUR FORMAT """
 
@@ -78,4 +137,4 @@ def get_highlights(df):
 
         output_dict['main_timestamps'].append(main_timestamp_dict)
 
-    return [output_dict]
+    return [output_dict],df

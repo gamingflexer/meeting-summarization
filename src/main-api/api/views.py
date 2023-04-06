@@ -225,7 +225,7 @@ class AddMeetingFileAPI(APIView):
                 segmented_df,speaker_dialogue,durations,attendeces_count = any_transcript_to_dataframe(newPath)
                 #--> send to summarization
                 try:
-                    response = requests.post(URL_MICRO + "summarization" , data=json.dumps({"transcript":speaker_dialogue}))
+                    response = requests.post(URL_MICRO + "summarization" , data=json.dumps({"transcript":speaker_dialogue,"segmented_df": segmented_df}))
                     response.raise_for_status()
                     models_data = (json.loads(response.json()))['data']
                 except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
@@ -256,6 +256,7 @@ class AddMeetingFileAPI(APIView):
                                                                      reading_time = len(models_data['summary'].split(" "))/200,
                                                                      speaker_json = json.dumps({"sepakers":models_data['metadata']['speaker_final']}),
                                                                      model_used = models_data['model_used'],
+                                                                     highlights_json = json.dumps(models_data['metadata']['highlights']),
                                                                      )
                                 
                 
