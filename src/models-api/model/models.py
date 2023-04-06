@@ -12,6 +12,14 @@ if DEBUG == False:
   gpus = tf.config.experimental.list_physical_devices('GPU')
   tf.config.experimental.set_memory_growth(gpus[0], True)
 
+  device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+  model_state_dict = torch.load(os.path.join(MODEL_FOLDER,"bert-action-items","model.pth"),map_location = device)
+  tokenizer_action = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
+  # Create model instance
+  model_action = DistilBertForSequenceClassification.from_pretrained('distilbert-base-uncased', num_labels=2).to("cuda")
+  # Load state dictionary into model
+  model_action.load_state_dict(model_state_dict)
+
 import logging
 logging.getLogger("transformers.modeling_utils").setLevel(logging.ERROR)
 
@@ -59,7 +67,7 @@ def bart_title_summarizer(model,model_path,text):
     try:
       tokenizer = AutoTokenizer.from_pretrained(model_path)
     except OSError:
-      tokenizer = AutoTokenizer.from_pretrained("")    
+      tokenizer = AutoTokenizer.from_pretrained("asach/bart-highlights-redit-new")
     encoder_max_length = 256  # demo
     decoder_max_length = 64
     inputs = tokenizer(
@@ -103,17 +111,18 @@ def action_items_distil_bert(text_list):
 
     top_action_items = []
 
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model_state_dict = torch.load(os.path.join(MODEL_FOLDER,"bert-action-items","model.pth"),map_location = device)
-    tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
-    # Create model instance
-    model = DistilBertForSequenceClassification.from_pretrained('distilbert-base-uncased', num_labels=2).to("cuda")
-    # Load state dictionary into model
-    model.load_state_dict(model_state_dict)
+    if DEBUG == True:
+      device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+      model_state_dict = torch.load(os.path.join(MODEL_FOLDER,"bert-action-items","model.pth"),map_location = device)
+      tokenizer_action = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
+      # Create model instance
+      model_action = DistilBertForSequenceClassification.from_pretrained('distilbert-base-uncased', num_labels=2).to("cuda")
+      # Load state dictionary into model
+      model_action.load_state_dict(model_state_dict) 
 
     for text in text_list:
-        model.eval()
-        encoding = tokenizer.encode_plus(
+        model_action.eval()
+        encoding = tokenizer_action.encode_plus(
             text,
             add_special_tokens=True,
             max_length=512,
@@ -126,7 +135,7 @@ def action_items_distil_bert(text_list):
         attention_mask = encoding['attention_mask'].to(device)
         
         with torch.no_grad():
-            outputs = model(input_ids, attention_mask=attention_mask)
+            outputs = model_action(input_ids, attention_mask=attention_mask)
             # Get predicted label
         pred_label = torch.argmax(outputs.logits).item()
         
