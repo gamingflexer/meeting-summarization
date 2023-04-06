@@ -10,7 +10,8 @@ from .utils import (transcript_html_to_dataframe,
                    json_zoom_transcript_file,
                    json_google_meet_transcript_file,
                    segment_transcript,
-                   duration_from_transcript)
+                   duration_from_transcript,
+                   start_end_from_transcript)
 
 def any_transcript_to_dataframe(file_path):
     file_extension = os.path.splitext(file_path)[1].lower()
@@ -53,6 +54,7 @@ def any_transcript_to_dataframe(file_path):
         durations = duration_from_transcript(df,file_extension)
     else:
         durations = duration_from_transcript(segmented_df,file_extension)
+    #segmented_df = start_end_from_transcript(segmented_df, file_extension)
     attendeces_count = len(df['speaker'].unique())
     #print(segmented_df,speaker_dialogue,durations,attendeces_count)
     return segmented_df,speaker_dialogue,(str(durations)[:3] + " min"),attendeces_count
