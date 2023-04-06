@@ -17,7 +17,7 @@ from decouple import config
 from utils import txt_to_pdf
 
 from .utility import  preprocess_hocr
-from .preprocessing.preprocessor import any_transcript_to_dataframe,identify_meeting_link,detect_language
+from .preprocessing.preprocessor import any_transcript_to_dataframe,identify_meeting_link,detect_language,start_end_from_transcript
 from .global_constant import *
 import datetime
 import requests
@@ -223,9 +223,13 @@ class AddMeetingFileAPI(APIView):
                 # preprocess it and add new data using preprocessor function {Expecting the files in our format}
                 
                 segmented_df,speaker_dialogue,durations,attendeces_count = any_transcript_to_dataframe(newPath)
+                segmented_df_ = start_end_from_transcript(segmented_df,file_extension = path_tranacript.split(".")[-1])
                 #--> send to summarization
                 try:
-                    response = requests.post(URL_MICRO + "summarization" , data=json.dumps({"transcript":speaker_dialogue,"segmented_df": segmented_df}))
+                    response = requests.post(URL_MICRO + "summarization" , data=json.dumps(
+                                                                                {"transcript":speaker_dialogue,
+                                                                                "segmented_df": segmented_df_.to_json()
+                                                                                }))
                     response.raise_for_status()
                     models_data = (json.loads(response.json()))['data']
                 except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
