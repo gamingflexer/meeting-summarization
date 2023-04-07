@@ -15,6 +15,7 @@ from config import LIVE_TRANSCRIPT_FILE
 import pandas as pd
 from views.summary import ModelSelectFromLength
 from views.extras import summarize_conversation_extras
+import ast
 
 DEBUG = config('DEBUG', cast=bool)
 
@@ -68,8 +69,15 @@ class AudioApi(Resource):
 class SummaryApi(Resource):
     
     def post(self):
-        data = request.get_json()        
-                    
+        print("hii entered")
+        
+        data=request.get_data()
+        data = data.decode("UTF-8",'surrogateescape')
+        try:
+                data = ast.literal_eval(str(data))
+        except ValueError:
+                data = json.loads(str(data))     
+        print(data)
         """ Configs """
         
         # if data['translate'] == 1:  #hold on for now
@@ -144,7 +152,7 @@ class SummaryApi(Resource):
                             "models_used" : models_used,
                             "highlights" : highlight_json,
                             "transcript" : transcript_json,
-                        },
+                        }
                     }
         
 
