@@ -166,7 +166,13 @@ class EntitiesApi(Resource):
 class ChatApi(Resource):
 
     def post(self):
-        data = request.get_json()
+        data=request.get_data()
+        data = data.decode("UTF-8",'surrogateescape')
+        try:
+            data = ast.literal_eval(str(data))
+        except ValueError:
+            data = json.loads(str(data))
+            
         chat = ChatBot(question= data['data']['question'],transcript = data['data']['document'])
         response = chat.chatbot_response(tokenizer_chat,model_chat)
         return {"data": response}, 200
