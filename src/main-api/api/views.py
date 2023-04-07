@@ -332,11 +332,11 @@ class SummaryPageAPI(APIView):
         
         authorization_header = request.META.get('HTTP_AUTHORIZATION')
         token = authorization_header.replace("Bearer ", "")
-        
+
         decoded_token = auth.verify_id_token(token)
         firebase_user_id = decoded_token['user_id']
         User_info.objects.get(user_firebase_token=firebase_user_id)
-        
+
         data_dict = {}
         meta_data_dict={}
         meta_data_list=[]
@@ -358,134 +358,26 @@ class SummaryPageAPI(APIView):
 
         for single_key in listofkeys:
             meta_data_dict[single_key] = content.get(single_key)
-        meta_data_dict['speaker'] =  json.loads(content.get('speaker_json')) 
+        try:
+            meta_data_dict['speaker'] =  json.loads(content.get('speaker_json')).get('sepakers')
+        except :
+            meta_data_dict['speaker']=[]
         meta_data_list.append(meta_data_dict)
         meeting_data_dict["metadata"] = meta_data_list
 
         for single_key in summary_dict_key:
             summary_dict[single_key] = content.get(single_key)
         summary_dict['agenda'] = ['General Meeting','Disccusion']
-
-        summary_dict['highlights'] = [{ "main_timestamps": [
-                                        {
-                                            "timestamp": "00:00:00",
-                                            "headline": "Meeting started",
-                                            "internal_timestamp": [
-                                                {
-                                                    "time": "00:10:00",
-                                                    "text": "Meeting started"
-                                                },
-                                                {
-                                                    "time": "00:20:00",
-                                                    "text": "Meeting started"
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "timestamp": "1:00:00",
-                                            "headline": "Middle Part started",
-                                            "internal_timestamp": [
-                                                {
-                                                    "time": "1:10:00",
-                                                    "text": "Topic 1 Disussion"
-                                                },
-                                                {
-                                                    "time": "2:20:00",
-                                                    "text": "Topic 2 Disussion"
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "timestamp": "3:00:00",
-                                            "headline": "Middle Part 2 Comeback started",
-                                            "internal_timestamp": [
-                                                {
-                                                    "time": "3:10:00",
-                                                    "text": " Oka whe need to complete it by sunday"
-                                                },
-                                                {
-                                                    "time": "4:10:00",
-                                                    "text": "But all are busy & me  ; ("
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "timestamp": "4:00:00",
-                                            "headline": "Meeting Ended",
-                                            "internal_timestamp": [
-                                                {
-                                                    "time": "4:10:00",
-                                                    "text": "Conclstion "
-                                                },
-                                                {
-                                                    "time": "6:10:00",
-                                                    "text": "Bye Bye"
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ] #[" "]   #om will do
+        try:
+            summary_dict['highlights'] = json.loads(content.get('highlights_json')) #[" "]   #om will do
+        except:
+            summary_dict['highlights']=[]
         summary_data_list.append(summary_dict)
         meeting_data_dict['summary'] = summary_data_list
-        meeting_data_dict['trascript'] = [
-                        {
-                            "meeting_transcript": content.get("meeting_transcript"),
-                            "meeting_transcript_with_actions": [
-                                {
-                                    "time_stamp": 0,
-                                    "speaker": " Speaker 1",
-                                    "text": "Good morning everyone and welcome to our weekly team meeting. Today wel be discussing the progress of our ongoing projects and planning for the next quarter.",
-                                    "end_time": 0,
-                                    "start_time": 0,
-                                    "attributes": [
-                                        {
-                                            "is_question": True,
-                                            "back_channel": [
-                                                "yes",
-                                                "no"
-                                            ],
-                                            "is_answer": False
-                                        }
-                                    ]
-                                },
-                                {
-                                    "time_stamp": 75200,
-                                    "speaker": " Speaker 2",
-                                    "text": "Thanks, Speaker 1. I'd like to start by sharing an update on the marketing campaign we launched last month. Our initial metrics are looking very promising and we're already seeing an uptick in website traffic and engagement.",
-                                    "end_time": 75200,
-                                    "start_time": 0,
-                                    "attributes": [
-                                        {
-                                            "is_question": True,
-                                            "back_channel": [
-                                                "yes",
-                                                "no"
-                                            ],
-                                            "is_answer": False
-                                        }
-                                    ]
-                                },
-                                {
-                                    "time_stamp": 150500,
-                                    "speaker": " Speaker 3",
-                                    "text": "Thats great to hear, Speaker 2. I think we should also consider expanding our reach to new markets, especially in Europe where we've seen a lot of interest lately.",
-                                    "end_time": 225700,
-                                    "start_time": 75200,
-                                    "attributes": [
-                                        {
-                                            "is_question": False,
-                                            "back_channel": [
-                                                "yes",
-                                                "no"
-                                            ],
-                                            "is_answer": True
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ] #om will do
+        try:
+            meeting_data_dict['trascript'] = json.loads(content.get('transcript_json'))
+        except:
+            meeting_data_dict['trascript'] =[]
         meeting_data_list.append(meeting_data_dict)
         data_dict['meeting_data'] = meeting_data_list
         data_dict["email_redirect"] = f"mailto:{decoded_token['email']}"
