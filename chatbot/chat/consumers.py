@@ -56,8 +56,6 @@ class ChatConsumer(WebsocketConsumer):
             print("Down")
         except requests.exceptions.HTTPError:
             print("4xx, 5xx")
-        # print((response.json())['data']['chatbot_data'])
-        # print(type(response.json()))
         summary = (response.json())['data']['chatbot_data'][0]['meeting_summary']
         transcript = "sections"
         

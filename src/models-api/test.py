@@ -81,8 +81,5 @@ def processors_call_on_trancript(transcript): # in the format of the json | whis
                         "stats":stats,
                         "df_cluster":df_cluster}}
                          
-    
-    
-    
 tokenizer = AutoTokenizer.from_pretrained("microsoft/GODEL-v1_1-large-seq2seq")
 model = AutoModelForSeq2SeqLM.from_pretrained("microsoft/GODEL-v1_1-large-seq2seq")
