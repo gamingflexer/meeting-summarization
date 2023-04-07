@@ -38,7 +38,7 @@ def audio_enhance(file): #NOT TO USED IF YOU USING FINETUNED MODEL
 
 def wav_to_transcript(wav_file_path,model_name="base", segments = False):
     whisper2.model.generation_config = GenerationConfig.from_pretrained("openai/whisper-medium")
-    result = whisper2(wav_file_path, return_timestamps=True)['text']
+    result = whisper2(wav_file_path, return_timestamps=False)['text']
     if segments:
         for segment in result['segments']:
             segment.pop('tokens')

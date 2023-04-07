@@ -93,7 +93,7 @@ class SummaryApi(Resource):
         if data is None:
             return {"message": "No data provided"}, 400
         
-        # meeting_type = data['data'].get('meeting_type')
+        meeting_type = data['data'].get('meeting_type')
 
         # if meeting_type == 'from_video_audio': # no speaker info
         #     transcript = data['data'].get('transcript') # this is a json
@@ -110,50 +110,53 @@ class SummaryApi(Resource):
 
         """START HERE TO GET SUMMARY"""
         # formatted transcript preprocessor [NEED TO FORMAT !!]
+        if meeting_type == 'from_transcript':
+            #Convert to DataFrame
+            transcript_joined = data['data'].get('transcript') # this is a string
+            segmented_df = pd.DataFrame((data['data'].get('segmented_df'))) ########## this is the segmented_df transcript
 
-        #Convert to DataFrame
-        transcript_joined = data['data'].get('transcript') # this is a string
-        segmented_df = pd.DataFrame((data['data'].get('segmented_df'))) ########## this is the segmented_df transcript
+            highlight_json,segmented_title_df = get_highlights(segmented_df)
 
-        highlight_json,segmented_title_df = get_highlights(segmented_df)
+            transcript_df = segmented_df
+            transcript_df.rename(columns={'text':'utterance'}, inplace=True)
+            # -------------------------------------------------------------------------------- #
 
-        transcript_df = segmented_df
-        transcript_df.rename(columns={'text':'utterance'}, inplace=True)
-        # -------------------------------------------------------------------------------- #
+            #summary generation
+            start_time = time.time()
+            main_summary,models_used = ModelSelectFromLength(transcript_joined)
+            print("\n--- Time to get the summary %s seconds ---\n" % (time.time() - start_time))
 
-        #summary generation
-        start_time = time.time()
-        main_summary,models_used = ModelSelectFromLength(transcript_joined)
-        print("\n--- Time to get the summary %s seconds ---\n" % (time.time() - start_time))
+            #MAIN functions  ---> make a functions to convert into proper dataframe
+            meta_data,df_updated = processors_call_on_trancript(transcript_joined = transcript_joined, transcript_df = transcript_df, summary = main_summary)
+            transcript_json = convert_totranscript_json(df_updated)
 
-        #MAIN functions  ---> make a functions to convert into proper dataframe
-        meta_data,df_updated = processors_call_on_trancript(transcript_joined = transcript_joined, transcript_df = transcript_df, summary = main_summary)
-        transcript_json = convert_totranscript_json(df_updated)
-
-        # #postprocessing
-        post_processor = PostProcesssor(main_summary)
-        clean_summary = post_processor.get_clean_summary()
-        formatted_summary = post_processor.get_formatted_summary(clean_summary)
-        print("\n--- TOTAL TIME %s seconds ---\n" % (time.time() - start_time))
-        
-        try:
-            final_summary = formatted_summary
-        except NameError:
+            # #postprocessing
+            post_processor = PostProcesssor(main_summary)
+            clean_summary = post_processor.get_clean_summary()
+            formatted_summary = post_processor.get_formatted_summary(clean_summary)
+            print("\n--- TOTAL TIME %s seconds ---\n" % (time.time() - start_time))
+            
             try:
-                final_summary = clean_summary
-            except:
-                final_summary = main_summary
+                final_summary = formatted_summary
+            except NameError:
+                try:
+                    final_summary = clean_summary
+                except:
+                    final_summary = main_summary
 
-        return {"data":
-                        {
-                            "summary":final_summary,
-                            "extras" : summarize_conversation_extras(transcript_joined),
-                            "metadata" :meta_data['meta_data'],
-                            "models_used" : models_used,
-                            "highlights" : highlight_json,
-                            "transcript" : transcript_json,
+            return {"data":
+                            {
+                                "summary":final_summary,
+                                "extras" : summarize_conversation_extras(transcript_joined),
+                                "metadata" :meta_data['meta_data'],
+                                "models_used" : models_used,
+                                "highlights" : highlight_json,
+                                "transcript" : transcript_json,
+                            }
                         }
-                    }
+        else:
+            transcript_joined = data['data'].get('transcript') # this is a string
+            
         
 
 class EntitiesApi(Resource):
