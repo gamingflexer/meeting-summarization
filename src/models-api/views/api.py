@@ -180,7 +180,15 @@ class LiveChatApi(Resource):
         return {"data": data.replace('\n', " ")}, 200
 
     def post(self):
-        transcript = (request.get_json())['transcript']
+        data=request.get_data()
+        data = data.decode("UTF-8",'surrogateescape')
+        try:
+            data = ast.literal_eval(str(data))
+        except ValueError:
+            data = json.loads(str(data))
+                
+        transcript = data['transcript']
+        
         print(LIVE_TRANSCRIPT_FILE)
         with open(LIVE_TRANSCRIPT_FILE, 'a') as file:
             file.write(transcript + "|")
