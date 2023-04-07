@@ -228,14 +228,16 @@ class AddMeetingFileAPI(APIView):
                 
                 segmented_df,speaker_dialogue,durations,attendeces_count = any_transcript_to_dataframe(newPath)
                 segmented_df_2 = start_end_from_transcript(segmented_df,file_extension = newPath.split(".")[-1])
-                response_json = dict({"transcript":speaker_dialogue,"segmented_df": json.loads(segmented_df_2.to_json(orient='records'))})
-                
+                response_json = dict({'data':{"transcript":speaker_dialogue,"segmented_df": json.loads(segmented_df_2.to_json(orient='records'))}})
+                print(response_json)
+                # response_json={'transcript': "Claire: Hi everyone, welcome to our weekly team meeting.\nMark: Hi Claire, thanks for having us.\nClaire: Today we'll be discussing the progress on the new project.\nEmma: I have some updates on the project. The design work is almost done.\nJohn: Great to hear that Emma, what about the development work?"}
                 #--> send to summarization
                 try:
                     response = requests.post(url = URL_MICRO + "summarization", data=json.dumps(response_json))
                     response.raise_for_status()
                     response.raise_for_status()
-                    models_data = (json.loads(response.json()))['data']
+                    models_data = (response.json())['data']
+                    # models_data = (json.loads(response.json()))['data']
                 except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
                     print("Down")
                 except requests.exceptions.HTTPError:
