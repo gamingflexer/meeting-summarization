@@ -2,115 +2,119 @@
 {% comment %} hackoverflow/templates/chat/chat.html {% endcomment %}
 {% block body %}
 
-<!-- <div className='flex bg-[#d5d8da]'>
-  
-  <div className='flex flex-col justify-between items-center text-[#252525]  h-screen  border  w-full'>
-      <div className='h-full border w-full'>
-          <div>
-            <button type="button" onClick={resetTranscript}>Reset</button>
-            <button type="button" onClick={listenContinuously}>Listen</button>
-            <button type="button" onClick={SpeechRecognition.stopListening}>Stop</button>
-          </div>
-
-      <div>
-        {message}
+<div class="p-4 h-screen">
+  <!-- Chats -->
+  <div class="flex flex-col mx-auto max-w-screen-md h-[90vh]">
+    <!--   Info  -->
+    <div class="fixed bottom-0 right-0 mb-8 mr-8">
+      <button id="info-button"
+              class="relative z-10 w-12 h-12 rounded-full text-green-700 bg-gray-200 hover:bg-gray-300 focus:outline-none">
+        ?
+      </button>
+      <div id="info-panel"
+           class="fixed bottom-12 right-12 w-64 p-4 bg-white border border-gray-300 rounded-lg shadow-sm">
+        <p class="text-gray-800">Frequently Asked Questions</p>
+        <ul class="mt-4">
+          <li class="mb-2 text-blue-500 cursor-pointer" data-text="What is the general topic of the conversation?">What
+            is the general topic of the conversation?
+          </li>
+          <li class="mb-2 text-blue-500 cursor-pointer" data-text="Who are the speakers in the conversation?">Who are
+            the speakers in the conversation?
+          </li>
+          <li class="mb-2 text-blue-500 cursor-pointer" data-text="What are the action items in the conversation?">What
+            are the action items in the conversation?
+          </li>
+          <li class="mb-2 text-blue-500 cursor-pointer"
+              data-text="What are the roles of the speakers in the conversation?">What are the roles of the speakers in
+            the conversation?
+          </li>
+          <li class="mb-2 text-blue-500 cursor-pointer" data-text="What is the agenda of the meeting?">What is the
+            agenda of the meeting?
+          </li>
+          <li class="mb-2 text-blue-500 cursor-pointer" data-text="What are the decisions taken here?">What are the
+            decisions taken here?
+          </li>
+          <li class="mb-2 text-blue-500 cursor-pointer" data-text="Can you summarize this conversation?">Can you
+            summarize this conversation?
+          </li>
+        </ul>
       </div>
-      <div>
-        <span>{transcript}</span>
     </div>
 
 
-      </div>
-      <div className='flex h-[70px] border_top w-full'>
-        <div className='flex w-full'>
-            <div className='flex items-center my-auto w-10 h-10 ml-2 justify-center border-gray-300 bg-[#3FCA5D] hover:bg-[#3FCA5D]/70 rounded-full'>
-              <img src={microphone} alt="" className='w-7 h-7 object-contain'/>
-            </div>
-
-          {/* <h1 className='font_paragraph_regular relative z-10'>Upload your files here.</h1> */}
-          <div className='flex items-center my-auto w-10 h-10 ml-2 justify-center hover:bg-[#cecbcb] rounded-full' onClick={()=>document.querySelector('.input-field').click()}>
-            <form action='' >
-                <img src={documentPic} alt="" className='w-7 h-7 object-contain'/>
-                <input type='file' name='file' className='input-field' hidden
-                onChange={handleFileChange}></input>
-            </form>
-          </div>
-
-        </div>
-        <div className='flex items-center my-auto w-10 h-10 ml-2 justify-center hover:bg-[#cecbcb] rounded-full'>
-          <form action="">
-              <img src={send} alt="" className='w-7 h-7 object-contain' onClick={handleChatSubmit}/>
-              {/* <input type='file' name='file' className='input-field' hidden 
-                onChange={handleChatSubmit} /> */}
-          </form>
+    <!-- Header -->
+    <div class="flex justify-between items-center pb-4">
+      <h1 class="text-2xl font-semibold text-gray-900 font-sans">KEY<span class="text-blue-800">NOTE</span></h1>
+      <div class="flex items-center">
+        <div class="flex items-center">
+          <span class="text-gray-500 text-sm mr-2">Meeting ID:</span>
+          <span class="text-gray-900 text-sm font-bold">{{ meeting_id }}</span>
         </div>
       </div>
-      {/* <h1 className='mb-20 font-bold'>Chat Messager</h1> */}
-  </div>
+    </div>
 
-    </div> -->
+    <!--   Chat Portion  -->
+    <div id="chat-log" class="border w-full p-4 bg-gray-100 h-full rounded-lg overflow-y-scroll"></div>
 
-<div class="flex flex-col bg-[#f7f3f3] h-screen p-4">
-  <h1 class="text-3xl m-5 pt-2 px-5 tracking-tight h-30 font-light py-2 border rounded-md" id="chat-header"></h1>
-  <div id="chat-log" class="border w-full p-4 bg-gray-300 h-full rounded-lg"></div>
-  <div class="m-4 flex">
-    <button id="chat-message-submit"
-      class="py-2 px-4 ml-2 border  border-transparent text-sm font-medium rounded-md text-white hover:bg-green-400 "
-      type="submit"><img
-        src="/Users/cosmos/Desktop/ Projects/HackerOverflow/chatbot/hackoverflow/templates/chat/microphone.png"
-        alt=""></button>
-    <input id="chat-message-input"
-      class="py-2 mx-5 outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm  focus:border-grey-500 w-full"
-      type="text" placeholder="Write your message here." />
-    <button id="chat-message-submit"
-      class="py-2 px-4 ml-2 border  border-transparent text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-400"
-      type="submit">
-      +
-    </button>
-    <button id="chat-message-submit"
-      class="py-2 px-4 ml-2 border  border-transparent text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-400"
-      type="submit">
-      Send
-    </button>
+    <!--  Form and Buttons -->
+    <div class="flex mt-4">
+      <label for="chat-message-input" class="hidden"></label>
+      <input
+        id="chat-message-input"
+        class="py-2 rounded-md outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm  focus:border-grey-500 w-full"
+        type="text"
+        placeholder="Start typing..."
+      />
+      <button
+        id="chat-message-submit"
+        class="py-2 px-4 ml-4 border  border-transparent text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-400"
+        type="submit"
+      >
+        Send
+      </button>
+    </div>
   </div>
 </div>
 {% endblock %}
 {% block scripts %}
 <script>
-  var wss_protocol = window.location.protocol == "https:" ? "wss://" : "ws://";
-  var chatSocket = new WebSocket(
+  const wss_protocol = window.location.protocol == "https:" ? "wss://" : "ws://";
+  const chatSocket = new WebSocket(
     wss_protocol + window.location.host + "/ws/chat/" + "{{ meeting_id }}" + "/"
   );
-  var messages = [];
+  let messages = [];
 
-  chatSocket.onopen = function (e) {
-    document.querySelector("#chat-header").innerHTML =
-      "RAPID RECAP";
+  chatSocket.onopen = function () {
+    console.log("Socket opened");
   };
 
   chatSocket.onmessage = function (e) {
-    var data = JSON.parse(e.data);
-    var message = data["text"];
+
+    document.querySelector("#chat-log").innerHTML = '<div className="bouncing-loader"><div></div><div></div><div></div></div>';
+
+    let data = JSON.parse(e.data);
+    let message = data["text"];
     messages.push(message);
 
-    var str = '<ul class="space-y-2">';
+    let str = '<ul class="space-y-2">';
     messages.forEach(function (msg) {
-      str += `<li class="flex ${msg.source == "bot" ? "justify-start" : "justify-end"
-        }">
-      
-      <div class="relative mx-5 px-4 py-2 rounded-lg shadow-md
-        ${msg.source == "bot"
-          ? "text-gray-900 bg-white border border-gray-200"
-          : " bg-gray-100 text-gray-900 border border-gray-100"
-        }">
-        <span className="block font-normal">${msg.msg}</span></div></li>`;
+      str += `<li class="flex ${msg.source === "bot" ? "justify-start" : "justify-end"
+      }">
+
+      <div class="relative px-5 py-1 shadow-sm
+        ${msg.source === "bot"
+        ? "text-gray-900 bg-white border border-gray-200"
+        : "bg-gray-100 text-gray-900 border border-gray-100"
+      } rounded-full">
+        <span class="block font-normal">${msg.msg}</span></div></li>`;
     });
     str += "</ul>";
     document.querySelector("#chat-log").innerHTML = str;
   };
 
-  chatSocket.onclose = function (e) {
+  chatSocket.onclose = function () {
     alert("Socket closed unexpectedly, please reload the page.");
+    console.log("Socket closed unexpectedly, please reload the page.")
   };
 
   document.querySelector("#chat-message-input").focus();
@@ -121,7 +125,7 @@
     }
   };
 
-  document.querySelector("#chat-message-submit").onclick = function (e) {
+  document.querySelector("#chat-message-submit").onclick = function () {
     var messageInputDom = document.querySelector("#chat-message-input");
     var message = messageInputDom.value;
     chatSocket.send(
@@ -132,5 +136,59 @@
 
     messageInputDom.value = "";
   };
+
+
+  const inputElement = document.getElementById('chat-message-input');
+
+  const placeholderTexts = [
+    'What is the general topic of the conversation?',
+    'Who are the speakers in the conversation?',
+    'What are the action items in the conversation?',
+    'What are the roles of the speakers in the conversation?',
+    'What is the agenda of the meeting?',
+    'What are the decisions taken here?',
+    'Can you summarize this conversation?'
+  ];
+
+  let currentIndex = 0;
+
+  let changeIntervalId;
+  let typingIntervalId;
+  changeIntervalId = setInterval(() => {
+    clearInterval(typingIntervalId); // clear typing interval if it's running
+    currentIndex = (currentIndex + 1) % placeholderTexts.length;
+    const placeholderText = placeholderTexts[currentIndex];
+    let currentText = '';
+    let currentTextIndex = 0;
+    typingIntervalId = setInterval(() => {
+      currentText += placeholderText.charAt(currentTextIndex);
+      inputElement.placeholder = currentText + '|';
+      currentTextIndex++;
+      if (currentTextIndex > placeholderText.length) {
+        clearInterval(typingIntervalId);
+        inputElement.placeholder = placeholderText;
+      }
+    }, 50);
+  }, 5000);
+
+
+  //  info
+  const infoButton = document.getElementById('info-button');
+  const infoPanel = document.getElementById('info-panel');
+
+  infoButton.addEventListener('click', () => {
+    infoPanel.classList.toggle('hidden');
+  });
+
+  // Get the info panel and input field
+  const inputField = document.getElementById('chat-message-input');
+
+  // Add click event listener to each question
+  const questions = infoPanel.querySelectorAll('li');
+  questions.forEach(question => {
+    question.addEventListener('click', () => {
+      inputField.value = question.dataset.text;
+    });
+  });
 </script>
 {% endblock %}
