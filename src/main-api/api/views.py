@@ -270,6 +270,7 @@ class AddMeetingFileAPI(APIView):
                                                                      speaker_json = json.dumps({"sepakers":models_data['metadata']['speaker_final']}),
                                                                      model_used = models_data['models_used'],
                                                                      highlights_json = json.dumps(models_data['highlights']),
+                                                                     transcript_json = json.dumps(models_data['transcript']),
                                                                      )
                                 
                 

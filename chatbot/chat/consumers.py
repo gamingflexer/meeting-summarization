@@ -6,6 +6,10 @@ from django.views.decorators.csrf import csrf_exempt
 import requests
 import re
 
+from decouple import config
+
+URL_MICRO = config('URL_MICRO')
+
 class ChatConsumer(WebsocketConsumer):
     
     def connect(self):
@@ -52,14 +56,15 @@ class ChatConsumer(WebsocketConsumer):
             print("Down")
         except requests.exceptions.HTTPError:
             print("4xx, 5xx")
-        
-        summary = (response.json())['data']['chatbot_data']['meeting_summary']
+        # print((response.json())['data']['chatbot_data'])
+        # print(type(response.json()))
+        summary = (response.json())['data']['chatbot_data'][0]['meeting_summary']
         transcript = "sections"
         
         """GET FROM CHATBOT RESPONSE"""
         
         try:
-            response = requests.post("http://127.0.0.1:3000/api/chatbot", 
+            response = requests.post(f"{URL_MICRO}chat", 
                                     data=json.dumps(
                                                     {"data":
                                                         {"question": text_data_json["text"], 
@@ -85,7 +90,7 @@ class ChatConsumer(WebsocketConsumer):
             self.channel_name,
             {
                 "type": "chat.message",
-                "text": {"msg": "res_openai", "source": "bot"},
+                "text": {"msg": res_openai, "source": "bot"},
             },
         )
 
