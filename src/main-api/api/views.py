@@ -152,6 +152,7 @@ class AddMeetingAPI(APIView):
             data = response_data.get('data')
             meeting_audio_file_link_new = ""
             main_queryset = User_info.objects.get(user_firebase_token=firebase_user_id)
+                        
             Summary.objects.create(user_firebase_token = main_queryset,
                                     title = data.get("meeting_title"),
                                     meet_platform = data.get("meeting_platform"),
@@ -165,8 +166,10 @@ class AddMeetingAPI(APIView):
                                     language = data.get("language"),
                                     meeting_audio_file_link = meeting_audio_file_link_new
                                     )
+            
             main_queryset_summary = Summary.objects.filter(user_firebase_token=firebase_user_id).latest('meeting_id')
             main_queryset_summary_serializer = Summary_Serializers(main_queryset_summary)
+            
             return Response({"data":
                             {"meeting_data":main_queryset_summary_serializer.data}},
                             status=status.HTTP_201_CREATED)
@@ -210,10 +213,11 @@ class AddMeetingFileAPI(APIView):
                                                                  is_summarized=True)
             
             file_extention = newPath.split("/")[-1].split(".")[-1]
-            with open(os.path.join(base_path_file,"api","data","summary.json"), 'rb') as f:
-                data = f.read()
+
+            # with open("/Users/cosmos/Desktop/Projects/DeepBlue 2/meeting-summarization-api/data/responses/summary_model_api_response.json", 'rb') as f:
+            #     json_data = f.read()
             
-            meeting_data = json.loads(data)
+            #print(json_data)
             
             # if from_transcript file type then send to
             if file_extention in TRANCRIPT_EXT:
@@ -223,13 +227,13 @@ class AddMeetingFileAPI(APIView):
                 # preprocess it and add new data using preprocessor function {Expecting the files in our format}
                 
                 segmented_df,speaker_dialogue,durations,attendeces_count = any_transcript_to_dataframe(newPath)
-                segmented_df_ = start_end_from_transcript(segmented_df,file_extension = path_tranacript.split(".")[-1])
+                segmented_df_2 = start_end_from_transcript(segmented_df,file_extension = newPath.split(".")[-1])
+                response_json = dict({"transcript":speaker_dialogue,"segmented_df": json.loads(segmented_df_2.to_json(orient='records'))})
+                
                 #--> send to summarization
                 try:
-                    response = requests.post(URL_MICRO + "summarization" , data=json.dumps(
-                                                                                {"transcript":speaker_dialogue,
-                                                                                "segmented_df": segmented_df_.to_json()
-                                                                                }))
+                    response = requests.post(url = URL_MICRO + "summarization", data=json.dumps(response_json))
+                    response.raise_for_status()
                     response.raise_for_status()
                     models_data = (json.loads(response.json()))['data']
                 except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
@@ -237,10 +241,13 @@ class AddMeetingFileAPI(APIView):
                 except requests.exceptions.HTTPError:
                     print("4xx, 5xx")
                 
+                #models_data = (json.loads(json_data))['data']
+                
                 try:
-                    top_time_spent_person = models_data['metadata']['top_speaker'][0]
+                    top_time_spent_person = models_data.get('metadata')['top_speaker'][0]
                 except KeyError:
                     top_time_spent_person = ""
+                    
                 #save data
                 Summary.objects.filter(meeting_id=meeting_id).update(meeting_duration = durations,
                                                                      is_summarized = True,
@@ -248,10 +255,10 @@ class AddMeetingFileAPI(APIView):
                                                                      attendees_count = attendeces_count,
                                                                      summary_gen_date = datetime.datetime.now(),
                                                                      meeting_summary = models_data['summary'],
-                                                                     sentiments = ','.join(models_data['extras']['sentiments']),
+                                                                     sentiments = ''.join(models_data['extras']['sentiments']),
                                                                      decisions = ','.join(models_data['extras']['decisions']),
                                                                      action_items = ','.join(set(models_data['extras']['action_items'] + models_data['metadata']['action_items'])),
-                                                                     top_speaker = ','.join(models_data['metadata']['top_speaker']),
+                                                                    #  top_speaker = ','.join(models_data.get('metadata').get('top_speaker'),
                                                                      meeting_description = models_data['metadata']['meeting_description'],
                                                                      generated_title = models_data['metadata']['generated_title'],
                                                                      topic = models_data['metadata']['meeting_category_assgined'],
@@ -259,8 +266,8 @@ class AddMeetingFileAPI(APIView):
                                                                      top_spent_time_person = top_time_spent_person,
                                                                      reading_time = len(models_data['summary'].split(" "))/200,
                                                                      speaker_json = json.dumps({"sepakers":models_data['metadata']['speaker_final']}),
-                                                                     model_used = models_data['model_used'],
-                                                                     highlights_json = json.dumps(models_data['metadata']['highlights']),
+                                                                     model_used = models_data['models_used'],
+                                                                     highlights_json = json.dumps(models_data['highlights']),
                                                                      )
                                 
                 
