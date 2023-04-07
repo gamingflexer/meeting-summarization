@@ -57,6 +57,7 @@ class Summary(models.Model):  # all meeting data
     
     highlights_json = models.CharField(max_length=5000,default="")
     speaker_json = models.CharField(max_length=5000,default="")
+    transcript_json = models.CharField(max_length=6000,default="")
     
     #microsoft
     lastModifiedDateTime_microsoft = models.DateTimeField(null=True,blank=True)
