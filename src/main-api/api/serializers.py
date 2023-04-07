@@ -4,7 +4,7 @@ from api.models import *
 class Summary_Serializers(serializers.ModelSerializer):
     class Meta:
         model = Summary
-        fields = "__all__"
+        fields = ('meeting_id','user_firebase_token','calender_meeting_id','title','creator','organizer','creation_time','start_time','end_time','attendees_count','meet_link','meet_platform','meeting_description','meeting_location','meeting_transcript','meeting_old_transcript','meeting_audio_file_link','is_multilingual','language','is_summarized','meeting_summary','meeting_old_summary','is_summary_edited','summary_gen_date','reading_time','meeting_category_assigned','model_used','generated_title','topic','top_keywords','top_speaker','roles_detected','top_spent_time_person','decisions','highlights_json','speaker_json','transcript_json','lastModifiedDateTime_microsoft','calendar_platform','is_good','factual_consistency','meeting_summary_old','meeting_duration','meeting_type','sentiments','action_items','risks','assumptions','dependencies','constraints','tradeoffs','questions')
         
 class User_info_Serializers(serializers.ModelSerializer):
     class Meta:

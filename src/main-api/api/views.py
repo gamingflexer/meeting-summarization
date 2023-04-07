@@ -375,9 +375,10 @@ class SummaryPageAPI(APIView):
         summary_data_list.append(summary_dict)
         meeting_data_dict['summary'] = summary_data_list
         try:
-            meeting_data_dict['trascript'] = json.loads(content.get('transcript_json'))
-        except:
-            meeting_data_dict['trascript'] =[]
+            meeting_data_dict['trascript'] = json.loads(str(content.get('transcript_json')))
+        except Exception as e:
+            print(e, "\nerror in transcript json\n")
+            meeting_data_dict['trascript'] = []
         meeting_data_list.append(meeting_data_dict)
         data_dict['meeting_data'] = meeting_data_list
         data_dict["email_redirect"] = f"mailto:{decoded_token['email']}"
