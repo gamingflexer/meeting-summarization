@@ -126,7 +126,7 @@ def processors_call_on_trancript(transcript_df, transcript_joined, summary): # i
     
     return {
             "meta_data":{"email":email,
-                        "imp_dates":date,
+                        "imp_dates":str(date),
                         "phone_numbers":phone_numbers,
                         "speaker_names":speaker_names,
                         "addresses":addresses,
