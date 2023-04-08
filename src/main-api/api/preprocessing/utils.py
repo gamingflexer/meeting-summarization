@@ -232,7 +232,7 @@ def segment_transcript(df):
         df['main_timestamps'] = main_timestamps
         return df, False
 
-def duration_from_transcript(df,file_extension):
+def duration_from_transcript(df,file_extension= ".any"):
     if file_extension == '.json':
         try:
             start_time = df.iloc[0]["start_time"]

@@ -59,6 +59,20 @@ def any_transcript_to_dataframe(file_path):
     #print(segmented_df,speaker_dialogue,durations,attendeces_count)
     return segmented_df,speaker_dialogue,(str(durations)[:3] + " min"),attendeces_count
 
+def any_transcript_to_data(df):
+    df_grouped = pd.DataFrame()
+    df_grouped['speaker_dialogue'] = df['speaker'] + ': ' + df['text']
+    speaker_dialogue = df_grouped['speaker_dialogue'].str.cat(sep='\n')
+    segmented_df,status = segment_transcript(df)
+    if status  == False:
+        durations = duration_from_transcript(df)
+    else:
+        durations = duration_from_transcript(segmented_df)
+    #segmented_df = start_end_from_transcript(segmented_df, file_extension)
+    attendeces_count = len(df['speaker'].unique())
+    #print(segmented_df,speaker_dialogue,durations,attendeces_count)
+    return segmented_df,speaker_dialogue,(str(durations)[:3] + " min"),attendeces_count
+    
 
 def identify_meeting_link(meeting_link):
     # Check if link is for Google Meet
