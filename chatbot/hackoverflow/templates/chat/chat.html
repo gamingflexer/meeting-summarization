@@ -89,8 +89,7 @@
   };
 
   chatSocket.onmessage = function (e) {
-
-    document.querySelector("#chat-log").innerHTML = '<div className="bouncing-loader"><div></div><div></div><div></div></div>';
+    // document.querySelector("#chat-log").innerHTML = '<div className="bouncing-loader"><div>hello</div><div></div><div></div></div>';
 
     let data = JSON.parse(e.data);
     let message = data["text"];

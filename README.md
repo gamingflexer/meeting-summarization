@@ -65,6 +65,10 @@ git clone https://github.com/maxent-ai/converse.git && cd converse && pip instal
 sudo apt install ffmpeg
 ```
 
+## Comman Issues 
+
+= `PermissionError: sudo chmod -R 777 `path of the media folder`
+
 ## Project Structure
 
 ### Collaborators
