@@ -398,7 +398,7 @@ class SummaryPageAPI(APIView):
             print(e, "\nerror in transcript json\n")
             meeting_data_dict['trascript'] = []
         meeting_data_list.append(meeting_data_dict)
-        try:
+
         data_dict['meeting_data'] = meeting_data_list
         try:
             if content.get('action_items') is None or content.get('action_items') == "":
