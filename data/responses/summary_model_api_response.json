@@ -1,0 +1,442 @@
+{
+    "data": {
+        "summary": "• summarize: transcript: company meeting on software requirements manager: hello, everyone\n• welcome to the meeting on the software requirements for the upcoming project\n• the team is focused on developing a new software tool for our customer service team\n• the team is making sure that the software is user-friendly and intuitive\n• however, the user interface should be clean, simple, and easy to navigate\n• however, the user interface should be consistent with our brand and other software products\n• the team is making sure that the software is user-friendly and easy to use\n• marketing: how are we going to handle customer support for the new software? manager: good question\n• we'll be setting up a dedicated support team that will be trained on the software and able to handle any customer issues or questions\n• developer 2: what are some of the specific requirements for the new software? manager: the user interface should be user-friendly and easy to navigate\n• however, the user interface should be user-friendly and easy tothe company's new customer service tool will help the team more efficiently track customers, resolve issues and improve overall satisfaction\n• developer 1 asks how the project is going to be developed; the manager answers that it needs to be \"user-friendly\" and \"intuitive,\" while the designer asks if they can use third-party libraries for certain functions\n• the manager also says that they should make sure that their design is \"clean, simple, easy to navigate.\" they plan to launch the product within six months with an end-of-run evaluation of the product in two weeks.",
+        "extras": {
+            "sentiments": "Neutral",
+            "action_items": [],
+            "decisions": [],
+            "risks": [],
+            "assumptions": [],
+            "dependencies": [],
+            "constraints": [],
+            "tradeoffs": [],
+            "open_questions": [
+                "Can you give us an overview of the project goals and objectives?",
+                "What are some of the specific requirements we need to meet?",
+                "How are we going to prioritize these requirements?",
+                "Can you give us an example of how this would work in practice?",
+                "How will we track our progress towards meeting these requirements?",
+                "What design principles should we be following?",
+                "Are there any third-party tools or libraries that we can use to speed up development?",
+                "What is our timeline for completing the project?",
+                "How are we going to market the new software tool?",
+                "Is there anything else we need to be aware of?",
+                "One more question - what file format should we be using for our design files?",
+                "What hardware and software configurations should we be testing on?",
+                "Can we implement any machine learning or AI features in the software?",
+                "How are we going to handle customer support for the new software?",
+                "How are we going to handle data security and privacy concerns?",
+                "Can we add any customization options for users?"
+            ]
+        },
+        "metadata": {
+            "email": [],
+            "imp_dates": [],
+            "phone_numbers": [],
+            "speaker_names": [
+                " Speaker 1",
+                " Speaker 2",
+                " Speaker 3",
+                " Speaker 4",
+                " Speaker 5",
+                " Speaker 6"
+            ],
+            "addresses": [],
+            "jargon_sentences": [],
+            "action_items": [],
+            "get_interactions_silence": {
+                "interruptions": {
+                    " Speaker 1": {
+                        "metadata": [],
+                        "count": 0
+                    },
+                    " Speaker 2": {
+                        "metadata": [],
+                        "count": 0
+                    },
+                    " Speaker 3": {
+                        "metadata": [],
+                        "count": 0
+                    },
+                    " Speaker 4": {
+                        "metadata": [],
+                        "count": 0
+                    },
+                    " Speaker 5": {
+                        "metadata": [],
+                        "count": 0
+                    },
+                    " Speaker 6": {
+                        "metadata": [],
+                        "count": 0
+                    },
+                    "total_interruption": 0
+                },
+                "silence": {
+                    " Speaker 1": {
+                        "metadata": [],
+                        "count": 0
+                    },
+                    " Speaker 2": {
+                        "metadata": [],
+                        "count": 0
+                    },
+                    " Speaker 3": {
+                        "metadata": [],
+                        "count": 0
+                    },
+                    " Speaker 4": {
+                        "metadata": [],
+                        "count": 0
+                    },
+                    " Speaker 5": {
+                        "metadata": [],
+                        "count": 0
+                    },
+                    " Speaker 6": {
+                        "metadata": [],
+                        "count": 0
+                    },
+                    "total_interruption": 0
+                }
+            },
+            "backchannels": "[]",
+            "stats": {
+                "stats": {
+                    " Speaker 1": [
+                        "Use of concrete nouns, interest in objects/things"
+                    ],
+                    " Speaker 2": [
+                        "Education, concern with precision"
+                    ],
+                    " Speaker 3": [],
+                    " Speaker 4": [],
+                    " Speaker 5": [
+                        "Use of concrete nouns, interest in objects/things"
+                    ],
+                    " Speaker 6": [
+                        "Verbal fluency, cognitive complexity"
+                    ]
+                }
+            },
+            "meeting_category_assgined": "General, Customer Service, IT, Legal",
+            "roles_detected": {
+                " Speaker 1": "the manager and the developer are the key roles",
+                " Speaker 2": "Manager and Designer are talking about their work and their design requirements for the software.",
+                " Speaker 3": "manager and designer are involved. you",
+                " Speaker 4": "speaker 4 speaks about software requirements for company",
+                " Speaker 5": "he's the manager of a new software tool for customer service",
+                " Speaker 6": "a manager..the manager,"
+            },
+            "meeting_description": "Manager is developing a new customer service tool",
+            "generated_title": "a manager..the manager,",
+            "speaker_final": [
+                {
+                    "sepaker_name": " Speaker 1",
+                    "sepaker_duration": "10 min",
+                    "sepaker_quality": [
+                        "Use of concrete nouns, interest in objects/things"
+                    ],
+                    "roles_detected": "the manager and the developer are the key roles"
+                },
+                {
+                    "sepaker_name": " Speaker 2",
+                    "sepaker_duration": "10 min",
+                    "sepaker_quality": [
+                        "Education, concern with precision"
+                    ],
+                    "roles_detected": "Manager and Designer are talking about their work and their design requirements for the software."
+                },
+                {
+                    "sepaker_name": " Speaker 3",
+                    "sepaker_duration": "10 min",
+                    "sepaker_quality": [],
+                    "roles_detected": "manager and designer are involved. you"
+                },
+                {
+                    "sepaker_name": " Speaker 4",
+                    "sepaker_duration": "10 min",
+                    "sepaker_quality": [],
+                    "roles_detected": "speaker 4 speaks about software requirements for company"
+                },
+                {
+                    "sepaker_name": " Speaker 5",
+                    "sepaker_duration": "10 min",
+                    "sepaker_quality": [
+                        "Use of concrete nouns, interest in objects/things"
+                    ],
+                    "roles_detected": "he's the manager of a new software tool for customer service"
+                },
+                {
+                    "sepaker_name": " Speaker 6",
+                    "sepaker_duration": "10 min",
+                    "sepaker_quality": [
+                        "Verbal fluency, cognitive complexity"
+                    ],
+                    "roles_detected": "a manager..the manager,"
+                }
+            ]
+        },
+        "models_used": "mikeadimech/longformer-qmsum-meeting-summarization,asach/lognt5-xsum-icsi-400-10",
+        "highlights": [
+            {
+                "main_timestamps": [
+                    {
+                        "timestamp": "end",
+                        "headline": "end_headline",
+                        "internal_timestamp": [
+                            {
+                                "time": 1680826260000,
+                                "text": "end_1_headline"
+                            },
+                            {
+                                "time": 1680826320000,
+                                "text": "Good point, Speaker 6."
+                            },
+                            {
+                                "time": 1680826380000,
+                                "text": "end_3_headline"
+                            },
+                            {
+                                "time": 1680826440000,
+                                "text": "end_4_headline"
+                            }
+                        ]
+                    },
+                    {
+                        "timestamp": "main_context",
+                        "headline": "Good suggestions, everyone.",
+                        "internal_timestamp": [
+                            {
+                                "time": 1680825900000,
+                                "text": "Good suggestions, everyone."
+                            },
+                            {
+                                "time": 1680825975800,
+                                "text": "Yes, Speaker 1."
+                            },
+                            {
+                                "time": 1680826050200,
+                                "text": "main_3_headline"
+                            },
+                            {
+                                "time": 1680826125300,
+                                "text": "main_4_headline"
+                            },
+                            {
+                                "time": 1680826200000,
+                                "text": "main_5_headline"
+                            }
+                        ]
+                    },
+                    {
+                        "timestamp": "start",
+                        "headline": "Talking about the progress of our ongoing projects",
+                        "internal_timestamp": [
+                            {
+                                "time": 1680825600000,
+                                "text": "Good Morning everyone and welcome to our weekly team"
+                            },
+                            {
+                                "time": 1680825675200,
+                                "text": "The marketing campaign we launched last month"
+                            },
+                            {
+                                "time": 1680825750500,
+                                "text": "start_3_headline"
+                            },
+                            {
+                                "time": 1680825825100,
+                                "text": "start_4_headline"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "transcript": [
+            {
+                "time_stamp": 1680825675200,
+                "speaker": " Speaker 1",
+                "text": "Good morning everyone and welcome to our weekly team meeting. Today we'll be discussing the progress of our ongoing projects and planning for the next quarter.",
+                "end_time": 1680825675200,
+                "start_time": 1680825600000,
+                "attributes": [
+                    {
+                        "is_question": true,
+                        "is_backchannel": false,
+                        "is_answer": false
+                    }
+                ]
+            },
+            {
+                "time_stamp": 1680825750500,
+                "speaker": " Speaker 2",
+                "text": "Thanks, Speaker 1. I'd like to start by sharing an update on the marketing campaign we launched last month. Our initial metrics are looking very promising and we're already seeing an uptick in website traffic and engagement.",
+                "end_time": 1680825750500,
+                "start_time": 1680825675200,
+                "attributes": [
+                    {
+                        "is_question": true,
+                        "is_backchannel": false,
+                        "is_answer": false
+                    }
+                ]
+            },
+            {
+                "time_stamp": 1680825825100,
+                "speaker": " Speaker 3",
+                "text": "That's great to hear, Speaker 2. I think we should also consider expanding our reach to new markets, especially in Europe where we've seen a lot of interest lately.",
+                "end_time": 1680825825100,
+                "start_time": 1680825750500,
+                "attributes": [
+                    {
+                        "is_question": true,
+                        "is_backchannel": false,
+                        "is_answer": false
+                    }
+                ]
+            },
+            {
+                "time_stamp": 1680825900000,
+                "speaker": " Speaker 4",
+                "text": "I agree, Speaker 3. We should definitely explore some new channels and tactics to tap into these emerging markets.",
+                "end_time": 1680825900000,
+                "start_time": 1680825825100,
+                "attributes": [
+                    {
+                        "is_question": true,
+                        "is_backchannel": false,
+                        "is_answer": false
+                    }
+                ]
+            },
+            {
+                "time_stamp": 1680825975800,
+                "speaker": " Speaker 1",
+                "text": "Excellent suggestions, everyone. Let's make sure to add these items to our action items for next week and keep the momentum going. Any other updates or concerns to share before we wrap up?",
+                "end_time": 1680825975800,
+                "start_time": 1680825900000,
+                "attributes": [
+                    {
+                        "is_question": true,
+                        "is_backchannel": false,
+                        "is_answer": false
+                    }
+                ]
+            },
+            {
+                "time_stamp": 1680826050200,
+                "speaker": " Speaker 5",
+                "text": "Yes, Speaker 1. I have some feedback on the new project management software we've been using. While it's been helpful in some ways, I think there are some features that are missing or could be improved to better support our team's needs.",
+                "end_time": 1680826050200,
+                "start_time": 1680825975800,
+                "attributes": [
+                    {
+                        "is_question": true,
+                        "is_backchannel": false,
+                        "is_answer": false
+                    }
+                ]
+            },
+            {
+                "time_stamp": 1680826125300,
+                "speaker": " Speaker 1",
+                "text": "Thanks for bringing that up, Speaker 5. Let's take a closer look at the software and see if there are any adjustments we can make to better align it with our processes.",
+                "end_time": 1680826125300,
+                "start_time": 1680826050200,
+                "attributes": [
+                    {
+                        "is_question": true,
+                        "is_backchannel": false,
+                        "is_answer": false
+                    }
+                ]
+            },
+            {
+                "time_stamp": 1680826200000,
+                "speaker": " Speaker 6",
+                "text": "Before we end the call, I just want to remind everyone that our company retreat is coming up next month and we still need to finalize some details.",
+                "end_time": 1680826200000,
+                "start_time": 1680826125300,
+                "attributes": [
+                    {
+                        "is_question": true,
+                        "is_backchannel": false,
+                        "is_answer": false
+                    }
+                ]
+            },
+            {
+                "time_stamp": 1680826260000,
+                "speaker": " Speaker 1",
+                "text": "Good point, Speaker 6. Let's make sure to get those arrangements sorted out ASAP. Thanks everyone for a productive meeting, and have a great week ahead!",
+                "end_time": 1680826260000,
+                "start_time": 1680826200000,
+                "attributes": [
+                    {
+                        "is_question": true,
+                        "is_backchannel": false,
+                        "is_answer": false
+                    }
+                ]
+            },
+            {
+                "time_stamp": 1680826320000,
+                "speaker": " Speaker 1",
+                "text": "Good point, Speaker 6. Let's make sure to get those arrangements sorted out ASAP. Thanks everyone for a productive meeting, and have a great week ahead!",
+                "end_time": 1680826320000,
+                "start_time": 1680826260000,
+                "attributes": [
+                    {
+                        "is_question": true,
+                        "is_backchannel": false,
+                        "is_answer": false
+                    }
+                ]
+            },
+            {
+                "time_stamp": 1680826380000,
+                "speaker": " Speaker 1",
+                "text": "Good point, Speaker 6. Let's make sure to get those arrangements sorted out ASAP. Thanks everyone for a productive meeting, and have a great week ahead!",
+                "end_time": 1680826380000,
+                "start_time": 1680826320000,
+                "attributes": [
+                    {
+                        "is_question": true,
+                        "is_backchannel": false,
+                        "is_answer": false
+                    }
+                ]
+            },
+            {
+                "time_stamp": 1680826440000,
+                "speaker": " Speaker 5",
+                "text": "Lets conclude the meeting then.",
+                "end_time": 1680826440000,
+                "start_time": 1680826380000,
+                "attributes": [
+                    {
+                        "is_question": true,
+                        "is_backchannel": false,
+                        "is_answer": false
+                    }
+                ]
+            },
+            {
+                "time_stamp": 1680826440000,
+                "speaker": " Speaker 2",
+                "text": "thanks everyone for joining",
+                "end_time": 1680826440000,
+                "start_time": 1680826440000,
+                "attributes": [
+                    {
+                        "is_question": true,
+                        "is_backchannel": false,
+                        "is_answer": false
+                    }
+                ]
+            }
+        ]
+    }
+}

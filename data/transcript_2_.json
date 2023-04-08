@@ -1,0 +1,625 @@
+[
+    {
+        "start_time": 0.0,
+        "end_time": 7.0,
+        "speaker": "SPEAKER_01",
+        "text": " Hi Gary.",
+        "duration": 7.0
+    },
+    {
+        "start_time": 7.0,
+        "end_time": 11.0,
+        "speaker": "SPEAKER_00",
+        "text": " Hi guys, how you doing?",
+        "duration": 4.0
+    },
+    {
+        "start_time": 11.0,
+        "end_time": 12.0,
+        "speaker": "SPEAKER_01",
+        "text": " Good.",
+        "duration": 1.0
+    },
+    {
+        "start_time": 12.0,
+        "end_time": 16.0,
+        "speaker": "SPEAKER_00",
+        "text": " Getting a little technical hookup.",
+        "duration": 4.0
+    },
+    {
+        "start_time": 16.0,
+        "end_time": 21.0,
+        "speaker": "SPEAKER_00",
+        "text": " Live streaming on YouTube now by the looks of it.",
+        "duration": 5.0
+    },
+    {
+        "start_time": 21.0,
+        "end_time": 26.0,
+        "speaker": "SPEAKER_00",
+        "text": " So we cant swear any longer if something goes wrong.",
+        "duration": 5.0
+    },
+    {
+        "start_time": 26.0,
+        "end_time": 31.0,
+        "speaker": "SPEAKER_00",
+        "text": " Apparently not.",
+        "duration": 5.0
+    },
+    {
+        "start_time": 31.0,
+        "end_time": 34.0,
+        "speaker": "SPEAKER_00",
+        "text": " But all mine, please, and Q please.",
+        "duration": 3.0
+    },
+    {
+        "start_time": 34.0,
+        "end_time": 37.0,
+        "speaker": "SPEAKER_01",
+        "text": " Under that.",
+        "duration": 3.0
+    },
+    {
+        "start_time": 37.0,
+        "end_time": 44.0,
+        "speaker": "SPEAKER_01",
+        "text": " Hi, Joe.",
+        "duration": 7.0
+    },
+    {
+        "start_time": 44.0,
+        "end_time": 46.0,
+        "speaker": "SPEAKER_01",
+        "text": " Hi, Gary.",
+        "duration": 2.0
+    },
+    {
+        "start_time": 46.0,
+        "end_time": 48.0,
+        "speaker": "SPEAKER_01",
+        "text": " Good.",
+        "duration": 2.0
+    },
+    {
+        "start_time": 48.0,
+        "end_time": 49.0,
+        "speaker": "SPEAKER_01",
+        "text": " Good.",
+        "duration": 1.0
+    },
+    {
+        "start_time": 49.0,
+        "end_time": 51.0,
+        "speaker": "SPEAKER_01",
+        "text": " Cat complain.",
+        "duration": 2.0
+    },
+    {
+        "start_time": 51.0,
+        "end_time": 54.0,
+        "speaker": "SPEAKER_01",
+        "text": " Don get back to work.",
+        "duration": 3.0
+    },
+    {
+        "start_time": 54.0,
+        "end_time": 59.0,
+        "speaker": "SPEAKER_01",
+        "text": " I seen there more and more cars out there at the moment.",
+        "duration": 5.0
+    },
+    {
+        "start_time": 59.0,
+        "end_time": 66.0,
+        "speaker": "SPEAKER_01",
+        "text": " Getting a bit slack on it.",
+        "duration": 7.0
+    },
+    {
+        "start_time": 66.0,
+        "end_time": 69.0,
+        "speaker": "SPEAKER_00",
+        "text": " I feeling up.",
+        "duration": 3.0
+    },
+    {
+        "start_time": 69.0,
+        "end_time": 72.0,
+        "speaker": "SPEAKER_01",
+        "text": " I not Lily Hayward.",
+        "duration": 3.0
+    },
+    {
+        "start_time": 72.0,
+        "end_time": 76.0,
+        "speaker": "SPEAKER_00",
+        "text": " Ie got it.",
+        "duration": 4.0
+    },
+    {
+        "start_time": 76.0,
+        "end_time": 77.0,
+        "speaker": "SPEAKER_00",
+        "text": " Thanks Joe.",
+        "duration": 1.0
+    },
+    {
+        "start_time": 77.0,
+        "end_time": 79.0,
+        "speaker": "SPEAKER_00",
+        "text": "Ie got it.",
+        "duration": 2.0
+    },
+    {
+        "start_time": 79.0,
+        "end_time": 82.0,
+        "speaker": "SPEAKER",
+        "text": " Great.",
+        "duration": 3.0
+    },
+    {
+        "start_time": 82.0,
+        "end_time": 87.0,
+        "speaker": "SPEAKER_00",
+        "text": " I thought I was so smart as well.",
+        "duration": 5.0
+    },
+    {
+        "start_time": 87.0,
+        "end_time": 90.0,
+        "speaker": "SPEAKER_00",
+        "text": " I not sure.",
+        "duration": 3.0
+    },
+    {
+        "start_time": 90.0,
+        "end_time": 93.0,
+        "speaker": "SPEAKER_01",
+        "text": " I not sure.",
+        "duration": 3.0
+    },
+    {
+        "start_time": 93.0,
+        "end_time": 96.0,
+        "speaker": null,
+        "text": " There.",
+        "duration": 3.0
+    },
+    {
+        "start_time": 96.0,
+        "end_time": 98.0,
+        "speaker": null,
+        "text": " It pretty.",
+        "duration": 2.0
+    },
+    {
+        "start_time": 98.0,
+        "end_time": 101.0,
+        "speaker": null,
+        "text": " Shit.",
+        "duration": 3.0
+    },
+    {
+        "start_time": 101.0,
+        "end_time": 106.0,
+        "speaker": "SPEAKER_01",
+        "text": " Shit.",
+        "duration": 5.0
+    },
+    {
+        "start_time": 106.0,
+        "end_time": 110.0,
+        "speaker": "SPEAKER_00",
+        "text": " Is that Joe?",
+        "duration": 4.0
+    },
+    {
+        "start_time": 110.0,
+        "end_time": 113.0,
+        "speaker": "SPEAKER_00",
+        "text": " Everybody who meant to be here?",
+        "duration": 3.0
+    },
+    {
+        "start_time": 113.0,
+        "end_time": 115.0,
+        "speaker": "SPEAKER_00",
+        "text": " Richard.",
+        "duration": 2.0
+    },
+    {
+        "start_time": 115.0,
+        "end_time": 119.0,
+        "speaker": "SPEAKER_01",
+        "text": " Richard missing.",
+        "duration": 4.0
+    },
+    {
+        "start_time": 119.0,
+        "end_time": 122.0,
+        "speaker": "SPEAKER_01",
+        "text": " Are we still trying to log on?",
+        "duration": 3.0
+    },
+    {
+        "start_time": 144.0,
+        "end_time": 147.0,
+        "speaker": "SPEAKER_00",
+        "text": " I not sure.",
+        "duration": 3.0
+    },
+    {
+        "start_time": 147.0,
+        "end_time": 156.0,
+        "speaker": "SPEAKER_00",
+        "text": " I suppose we probably should start, should we, because in case the awesome keen people watching us on live stream.",
+        "duration": 9.0
+    },
+    {
+        "start_time": 156.0,
+        "end_time": 158.0,
+        "speaker": "SPEAKER_00",
+        "text": " So welcome everybody.",
+        "duration": 2.0
+    },
+    {
+        "start_time": 158.0,
+        "end_time": 162.0,
+        "speaker": "SPEAKER_00",
+        "text": " And hello to anyone that has joined us for the live stream.",
+        "duration": 4.0
+    },
+    {
+        "start_time": 162.0,
+        "end_time": 166.0,
+        "speaker": "SPEAKER_00",
+        "text": " We hopefully actually got my short meeting this afternoon.",
+        "duration": 4.0
+    },
+    {
+        "start_time": 166.0,
+        "end_time": 171.0,
+        "speaker": "SPEAKER_00",
+        "text": " So first off, can I ask for apologies, please?",
+        "duration": 5.0
+    },
+    {
+        "start_time": 171.0,
+        "end_time": 176.0,
+        "speaker": "SPEAKER_00",
+        "text": " So we can move on to disclosure of members interest.",
+        "duration": 5.0
+    },
+    {
+        "start_time": 176.0,
+        "end_time": 187.0,
+        "speaker": "SPEAKER_00",
+        "text": " So can I just remind everyone that if you do have any interest in any of the things that wee about to discuss, wee a conflict.",
+        "duration": 11.0
+    },
+    {
+        "start_time": 187.0,
+        "end_time": 188.0,
+        "speaker": "SPEAKER_00",
+        "text": " Would arise.",
+        "duration": 1.0
+    },
+    {
+        "start_time": 188.0,
+        "end_time": 191.0,
+        "speaker": "SPEAKER_00",
+        "text": " Can you please let us know about those now?",
+        "duration": 3.0
+    },
+    {
+        "start_time": 191.0,
+        "end_time": 194.0,
+        "speaker": "SPEAKER_01",
+        "text": " All good for me.",
+        "duration": 3.0
+    },
+    {
+        "start_time": 194.0,
+        "end_time": 195.0,
+        "speaker": "SPEAKER_01",
+        "text": " Adam.",
+        "duration": 1.0
+    },
+    {
+        "start_time": 195.0,
+        "end_time": 198.0,
+        "speaker": "SPEAKER_01",
+        "text": " Sorry.",
+        "duration": 3.0
+    },
+    {
+        "start_time": 198.0,
+        "end_time": 201.0,
+        "speaker": "SPEAKER_01",
+        "text": " Sorry.",
+        "duration": 3.0
+    },
+    {
+        "start_time": 201.0,
+        "end_time": 204.0,
+        "speaker": "SPEAKER_00",
+        "text": " That was my feedback.",
+        "duration": 3.0
+    },
+    {
+        "start_time": 204.0,
+        "end_time": 206.0,
+        "speaker": "SPEAKER_00",
+        "text": " I changed devices.",
+        "duration": 2.0
+    },
+    {
+        "start_time": 206.0,
+        "end_time": 208.0,
+        "speaker": "SPEAKER_00",
+        "text": " Oh, okay.",
+        "duration": 2.0
+    },
+    {
+        "start_time": 208.0,
+        "end_time": 209.0,
+        "speaker": "SPEAKER_00",
+        "text": " All right.",
+        "duration": 1.0
+    },
+    {
+        "start_time": 209.0,
+        "end_time": 210.0,
+        "speaker": "SPEAKER_00",
+        "text": " Go again, Gary.",
+        "duration": 1.0
+    },
+    {
+        "start_time": 210.0,
+        "end_time": 211.0,
+        "speaker": "SPEAKER_01",
+        "text": " Yeah.",
+        "duration": 1.0
+    },
+    {
+        "start_time": 211.0,
+        "end_time": 212.0,
+        "speaker": "SPEAKER_01",
+        "text": " I all good. Thanks very much.",
+        "duration": 1.0
+    },
+    {
+        "start_time": 212.0,
+        "end_time": 213.0,
+        "speaker": "SPEAKER_00",
+        "text": " Okay. Thank you.",
+        "duration": 1.0
+    },
+    {
+        "start_time": 213.0,
+        "end_time": 216.0,
+        "speaker": "SPEAKER_00",
+        "text": " And everyone else is happy.",
+        "duration": 3.0
+    },
+    {
+        "start_time": 216.0,
+        "end_time": 217.0,
+        "speaker": "SPEAKER_00",
+        "text": " Yep.",
+        "duration": 1.0
+    },
+    {
+        "start_time": 217.0,
+        "end_time": 218.0,
+        "speaker": "SPEAKER_00",
+        "text": " Okay.",
+        "duration": 1.0
+    },
+    {
+        "start_time": 218.0,
+        "end_time": 221.0,
+        "speaker": "SPEAKER_00",
+        "text": " No sound must be a good thing.",
+        "duration": 3.0
+    },
+    {
+        "start_time": 221.0,
+        "end_time": 222.0,
+        "speaker": "SPEAKER_00",
+        "text": " Right.",
+        "duration": 1.0
+    },
+    {
+        "start_time": 222.0,
+        "end_time": 225.0,
+        "speaker": "SPEAKER_00",
+        "text": " Item four, late items.",
+        "duration": 3.0
+    },
+    {
+        "start_time": 225.0,
+        "end_time": 232.0,
+        "speaker": "SPEAKER_00",
+        "text": " Sally, you or Joe, I presume we got no other, no late items to add this afternoon.",
+        "duration": 7.0
+    },
+    {
+        "start_time": 232.0,
+        "end_time": 239.0,
+        "speaker": "SPEAKER_00",
+        "text": " Okay. So can I please have someone move that the order of the meeting.",
+        "duration": 7.0
+    },
+    {
+        "start_time": 239.0,
+        "end_time": 244.0,
+        "speaker": "SPEAKER_00",
+        "text": " The confirmed as outlined in our agenda.",
+        "duration": 5.0
+    },
+    {
+        "start_time": 244.0,
+        "end_time": 246.0,
+        "speaker": "SPEAKER_00",
+        "text": " No.",
+        "duration": 2.0
+    },
+    {
+        "start_time": 246.0,
+        "end_time": 248.0,
+        "speaker": "SPEAKER_00",
+        "text": " I got another waiver.",
+        "duration": 2.0
+    },
+    {
+        "start_time": 248.0,
+        "end_time": 249.0,
+        "speaker": "SPEAKER_00",
+        "text": " Thank you.",
+        "duration": 1.0
+    },
+    {
+        "start_time": 249.0,
+        "end_time": 253.0,
+        "speaker": "SPEAKER_00",
+        "text": " Oops, hang on. I just got to swap mouses.",
+        "duration": 4.0
+    },
+    {
+        "start_time": 253.0,
+        "end_time": 257.0,
+        "speaker": "SPEAKER_00",
+        "text": " Okay. So.",
+        "duration": 4.0
+    },
+    {
+        "start_time": 257.0,
+        "end_time": 263.0,
+        "speaker": "SPEAKER_00",
+        "text": " Our next item, of course, is our draft annual planned submission.",
+        "duration": 6.0
+    },
+    {
+        "start_time": 263.0,
+        "end_time": 272.0,
+        "speaker": "SPEAKER_00",
+        "text": " Now I not going to read through all of that for you because seeing as that was the only thing I on our agenda. I assume you all have read that.",
+        "duration": 9.0
+    },
+    {
+        "start_time": 273.0,
+        "end_time": 276.0,
+        "speaker": "SPEAKER_00",
+        "text": " So we probably can most likely just.",
+        "duration": 3.0
+    },
+    {
+        "start_time": 276.0,
+        "end_time": 281.0,
+        "speaker": "SPEAKER_00",
+        "text": " Jump down to our recommendation.",
+        "duration": 5.0
+    },
+    {
+        "start_time": 281.0,
+        "end_time": 288.0,
+        "speaker": "SPEAKER_00",
+        "text": " Well, actually, firstly, is there anything anyone wanted to change in that or are we all in a.",
+        "duration": 7.0
+    },
+    {
+        "start_time": 288.0,
+        "end_time": 292.0,
+        "speaker": "SPEAKER_00",
+        "text": " An essence happy with what outlined in that report.",
+        "duration": 4.0
+    },
+    {
+        "start_time": 292.0,
+        "end_time": 294.0,
+        "speaker": "SPEAKER_00",
+        "text": " For our submissions.",
+        "duration": 2.0
+    },
+    {
+        "start_time": 295.0,
+        "end_time": 300.0,
+        "speaker": "SPEAKER_01",
+        "text": " I all good with everything is it been modified slightly. So now I all happy with that.",
+        "duration": 5.0
+    },
+    {
+        "start_time": 300.0,
+        "end_time": 309.0,
+        "speaker": "SPEAKER_01",
+        "text": " Madam chair had a really good read through it. So plenty of consideration given to the submissions unless somebody has got something there that I like to.",
+        "duration": 9.0
+    },
+    {
+        "start_time": 309.0,
+        "end_time": 312.0,
+        "speaker": "SPEAKER",
+        "text": " To raise issue one. I okay with it.",
+        "duration": 3.0
+    },
+    {
+        "start_time": 312.0,
+        "end_time": 314.0,
+        "speaker": "SPEAKER",
+        "text": " Okay. Lovely. Anyone else?",
+        "duration": 2.0
+    },
+    {
+        "start_time": 314.0,
+        "end_time": 320.0,
+        "speaker": "SPEAKER_",
+        "text": " Okay. Let get on then. So our recommendation is that.",
+        "duration": 6.0
+    },
+    {
+        "start_time": 321.0,
+        "end_time": 329.0,
+        "speaker": "SPEAKER_00",
+        "text": " Information contained in the report, telemetry community board draft annual plan submission of the chairperson of the telemetry community board.",
+        "duration": 8.0
+    },
+    {
+        "start_time": 329.0,
+        "end_time": 344.0,
+        "speaker": "SPEAKER_00",
+        "text": " Angel help be received and be the telemetry community board approved the draft submission on the 2020 slash 21 annual plan included in this report for submission to whiteboard district council by Friday 24th of April, 2020.",
+        "duration": 15.0
+    },
+    {
+        "start_time": 345.0,
+        "end_time": 355.0,
+        "speaker": "SPEAKER_00",
+        "text": " So can I have someone to move that for me please. Kane. Thank you. And to second it, Jill super done and dusted.",
+        "duration": 10.0
+    },
+    {
+        "start_time": 355.0,
+        "end_time": 357.0,
+        "speaker": "SPEAKER_00",
+        "text": " So Il just.",
+        "duration": 2.0
+    },
+    {
+        "start_time": 357.0,
+        "end_time": 362.0,
+        "speaker": "SPEAKER_00",
+        "text": " That pretty much will close our meeting then.",
+        "duration": 5.0
+    },
+    {
+        "start_time": 362.0,
+        "end_time": 364.0,
+        "speaker": "SPEAKER_00",
+        "text": " Very happy.",
+        "duration": 2.0
+    }
+]
