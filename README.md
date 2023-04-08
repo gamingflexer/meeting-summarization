@@ -19,7 +19,8 @@ Project features Implementated are
 - [x] Text summarization
 - [x] Action items
 - [x] Meeting duration
-- [x] Meeting attendees ...
+- [x] Meeting attendees 
+Many More ...
 
 ## Requirements
 
@@ -44,7 +45,16 @@ API SERVER
 
 Chatbot
 
-`python manage.py runserver 0.0.0.0:8001`
+```
+python manage.py tailwind init
+python manage.py tailwind install
+```
+
+```
+python manage.py runserver 0.0.0.0:8001
+redis-server
+python manage.py tailwind start
+```
 
 #### Start the meeting summarization api [GCP]
 
@@ -63,11 +73,12 @@ python -m spacy download en_core_web_sm
 pip install -U scikit-learn scipy matplotlib
 git clone https://github.com/maxent-ai/converse.git && cd converse && pip install -e . && cd ..
 sudo apt install ffmpeg
+sudo apt-get install libsndfile1-dev
 ```
 
 ## Comman Issues 
 
-= `PermissionError: sudo chmod -R 777 `path of the media folder`
+- `PermissionError:` sudo chmod -R 777 path of the media folder`
 
 ## Project Structure
 
