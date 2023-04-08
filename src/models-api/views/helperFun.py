@@ -126,14 +126,14 @@ def processors_call_on_trancript(transcript_df, transcript_joined, summary): # i
     
     return {
             "meta_data":{"email":email,
-                        "imp_dates":str(date),
+                        # "imp_dates":str(date),
                         "phone_numbers":phone_numbers,
                         "speaker_names":speaker_names,
                         "addresses":addresses,
                         "jargon_sentences":jargon_sentences,
                         "action_items":action_items_list,
-                        "get_interactions_silence":get_interactions_silence,
-                        "backchannels":backchannels,
+                        # "get_interactions_silence":get_interactions_silence,
+                        # "backchannels":backchannels,
                         "stats":stats,
                         "meeting_category_assgined": meeting_category_assgined,
                         "roles_detected": speaker_roles,

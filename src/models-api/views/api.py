@@ -205,17 +205,25 @@ class SummaryApi(Resource):
                     final_summary = main_summary     
             res =  {"data":
                                 {
-                                    "summary":final_summary,
-                                    "extras" : summarize_conversation_extras(transcript_joined),
-                                    "metadata" :meta_data['meta_data'],
-                                    "models_used" : models_used,
-                                    "highlights" : highlight_json,
-                                    "transcript" : transcript_json,
+                                     "summary":final_summary,
+                                     "extras" : summarize_conversation_extras(transcript_joined),
+                                     "metadata" :meta_data['meta_data'],
+                                     "models_used" : models_used,
+                                     "highlights" : highlight_json,
+                                     "transcript" : transcript_json,
                                 }
                             }
+            # print("-------------metadata--------------------")
+            # print(res)
+            # print("-----------------highlights---------------------------")
+            # print(json.dumps({"data":{"highlights" : highlight_json,}}))
+
+            # print("-----------------transcript---------------------------")
+            # print(json.dumps({"data":{"transcript" : transcript_json}}))
             try:
                 return res, 200
             except TypeError:
+                print("exception")
                 res_dump = json.dumps(res, indent=4, sort_keys=True, default=vars)
                 return res_dump, 200
             
