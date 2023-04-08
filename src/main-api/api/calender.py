@@ -28,11 +28,12 @@ class GoogleCalendarInitView(View):
 
     def get(self, request, *args, **kwargs):
         
-        authorization_header = request.META.get('HTTP_AUTHORIZATION')
-        token = authorization_header.replace("Bearer ", "")
+        # authorization_header = request.META.get('HTTP_AUTHORIZATION')
+        # token = authorization_header.replace("Bearer ", "")
         
-        decoded_token = auth.verify_id_token(token)
-        firebase_user_id = decoded_token['user_id']
+        # decoded_token = auth.verify_id_token(token)
+        # firebase_user_id = decoded_token['user_id']
+        firebase_user_id = "DL7rKD68CEYEpNd9eTIjBF6QDbt2"
         User_info.objects.filter(user_firebase_token=firebase_user_id).update(calender_onboarding_status=True)
 
         flow = InstalledAppFlow.from_client_secrets_file(
@@ -81,7 +82,7 @@ class GoogleCalendarRedirectView(View):
 
         # Store the credentials in the session.
         credentials = flow.credentials
-
+        print(credentials)
         request.session['credentials'] = {
             'token': credentials.token,
             'refresh_token': credentials.refresh_token,
@@ -127,11 +128,11 @@ class GoogleCalendarMultipleEventsView(View):
 
     def get(self, request,api_keyword, *args, **kwargs):
         
-        authorization_header = request.META.get('HTTP_AUTHORIZATION')
-        token = authorization_header.replace("Bearer ", "")
+        # authorization_header = request.META.get('HTTP_AUTHORIZATION')
+        # token = authorization_header.replace("Bearer ", "")
         
-        decoded_token = auth.verify_id_token(token)
-        firebase_user_id = decoded_token['user_id']
+        # decoded_token = auth.verify_id_token(token)
+        # firebase_user_id = decoded_token['user_id']
         firebase_user_id = "DL7rKD68CEYEpNd9eTIjBF6QDbt2"
         #User_info.objects.get(user_firebase_token=firebase_user_id)
 
