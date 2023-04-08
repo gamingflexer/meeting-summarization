@@ -143,17 +143,23 @@ class SummaryApi(Resource):
                     final_summary = clean_summary
                 except:
                     final_summary = main_summary
-
-            return {"data":
-                            {
-                                "summary":final_summary,
-                                "extras" : summarize_conversation_extras(transcript_joined),
-                                "metadata" :meta_data['meta_data'],
-                                "models_used" : models_used,
-                                "highlights" : highlight_json,
-                                "transcript" : transcript_json,
+                    
+            res =  {"data":
+                                {
+                                    "summary":final_summary,
+                                    "extras" : summarize_conversation_extras(transcript_joined),
+                                    "metadata" :meta_data['meta_data'],
+                                    "models_used" : models_used,
+                                    "highlights" : highlight_json,
+                                    "transcript" : transcript_json,
+                                }
                             }
-                        }
+            try:
+                return res, 200
+            except TypeError:
+                res_dump = json.dumps(res)
+                return res_dump, 200
+            
         else:
             transcript_joined = data['data'].get('transcript') # this is a string
             
