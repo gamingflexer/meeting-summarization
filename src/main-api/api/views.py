@@ -398,8 +398,15 @@ class SummaryPageAPI(APIView):
             print(e, "\nerror in transcript json\n")
             meeting_data_dict['trascript'] = []
         meeting_data_list.append(meeting_data_dict)
+
         data_dict['meeting_data'] = meeting_data_list
-        data_dict['action_items'] = content.get('action_items').split(",")
+        try:
+            if content.get('action_items') is None or content.get('action_items') == "":
+                data_dict['action_items']=[]
+            else :
+                data_dict['action_items'] = content.get('action_items').split(",")
+        except:
+            data_dict['action_items'] = []
         data_dict["email_redirect"] = f"mailto:{decoded_token['email']}"
 
         return Response({"data":data_dict},status=status.HTTP_200_OK)
